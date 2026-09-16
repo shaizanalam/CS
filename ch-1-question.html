@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Class XI CS - Computer System Overview | Practice Question Bank</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;800&display=swap');
+
+        :root {
+            --lavender: #e6e0fa;
+            --lavender-dark: #8b7fd6;
+            --blush: #fde2e9;
+            --blush-dark: #e0729a;
+            --mint: #dcf5e8;
+            --mint-dark: #3f9d72;
+            --babyblue: #dbeeff;
+            --babyblue-dark: #4a90d9;
+            --cream: #faf9f6;
+            --ink: #2d3748;
+            --ink-soft: #5a6478;
+            --correct: #3f9d72;
+            --correct-bg: #e4f9ee;
+            --wrong: #e0567a;
+            --wrong-bg: #fdeaf0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: var(--cream);
+            color: var(--ink);
+            margin: 0;
+            padding: 0 0 60px;
+            line-height: 1.5;
+        }
+
+        .wrap {
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        /* HEADER */
+        .header-card {
+            background: linear-gradient(120deg, var(--lavender) 0%, var(--blush) 50%, var(--babyblue) 100%);
+            border-radius: 22px;
+            padding: 26px 24px;
+            text-align: center;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+        }
+
+        .header-card h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .header-card p {
+            margin: 6px 0 0;
+            font-size: 13px;
+            color: var(--ink-soft);
+            font-weight: 600;
+        }
+
+        /* SCORE BAR */
+        .scorebar {
+            position: sticky;
+            top: 10px;
+            z-index: 50;
+            background: #fff;
+            border-radius: 18px;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+            margin-bottom: 18px;
+            border: 1.5px solid var(--lavender);
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .scorebar .label {
+            font-weight: 800;
+            font-size: 13.5px;
+            color: var(--lavender-dark);
+        }
+
+        .scorebar .stat {
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .scorebar .stat.correct-txt {
+            color: var(--correct);
+        }
+
+        .scorebar .stat.wrong-txt {
+            color: var(--wrong);
+        }
+
+        .barouter {
+            flex: 1;
+            min-width: 140px;
+            height: 10px;
+            background: #f1eefc;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 0 10px;
+        }
+
+        .barinner {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--mint-dark), var(--babyblue-dark));
+            transition: width .4s ease;
+        }
+
+        .reset-btn {
+            background: var(--blush);
+            color: var(--blush-dark);
+            border: none;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .reset-btn:hover {
+            background: var(--blush-dark);
+            color: #fff;
+        }
+
+        /* SECTION LABEL */
+        .section-title {
+            font-size: 16px;
+            font-weight: 800;
+            margin: 26px 4px 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title .chip {
+            background: var(--lavender-dark);
+            color: #fff;
+            font-size: 11px;
+            padding: 4px 11px;
+            border-radius: 20px;
+        }
+
+        .subsection-title {
+            font-size: 13px;
+            font-weight: 700;
+            margin: 16px 2px 8px;
+            color: var(--lavender-dark);
+        }
+
+        /* QUESTION CARD (interactive) */
+        .qcard {
+            background: #fff;
+            border-radius: 16px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .qtext {
+            font-weight: 700;
+            font-size: 13.5px;
+            margin-bottom: 10px;
+        }
+
+        .qnum {
+            color: var(--babyblue-dark);
+            margin-right: 4px;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .options.two-col-wide {
+            grid-template-columns: 1fr;
+        }
+
+        .opt-btn {
+            text-align: left;
+            background: #f9f8ff;
+            border: 1.5px solid #ece8fb;
+            border-radius: 12px;
+            padding: 9px 12px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--ink);
+            cursor: pointer;
+            transition: all .15s ease;
+        }
+
+        .opt-btn:hover:not(.locked) {
+            border-color: var(--lavender-dark);
+            background: #f1eefe;
+            transform: translateY(-1px);
+        }
+
+        .opt-btn.correct-pick {
+            background: var(--correct-bg);
+            border-color: var(--correct);
+            color: #1f6b46;
+        }
+
+        .opt-btn.wrong-pick {
+            background: var(--wrong-bg);
+            border-color: var(--wrong);
+            color: #9c2f4d;
+        }
+
+        .opt-btn.reveal-correct {
+            background: var(--correct-bg);
+            border-color: var(--correct);
+            color: #1f6b46;
+        }
+
+        .opt-btn.locked {
+            cursor: default;
+        }
+
+        .feedback {
+            margin-top: 9px;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 10px;
+            padding: 7px 11px;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.ok {
+            background: var(--correct-bg);
+            color: #1f6b46;
+        }
+
+        .feedback.no {
+            background: var(--wrong-bg);
+            color: #9c2f4d;
+        }
+
+        /* TF pills */
+        .tf-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .tf-btn {
+            flex: 1;
+            text-align: center;
+            background: #f9f8ff;
+            border: 1.5px solid #ece8fb;
+            border-radius: 20px;
+            padding: 8px 10px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 12.5px;
+            cursor: pointer;
+        }
+
+        .tf-btn:hover:not(.locked) {
+            border-color: var(--lavender-dark);
+        }
+
+        .tf-btn.correct-pick {
+            background: var(--correct-bg);
+            border-color: var(--correct);
+            color: #1f6b46;
+        }
+
+        .tf-btn.wrong-pick {
+            background: var(--wrong-bg);
+            border-color: var(--wrong);
+            color: #9c2f4d;
+        }
+
+        .tf-btn.reveal-correct {
+            background: var(--correct-bg);
+            border-color: var(--correct);
+            color: #1f6b46;
+        }
+
+        .tf-btn.locked {
+            cursor: default;
+        }
+
+        /* Reference / written sections */
+        details.ref-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 0;
+            margin-bottom: 10px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        details.ref-card summary {
+            cursor: pointer;
+            list-style: none;
+            padding: 13px 16px;
+            font-weight: 800;
+            font-size: 13.5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(90deg, #f9f8ff, #fff);
+        }
+
+        details.ref-card summary::-webkit-details-marker {
+            display: none;
+        }
+
+        details.ref-card summary .arrow {
+            transition: transform .2s ease;
+            color: var(--lavender-dark);
+            font-size: 14px;
+        }
+
+        details.ref-card[open] summary .arrow {
+            transform: rotate(90deg);
+        }
+
+        .ref-body {
+            padding: 4px 18px 16px;
+        }
+
+        .ref-body ol {
+            margin: 0;
+            padding-left: 20px;
+            font-size: 12.5px;
+        }
+
+        .ref-body ol li {
+            margin-bottom: 8px;
+        }
+
+        .ref-body table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .ref-body th {
+            background: var(--lavender);
+            color: #4b3f91;
+            padding: 6px 9px;
+            text-align: left;
+        }
+
+        .ref-body td {
+            padding: 6px 9px;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        .case-block {
+            background: #fdf7ff;
+            border-left: 3px solid var(--lavender-dark);
+            border-radius: 10px;
+            padding: 9px 12px;
+            margin-bottom: 10px;
+            font-size: 12.3px;
+        }
+
+        .case-block b {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--lavender-dark);
+            font-size: 12.5px;
+        }
+
+        .priority-card {
+            background: linear-gradient(120deg, #fff7e6, #fff2f8);
+            border: 1.5px dashed #f0c469;
+            border-radius: 16px;
+            padding: 14px 16px;
+            margin: 14px 0 22px;
+            font-size: 12.5px;
+        }
+
+        .priority-card ol {
+            padding-left: 18px;
+            margin: 6px 0 0;
+        }
+
+        .priority-card li {
+            margin-bottom: 5px;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 11px;
+            color: var(--ink-soft);
+            margin-top: 26px;
+        }
+
+        @media (max-width:520px) {
+            .options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+
+        <div class="header-card">
+            <h1>🌸 Computer System Overview</h1>
+            <p>Class XI Computer Science (083) • Interactive Practice Question Bank</p>
+        </div>
+
+        <div class="scorebar">
+            <span class="label">🎯 Your Score</span>
+            <div class="barouter">
+                <div class="barinner" id="barinner"></div>
+            </div>
+            <span class="stat correct-txt" id="correctStat">✅ 0</span>
+            <span class="stat wrong-txt" id="wrongStat">❌ 0</span>
+            <span class="stat" id="totalStat" style="color:var(--ink-soft);">/ 0 answered</span>
+            <button class="reset-btn" onclick="resetAll()">↺ Reset</button>
+        </div>
+
+        <!-- SECTION A: MCQ -->
+        <div class="section-title"><span class="chip">Section A</span> Multiple Choice Questions</div>
+        <div id="mcq-container"></div>
+
+        <!-- SECTION B: TRUE/FALSE -->
+        <div class="section-title"><span class="chip">Section B</span> True / False</div>
+        <p style="font-size:12px;color:var(--ink-soft);margin:-4px 4px 10px;">Tap True or False — wrong statements
+            auto-show the correction.</p>
+        <div id="tf-container"></div>
+
+        <!-- SECTION C: ASSERTION-REASON -->
+        <div class="section-title"><span class="chip">Section C</span> Assertion &amp; Reason</div>
+        <p style="font-size:12px;color:var(--ink-soft);margin:-4px 4px 10px;">A: Both true, R explains A &nbsp;|&nbsp;
+            B: Both true, R does not explain A &nbsp;|&nbsp; C: A true, R false &nbsp;|&nbsp; D: A false, R true</p>
+        <div id="ar-container"></div>
+
+        <!-- SECTION D-L: WRITTEN PRACTICE (reference, expandable) -->
+        <div class="section-title"><span class="chip">Sections D–M</span> Written Practice (self-answer in notebook,
+            then expand to recheck the prompt)</div>
+
+        <details class="ref-card">
+            <summary>📝 Section B — Very Short Answer (Definitions) <span class="arrow">▶</span></summary>
+            <div class="ref-body">
+                <ol>
+                    <li>What is a computer?</li>
+                    <li>What is a computer system?</li>
+                    <li>Define hardware.</li>
+                    <li>Define software.</li>
+                    <li>What is an input device?</li>
+                    <li>What is an output device?</li>
+                    <li>What is CPU?</li>
+                    <li>What is ALU?</li>
+                    <li>What is Control Unit?</li>
+                    <li>What is a register?</li>
+                    <li>What is primary memory?</li>
+                    <li>What is cache memory?</li>
+                    <li>What is secondary storage?</li>
+                    <li>What is RAM?</li>
+                    <li>What is ROM?</li>
+                    <li>What is volatile memory?</li>
+                    <li>What is non-volatile memory?</li>
+                    <li>What is a bit?</li>
+                    <li>What is a byte?</li>
+                    <li>What is system software?</li>
+                    <li>What is application software?</li>
+                    <li>What is a system utility?</li>
+                    <li>What is a device driver?</li>
+                    <li>What is an assembler?</li>
+                    <li>What is a compiler?</li>
+                    <li>What is an interpreter?</li>
+                    <li>What is an Operating System?</li>
+                    <li>What is GUI?</li>
+                    <li>What is CLI?</li>
+                </ol>
+            </div>
+        </details>
+
+        <details class="ref-card">
+            <summary>✏️ Section C — 2-Mark Questions <span class="arrow">▶</span></summary>
+            <div class="ref-body">
+                <ol>
+                    <li>Differentiate between hardware and software with one example each.</li>
+                    <li>What are input devices? Give two examples.</li>
+                    <li>What are output devices? Give two examples.</li>
+                    <li>Differentiate between input and output devices.</li>
+                    <li>Explain the role of ALU.</li>
+                    <li>Explain the role of Control Unit.</li>
+                    <li>What are registers? Why are they useful?</li>
+                    <li>Differentiate between RAM and ROM.</li>
+                    <li>Differentiate between volatile and non-volatile memory.</li>
+                    <li>Differentiate between primary memory and secondary storage.</li>
+                    <li>What is cache memory? Why is it used?</li>
+                    <li>Define bit and byte. How many bits make one byte?</li>
+                    <li>Arrange in increasing order: PB, Byte, GB, KB, TB, MB</li>
+                    <li>What is system software? Give two examples.</li>
+                    <li>What is application software? Give two examples.</li>
+                    <li>What is a device driver? Why is it needed?</li>
+                    <li>What is a system utility? Give one example.</li>
+                    <li>What is an assembler? What does it translate?</li>
+                    <li>What is a compiler?</li>
+                    <li>What is an interpreter?</li>
+                    <li>Give two differences between compiler and interpreter.</li>
+                    <li>What is an operating system?</li>
+                    <li>State any two functions of an operating system.</li>
+                    <li>What is GUI?</li>
+                    <li>What is CLI?</li>
+                    <li>Give two differences between GUI and CLI.</li>
+                    <li>Explain the relationship between hardware and software.</li>
+                    <li>Why is secondary storage required even when a computer has RAM?</li>
+                </ol>
+            </div>
+        </details>
+
+        <details class="ref-card">
+            <summary>🔗 Section D — Match the Following <span class="arrow">▶</span></summary>
+            <div class="ref-body">
+                <p style="font-weight:700;font-size:12.5px;">Set 1</p>
+                <table>
+                    <tr>
+                        <th>Column A</th>
+                        <th>Column B</th>
+                    </tr>
+                    <tr>
+                        <td>1. ALU</td>
+                        <td>A. Graphical User Interface</td>
+                    </tr>
+                    <tr>
+                        <td>2. GUI</td>
+                        <td>B. Arithmetic and logical operations</td>
+                    </tr>
+                    <tr>
+                        <td>3. RAM</td>
+                        <td>C. Volatile memory</td>
+                    </tr>
+                    <tr>
+                        <td>4. ROM</td>
+                        <td>D. Non-volatile memory</td>
+                    </tr>
+                    <tr>
+                        <td>5. CLI</td>
+                        <td>E. Command Line Interface</td>
+                    </tr>
+                </table>
+                <p style="font-weight:700;font-size:12.5px;margin-top:12px;">Set 2</p>
+                <table>
+                    <tr>
+                        <th>Column A</th>
+                        <th>Column B</th>
+                    </tr>
+                    <tr>
+                        <td>1. Keyboard</td>
+                        <td>A. Output</td>
+                    </tr>
+                    <tr>
+                        <td>2. Monitor</td>
+                        <td>B. Input</td>
+                    </tr>
+                    <tr>
+                        <td>3. Scanner</td>
+                        <td>C. Input</td>
+                    </tr>
+                    <tr>
+                        <td>4. Printer</td>
+                        <td>D. Output</td>
+                    </tr>
+                    <tr>
+                        <td>5. Microphone</td>
+                        <td>E. Input</td>
+                    </tr>
+                </table>
+                <p style="font-weight:700;font-size:12.5px;margin-top:12px;">Set 3</p>
+                <table>
+                    <tr>
+                        <th>Column A</th>
+                        <th>Column B</th>
+                    </tr>
+                    <tr>
+                        <td>1. Assembler</td>
+                        <td>A. High-level language</td>
+                    </tr>
+                    <tr>
+                        <td>2. Compiler</td>
+                        <td>B. Assembly language</td>
+                    </tr>
+                    <tr>
+                        <td>3. Interpreter</td>
+                        <td>C. Progressive translation/execution</td>
+                    </tr>
+                    <tr>
+                        <td>4. Device Driver</td>
+                        <td>D. Hardware communication</td>
+                    </tr>
+                    <tr>
+                        <td>5. Operating System</td>
+                        <td>E. System software</td>
+                    </tr>
+                </table>
+                <p style="font-size:11px;color:var(--ink-soft);margin-top:8px;">Tip: match by number, not by row order
+                    (e.g. Set 1 → 1-B, 2-A, 3-C, 4-D, 5-E).</p>
+            </div>
+        </details>
+
+        <div class="priority-card">
+            <b style="font-size:13px;">🔥 Most Important — Do These First</b>
+            <ol>
+                <li>Input → Processing → Output cycle</li>
+                <li>CPU and its components</li>
+                <li>ALU vs Control Unit</li>
+                <li>What are registers?</li>
+                <li>RAM vs ROM</li>
+                <li>Volatile vs non-volatile memory</li>
+                <li>Cache memory</li>
+                <li>Primary vs secondary memory</li>
+                <li>Memory units: bit → byte → KB → MB → GB → TB → PB</li>
+                <li>System software vs application software</li>
+                <li>Device drivers</li>
+                <li>Assembler, compiler, interpreter</li>
+                <li>Compiler vs interpreter</li>
+                <li>Define Operating System</li>
+                <li>Five functions of an OS</li>
+                <li>GUI vs CLI</li>
+                <li>Hardware vs software</li>
+                <li>Classify devices into input/output</li>
+                <li>Case-based memory questions</li>
+                <li>Case-based OS/device-driver questions</li>
+            </ol>
+        </div>
+
+        <div class="footer-note">Since this chapter carries only 5 marks in the blueprint, secure the fundamentals —
+            don't over-invest time here. ✨</div>
+
+    </div>
+
+    <script>
+        // ---------------- DATA ----------------
+        const mcqData = [
+            {
+                sec: "Basic Concepts", items: [
+                    { q: "Which sequence best represents the basic working of a computer system?", o: ["Output → Input → Processing", "Input → Processing → Output", "Processing → Input → Output", "Storage → Output → Input"], a: 1 },
+                    { q: "Which of the following is hardware?", o: ["Operating System", "Python", "Keyboard", "Web Browser"], a: 2 },
+                    { q: "Which of the following is software?", o: ["Monitor", "RAM", "CPU", "Operating System"], a: 3 },
+                    { q: "A computer system consists mainly of:", o: ["Only hardware", "Only software", "Hardware and software working together", "Only input devices"], a: 2 },
+                    { q: "Which of the following is a physical component?", o: ["Windows (OS feature)", "Compiler", "Keyboard", "Operating System"], a: 2 },
+                ]
+            },
+            {
+                sec: "Input & Output Devices", items: [
+                    { q: "Which device is primarily used to enter text?", o: ["Monitor", "Keyboard", "Printer", "Projector"], a: 1 },
+                    { q: "Which device converts a paper document into digital information?", o: ["Scanner", "Printer", "Monitor", "Speaker"], a: 0 },
+                    { q: "A microphone is a/an:", o: ["Input device", "Output device", "Storage device", "Processing device"], a: 0 },
+                    { q: "Which of the following is an output device?", o: ["Mouse", "Keyboard", "Monitor", "Scanner"], a: 2 },
+                    { q: "Which pair contains only input devices?", o: ["Keyboard and mouse", "Monitor and printer", "Speaker and projector", "Monitor and scanner"], a: 0 },
+                    { q: "Which pair contains only output devices?", o: ["Keyboard and mouse", "Scanner and microphone", "Monitor and printer", "Mouse and webcam"], a: 2 },
+                    { q: "Which device is used to display visual output?", o: ["Scanner", "Monitor", "Keyboard", "Microphone"], a: 1 },
+                    { q: "Which device produces a hard copy?", o: ["Scanner", "Monitor", "Printer", "Mouse"], a: 2 },
+                ]
+            },
+            {
+                sec: "CPU", items: [
+                    { q: "CPU stands for:", o: ["Central Processing Unit", "Computer Processing Utility", "Central Program Unit", "Computer Processing Unit"], a: 0 },
+                    { q: "Which component is commonly called the processing unit of a computer?", o: ["RAM", "CPU", "Monitor", "Keyboard"], a: 1 },
+                    { q: "Which part of the CPU performs arithmetic and logical operations?", o: ["Control Unit", "ALU", "Register", "Cache"], a: 1 },
+                    { q: "ALU stands for:", o: ["Arithmetic Logic Unit", "Automatic Logic Unit", "Arithmetic Link Utility", "Advanced Logic Unit"], a: 0 },
+                    { q: "Which component controls and coordinates the execution of instructions?", o: ["ALU", "Control Unit", "RAM", "SSD"], a: 1 },
+                    { q: "Which is a small, fast storage location inside the CPU?", o: ["Register", "Hard disk", "Monitor", "Printer"], a: 0 },
+                    { q: "Which of the following is NOT a major part of the CPU?", o: ["ALU", "Control Unit", "Registers", "Printer"], a: 3 },
+                ]
+            },
+            {
+                sec: "Memory", items: [
+                    { q: "Which type of memory is generally used as working memory?", o: ["RAM", "ROM", "SSD", "DVD"], a: 0 },
+                    { q: "RAM is called volatile because:", o: ["It is very slow", "Its contents are generally lost when power is removed", "It cannot store data", "It is read-only"], a: 1 },
+                    { q: "Which memory is generally non-volatile?", o: ["RAM", "ROM", "Register", "Cache"], a: 1 },
+                    { q: "Which memory is designed to provide faster access to frequently needed data/instructions?", o: ["Cache", "SSD", "Keyboard", "Printer"], a: 0 },
+                    { q: "Which is an example of secondary storage?", o: ["Register", "Cache", "SSD", "ALU"], a: 2 },
+                    { q: "Which of the following is generally used for long-term storage?", o: ["Register", "Cache", "SSD", "RAM"], a: 2 },
+                    { q: "Which memory loses its contents when power is switched off?", o: ["ROM", "SSD", "RAM", "Hard disk"], a: 2 },
+                    { q: "Which memory is closest to the CPU in terms of very fast access?", o: ["Register", "SSD", "Hard disk", "Pen drive"], a: 0 },
+                ]
+            },
+            {
+                sec: "Memory Units", items: [
+                    { q: "What is the smallest basic unit of digital information?", o: ["Byte", "Bit", "KB", "MB"], a: 1 },
+                    { q: "One byte contains:", o: ["2 bits", "4 bits", "8 bits", "16 bits"], a: 2 },
+                    { q: "Which is larger?", o: ["KB", "MB", "GB", "TB"], a: 3 },
+                    { q: "Which comes immediately after MB in the usual sequence?", o: ["KB", "GB", "TB", "PB"], a: 1 },
+                    { q: "Which unit is larger than TB?", o: ["MB", "GB", "PB", "KB"], a: 2 },
+                    { q: "Which sequence is correctly arranged from smaller to larger?", o: ["Byte → KB → MB → GB → TB → PB", "PB → TB → GB → MB → KB → Byte", "KB → Byte → MB → TB → GB → PB", "MB → KB → Byte → GB → TB → PB"], a: 0 },
+                ]
+            },
+            {
+                sec: "Software", items: [
+                    { q: "Which of the following is system software?", o: ["Operating System", "Presentation", "Photograph", "Text document"], a: 0 },
+                    { q: "Which of the following is application software?", o: ["Device driver", "Operating System", "Word Processor", "Compiler"], a: 2 },
+                    { q: "A device driver helps the operating system to:", o: ["Write documents", "Communicate with hardware devices", "Increase RAM physically", "Manufacture hardware"], a: 1 },
+                    { q: "Which is a system utility?", o: ["Software used for system maintenance", "Keyboard", "Monitor", "CPU"], a: 0 },
+                    { q: "Which of the following is NOT system software?", o: ["Operating System", "Device Driver", "System Utility", "Word Processor"], a: 3 },
+                ]
+            },
+            {
+                sec: "Language Translators", items: [
+                    { q: "Which translator converts assembly language into machine language?", o: ["Compiler", "Interpreter", "Assembler", "Operating System"], a: 2 },
+                    { q: "Which translator generally translates a high-level program as a whole before execution?", o: ["Compiler", "Interpreter", "Assembler", "Driver"], a: 0 },
+                    { q: "Which translator translates/executes a high-level program progressively?", o: ["Compiler", "Interpreter", "Assembler", "Utility"], a: 1 },
+                    { q: "Which of the following is a language translator?", o: ["Compiler", "Monitor", "Mouse", "Printer"], a: 0 },
+                    { q: "An assembler is primarily associated with:", o: ["Assembly language", "Machine hardware", "GUI", "Application software"], a: 0 },
+                ]
+            },
+            {
+                sec: "Operating System", items: [
+                    { q: "An Operating System is a type of:", o: ["Application software", "System software", "Hardware", "Input device"], a: 1 },
+                    { q: "Which of the following is NOT a normal function of an OS?", o: ["File management", "Memory management", "Device management", "Manufacturing hardware"], a: 3 },
+                    { q: "Which OS function manages files and directories?", o: ["File management", "Memory management", "Device management", "Arithmetic processing"], a: 0 },
+                    { q: "Which OS function manages allocation and use of memory?", o: ["File management", "Memory management", "Printing", "Scanning"], a: 1 },
+                    { q: "Which OS function helps control hardware devices?", o: ["Device management", "File management", "Word processing", "Image editing"], a: 0 },
+                    { q: "Which interface uses windows, icons, menus and a pointer?", o: ["CLI", "GUI", "ALU", "CPU"], a: 1 },
+                    { q: "GUI stands for:", o: ["General User Input", "Graphical User Interface", "Graphic Utility Instruction", "General Utility Interface"], a: 1 },
+                    { q: "CLI stands for:", o: ["Computer Logic Interface", "Command Line Interface", "Central Line Input", "Computer Language Interface"], a: 1 },
+                    { q: "In a CLI, the user primarily interacts by:", o: ["Typing commands", "Using only icons", "Printing documents", "Scanning documents"], a: 0 },
+                    { q: "Which is an example of a graphical interface element?", o: ["Icon", "Compiler", "ALU", "RAM"], a: 0 },
+                ]
+            },
+        ];
+
+        const tfData = [
+            { s: "Hardware refers to the physical components of a computer.", a: true },
+            { s: "Software refers to programs and instructions.", a: true },
+            { s: "A monitor is primarily an input device.", a: false, fix: "A monitor is an output device, not input." },
+            { s: "A scanner is an input device.", a: true },
+            { s: "A keyboard is an output device.", a: false, fix: "A keyboard is an input device, not output." },
+            { s: "A printer is an output device.", a: true },
+            { s: "CPU is responsible for processing instructions.", a: true },
+            { s: "ALU performs arithmetic and logical operations.", a: true },
+            { s: "Control Unit performs all arithmetic calculations.", a: false, fix: "Control Unit coordinates instruction execution; ALU performs arithmetic calculations." },
+            { s: "Registers are small and fast storage locations associated with the CPU.", a: true },
+            { s: "RAM is volatile memory.", a: true },
+            { s: "ROM is generally non-volatile.", a: true },
+            { s: "SSD is an example of secondary storage.", a: true },
+            { s: "Cache memory is used to improve access speed.", a: true },
+            { s: "A bit is larger than a byte.", a: false, fix: "A bit is smaller than a byte — 8 bits make one byte." },
+            { s: "One byte contains 8 bits.", a: true },
+            { s: "PB is smaller than TB.", a: false, fix: "PB (Petabyte) is larger than TB (Terabyte)." },
+            { s: "Operating System is system software.", a: true },
+            { s: "Device drivers help the OS communicate with hardware.", a: true },
+            { s: "A compiler is a hardware component.", a: false, fix: "A compiler is software — a language translator, not hardware." },
+            { s: "An assembler translates assembly language.", a: true },
+            { s: "An interpreter and compiler always work in exactly the same way.", a: false, fix: "They differ — a compiler translates the whole program first; an interpreter translates/executes line-by-line." },
+            { s: "File management is an OS function.", a: true },
+            { s: "GUI stands for Graphical User Interface.", a: true },
+            { s: "CLI stands for Central Logic Interface.", a: false, fix: "CLI stands for Command Line Interface." },
+            { s: "CLI mainly uses typed commands.", a: true },
+            { s: "GUI provides graphical elements for interaction.", a: true },
+            { s: "Application software is used to perform tasks for users.", a: true },
+            { s: "Secondary storage is generally used for long-term storage.", a: true },
+            { s: "Hardware and software work together in a computer system.", a: true },
+        ];
+
+        const arData = [
+            { a: "RAM is volatile memory.", r: "Its contents are generally lost when power is removed.", ans: "A", exp: "Both true; the reason correctly explains why RAM is volatile." },
+            { a: "A keyboard is an input device.", r: "It sends user-entered information to the computer.", ans: "A", exp: "Both true and correctly linked — the keyboard sends input, making it an input device." },
+            { a: "ALU is a part of the CPU.", r: "ALU performs arithmetic and logical operations.", ans: "A", exp: "Both true; the reason explains why ALU exists as part of CPU function." },
+            { a: "Secondary storage is useful for long-term storage.", r: "Secondary storage is generally non-volatile.", ans: "A", exp: "Both true; non-volatility is exactly why it suits long-term storage." },
+            { a: "An operating system manages hardware resources.", r: "Device management is an OS function.", ans: "A", exp: "Both true; device management is one way the OS manages hardware." },
+            { a: "A device driver is application software.", r: "A device driver enables the OS to communicate with hardware.", ans: "D", exp: "Assertion is false (a device driver is system software); the reason is true." },
+            { a: "GUI is a type of user interface.", r: "GUI allows users to interact using graphical elements.", ans: "A", exp: "Both true and correctly linked." },
+            { a: "A compiler is a language translator.", r: "It translates a high-level program into a lower-level form suitable for execution.", ans: "A", exp: "Both true; the reason correctly explains the assertion." },
+            { a: "A byte is smaller than a bit.", r: "One byte contains eight bits.", ans: "D", exp: "Assertion is false (a byte is larger than a bit); the reason itself is a true fact." },
+            { a: "A scanner is an output device.", r: "A scanner sends captured information into the computer.", ans: "D", exp: "Assertion is false — a scanner is an input device; the reason describes input behaviour correctly." },
+            { a: "Control Unit performs arithmetic calculations.", r: "Arithmetic and logical operations are performed by ALU.", ans: "D", exp: "Assertion is false (ALU does arithmetic, not CU); the reason is true." },
+            { a: "Cache memory can improve system performance.", r: "It can provide faster access to frequently needed information.", ans: "A", exp: "Both true and correctly linked." },
+            { a: "An operating system provides file management.", r: "Files and directories need to be organised and managed.", ans: "A", exp: "Both true; the reason explains why this OS function is needed." },
+            { a: "CLI uses typed commands as its main interaction method.", r: "Users enter commands through the command-line interface.", ans: "A", exp: "Both true and correctly linked." },
+            { a: "Hardware and software are both required for a normal computer system to perform useful tasks.", r: "Software provides instructions and hardware executes those instructions.", ans: "A", exp: "Both true; the reason correctly explains the assertion." },
+        ];
+
+        // ---------------- STATE ----------------
+        let correctCount = 0, wrongCount = 0;
+
+        function updateScore() {
+            const total = correctCount + wrongCount;
+            document.getElementById('correctStat').textContent = '✅ ' + correctCount;
+            document.getElementById('wrongStat').textContent = '❌ ' + wrongCount;
+            document.getElementById('totalStat').textContent = '/ ' + total + ' answered';
+            const totalQ = mcqData.reduce((n, s) => n + s.items.length, 0) + tfData.length + arData.length;
+            document.getElementById('barinner').style.width = (totalQ ? (total / totalQ * 100) : 0) + '%';
+        }
+
+        // ---------------- RENDER MCQ ----------------
+        const mcqContainer = document.getElementById('mcq-container');
+        let mcqIndex = 0;
+        mcqData.forEach(section => {
+            const h = document.createElement('div');
+            h.className = 'subsection-title';
+            h.textContent = section.sec;
+            mcqContainer.appendChild(h);
+            section.items.forEach(item => {
+                mcqIndex++;
+                const card = document.createElement('div');
+                card.className = 'qcard';
+                const qt = document.createElement('div');
+                qt.className = 'qtext';
+                qt.innerHTML = '<span class="qnum">Q' + mcqIndex + '.</span>' + item.q;
+                card.appendChild(qt);
+                const opts = document.createElement('div');
+                opts.className = 'options';
+                const fb = document.createElement('div');
+                fb.className = 'feedback';
+                item.o.forEach((optText, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'opt-btn';
+                    btn.textContent = String.fromCharCode(65 + idx) + '. ' + optText;
+                    btn.onclick = () => {
+                        if (btn.classList.contains('locked')) return;
+                        const allBtns = opts.querySelectorAll('.opt-btn');
+                        allBtns.forEach(b => b.classList.add('locked'));
+                        if (idx === item.a) {
+                            btn.classList.add('correct-pick');
+                            fb.className = 'feedback show ok';
+                            fb.textContent = '🎉 Correct! ' + optText + ' is right.';
+                            correctCount++;
+                        } else {
+                            btn.classList.add('wrong-pick');
+                            allBtns[item.a].classList.add('reveal-correct');
+                            fb.className = 'feedback show no';
+                            fb.textContent = '❌ Not quite — correct answer: ' + item.o[item.a];
+                            wrongCount++;
+                        }
+                        updateScore();
+                    };
+                    opts.appendChild(btn);
+                });
+                card.appendChild(opts);
+                card.appendChild(fb);
+                mcqContainer.appendChild(card);
+            });
+        });
+
+        // ---------------- RENDER TF ----------------
+        const tfContainer = document.getElementById('tf-container');
+        tfData.forEach((item, i) => {
+            const card = document.createElement('div');
+            card.className = 'qcard';
+            const qt = document.createElement('div');
+            qt.className = 'qtext';
+            qt.innerHTML = '<span class="qnum">' + (i + 1) + '.</span>' + item.s;
+            card.appendChild(qt);
+            const opts = document.createElement('div');
+            opts.className = 'tf-options';
+            const fb = document.createElement('div');
+            fb.className = 'feedback';
+            ['True', 'False'].forEach((label) => {
+                const val = (label === 'True');
+                const btn = document.createElement('button');
+                btn.className = 'tf-btn';
+                btn.textContent = (val ? '✔️ ' : '✖️ ') + label;
+                btn.onclick = () => {
+                    if (btn.classList.contains('locked')) return;
+                    const allBtns = opts.querySelectorAll('.tf-btn');
+                    allBtns.forEach(b => b.classList.add('locked'));
+                    if (val === item.a) {
+                        btn.classList.add('correct-pick');
+                        fb.className = 'feedback show ok';
+                        fb.textContent = '🎉 Correct!' + (item.a ? '' : ' ' + item.fix);
+                        correctCount++;
+                    } else {
+                        btn.classList.add('wrong-pick');
+                        allBtns[item.a ? 0 : 1].classList.add('reveal-correct');
+                        fb.className = 'feedback show no';
+                        fb.textContent = '❌ Actually ' + (item.a ? 'True' : 'False') + '.' + (item.fix ? ' ' + item.fix : '');
+                        wrongCount++;
+                    }
+                    updateScore();
+                };
+                opts.appendChild(btn);
+            });
+            card.appendChild(opts);
+            card.appendChild(fb);
+            tfContainer.appendChild(card);
+        });
+
+        // ---------------- RENDER ASSERTION-REASON ----------------
+        const arContainer = document.getElementById('ar-container');
+        const arChoices = {
+            A: "Both Assertion and Reason are true, and Reason correctly explains Assertion.",
+            B: "Both are true, but Reason does not correctly explain Assertion.",
+            C: "Assertion is true, but Reason is false.",
+            D: "Assertion is false, but Reason is true."
+        };
+        arData.forEach((item, i) => {
+            const card = document.createElement('div');
+            card.className = 'qcard';
+            const qt = document.createElement('div');
+            qt.className = 'qtext';
+            qt.innerHTML = '<span class="qnum">' + (i + 1) + '.</span> <b>Assertion:</b> ' + item.a + '<br><b>Reason:</b> ' + item.r;
+            card.appendChild(qt);
+            const opts = document.createElement('div');
+            opts.className = 'options two-col-wide';
+            const fb = document.createElement('div');
+            fb.className = 'feedback';
+            Object.keys(arChoices).forEach(letter => {
+                const btn = document.createElement('button');
+                btn.className = 'opt-btn';
+                btn.textContent = letter + '. ' + arChoices[letter];
+                btn.onclick = () => {
+                    if (btn.classList.contains('locked')) return;
+                    const allBtns = opts.querySelectorAll('.opt-btn');
+                    allBtns.forEach(b => b.classList.add('locked'));
+                    const correctIdx = Object.keys(arChoices).indexOf(item.ans);
+                    if (letter === item.ans) {
+                        btn.classList.add('correct-pick');
+                        fb.className = 'feedback show ok';
+                        fb.textContent = '🎉 Correct! ' + item.exp;
+                        correctCount++;
+                    } else {
+                        btn.classList.add('wrong-pick');
+                        allBtns[correctIdx].classList.add('reveal-correct');
+                        fb.className = 'feedback show no';
+                        fb.textContent = '❌ Correct answer: ' + item.ans + '. ' + item.exp;
+                        wrongCount++;
+                    }
+                    updateScore();
+                };
+                opts.appendChild(btn);
+            });
+            card.appendChild(opts);
+            card.appendChild(fb);
+            arContainer.appendChild(card);
+        });
+
+        function resetAll() {
+            correctCount = 0; wrongCount = 0;
+            updateScore();
+            document.querySelectorAll('.opt-btn, .tf-btn').forEach(b => {
+                b.classList.remove('locked', 'correct-pick', 'wrong-pick', 'reveal-correct');
+            });
+            document.querySelectorAll('.feedback').forEach(f => { f.className = 'feedback'; f.textContent = ''; });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        updateScore();
+    </script>
+</body>
+
+</html>

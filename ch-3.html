@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Class XI CS - Boolean Logic</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;800&display=swap');
+
+        :root {
+            --lavender: #e6e0fa;
+            --lavender-dark: #8b7fd6;
+            --blush: #fde2e9;
+            --blush-dark: #e0729a;
+            --mint: #dcf5e8;
+            --mint-dark: #4a9d78;
+            --babyblue: #dbeeff;
+            --babyblue-dark: #4a90d9;
+            --cream: #faf9f6;
+            --ink: #2d3748;
+            --ink-soft: #5a6478;
+        }
+
+        @page {
+            size: A4 portrait;
+            margin: 12mm;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: var(--cream);
+            color: var(--ink);
+            line-height: 1.45;
+            margin: 0;
+            padding: 6px;
+            font-size: 12.5px;
+        }
+
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        h1, h2, h3 {
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+        }
+
+        /* ---------- HEADER ---------- */
+        .header-card {
+            background: linear-gradient(120deg, var(--lavender) 0%, var(--blush) 50%, var(--babyblue) 100%);
+            border-radius: 20px;
+            padding: 20px 24px;
+            text-align: center;
+            margin-bottom: 14px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+
+        .header-card h1 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--ink);
+            letter-spacing: 0.3px;
+        }
+
+        .header-card p {
+            margin: 6px 0 0;
+            font-size: 12px;
+            color: var(--ink-soft);
+            font-weight: 600;
+        }
+
+        .header-tags {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .htag {
+            background: rgba(255, 255, 255, 0.65);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 10.5px;
+            font-weight: 700;
+            color: var(--ink-soft);
+        }
+
+        /* ---------- SECTION LABEL ---------- */
+        .section-label {
+            font-size: 13px;
+            font-weight: 800;
+            margin: 14px 2px 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            break-after: avoid;
+        }
+
+        .section-label .num {
+            background: var(--lavender-dark);
+            color: #fff;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10.5px;
+        }
+
+        /* ---------- CARDS ---------- */
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 14px 16px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            break-inside: avoid;
+            page-break-inside: avoid;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 13.5px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-pink { color: var(--blush-dark); }
+        .badge-purple { color: var(--lavender-dark); }
+        .badge-blue { color: var(--babyblue-dark); }
+        .badge-green { color: var(--mint-dark); }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        p.note {
+            font-size: 11.5px;
+            color: var(--ink-soft);
+            margin: 4px 0 8px;
+        }
+
+        /* ---------- TABLES ---------- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11.5px;
+            margin-top: 6px;
+        }
+
+        th {
+            background: var(--lavender);
+            color: #4b3f91;
+            padding: 7px 9px;
+            text-align: left;
+            font-weight: 700;
+        }
+
+        th:first-child { border-radius: 8px 0 0 8px; }
+        th:last-child { border-radius: 0 8px 8px 0; }
+
+        td {
+            padding: 6px 9px;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        tr:nth-child(even) td { background: #faf8ff; }
+
+        ul {
+            margin: 0;
+            padding-left: 16px;
+            font-size: 11.5px;
+        }
+
+        li { margin-bottom: 4px; }
+
+        /* ---------- FLOW DIAGRAM ---------- */
+        .flow-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--blush);
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 8px;
+            border: 1.5px dashed var(--blush-dark);
+            gap: 4px;
+        }
+
+        .flow-box {
+            background: #fff;
+            padding: 9px 8px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 11px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            flex: 1;
+        }
+
+        .flow-box span {
+            font-weight: 500;
+            font-size: 9.5px;
+            color: var(--ink-soft);
+        }
+
+        .flow-arrow {
+            color: var(--blush-dark);
+            font-weight: bold;
+            font-size: 16px;
+            padding: 0 4px;
+        }
+
+        .flow-sub {
+            text-align: center;
+            font-size: 10.5px;
+            color: var(--ink-soft);
+        }
+
+        /* ---------- TAG GRID & ITEMS ---------- */
+        .tag-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 11.5px;
+        }
+
+        .tag-item {
+            background: #fdf4ff;
+            border-radius: 10px;
+            padding: 8px 10px;
+            border-left: 3px solid #d946ef;
+        }
+
+        .tag-item.blue {
+            background: #f0f8ff;
+            border-left-color: var(--babyblue-dark);
+        }
+
+        .flash {
+            background: var(--mint);
+            border-radius: 10px;
+            padding: 7px 10px;
+            font-size: 10.5px;
+            font-weight: 700;
+            color: #1f5f43;
+            display: inline-block;
+            margin: 3px 4px 0 0;
+        }
+
+        .callout {
+            background: #fff7e6;
+            border: 1.5px dashed #f0c469;
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: 11px;
+            color: #7a5c14;
+            margin-top: 8px;
+            break-inside: avoid;
+        }
+
+        .def-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 14px;
+        }
+
+        .def-item {
+            font-size: 10.8px;
+            padding: 6px 8px;
+            background: #f9f8ff;
+            border-radius: 8px;
+        }
+
+        .def-item b {
+            color: var(--lavender-dark);
+            display: block;
+            font-size: 11px;
+            margin-bottom: 1px;
+        }
+
+        /* ---------- GATE VISUAL ---------- */
+        .gate-visual {
+            background: #f9f8ff;
+            border-radius: 12px;
+            padding: 10px 14px;
+            margin: 6px 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 11.5px;
+            line-height: 1.6;
+            border-left: 3px solid var(--lavender-dark);
+            text-align: center;
+        }
+
+        .gate-visual .result {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 800;
+            color: var(--lavender-dark);
+            margin-top: 6px;
+            font-size: 12.5px;
+        }
+
+        /* ---------- THEOREM CARD ---------- */
+        .theorem-card {
+            background: linear-gradient(120deg, #fff7e6, #fff2f8);
+            border: 1.5px dashed #f0c469;
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin: 8px 0;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .theorem-card .theorem-formula {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--blush-dark);
+            margin: 8px 0;
+        }
+
+        .page-break {
+            break-before: page;
+            page-break-before: always;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 9.5px;
+            color: var(--ink-soft);
+            margin-top: 10px;
+            padding-top: 6px;
+            border-top: 1px dashed #ddd;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <div class="header-card">
+        <h1>🌸 Class XI Computer Science (083)</h1>
+        <p>Boolean Logic • Truth Tables, Operators, Gates &amp; De Morgan's Theorems</p>
+        <div class="header-tags">
+            <span class="htag">📘 Session 2026–27</span>
+            <span class="htag">🧠 Logic &amp; Gates</span>
+            <span class="htag">⭐ 5 Marks Blueprint</span>
+        </div>
+    </div>
+
+    <!-- 1. BOOLEAN LOGIC INTRO -->
+    <div class="section-label"><span class="num">1</span> What is Boolean Logic?</div>
+    <div class="card">
+        <span class="card-title badge-pink">🔘 Boolean Logic &amp; Variables</span>
+        <p class="note" style="margin-top:0;"><b>Boolean Logic</b> is a system of logic in which variables can have only
+            <b>two possible values</b>: 0 (False/OFF) and 1 (True/ON). Widely used in digital electronics &amp;
+            computer systems.</p>
+        <div class="tag-grid">
+            <div class="tag-item">
+                <b>Boolean Variable</b>
+                A variable that can hold only two values: <b>0</b> or <b>1</b>.<br>
+                Examples: A, B, C, X, Y, Z
+            </div>
+            <div class="tag-item blue">
+                <b>Boolean Expression</b>
+                Formed using Boolean variables and logical operators.<br>
+                Examples: A + B, A · B, A'
+            </div>
+        </div>
+        <div>
+            <span class="flash">0 = False / OFF</span>
+            <span class="flash">1 = True / ON</span>
+        </div>
+    </div>
+
+    <!-- 2. TRUTH TABLE -->
+    <div class="section-label"><span class="num">2</span> Truth Tables</div>
+    <div class="grid-2">
+        <div class="card">
+            <span class="card-title badge-purple">📋 What is a Truth Table?</span>
+            <p class="note" style="margin-top:0;">A table that shows <b>all possible combinations</b> of input values
+                and their corresponding output for a logical operation.</p>
+            <table>
+                <tr>
+                    <th>X</th>
+                    <th>Y</th>
+                </tr>
+                <tr><td>0</td><td>0</td></tr>
+                <tr><td>0</td><td>1</td></tr>
+                <tr><td>1</td><td>0</td></tr>
+                <tr><td>1</td><td>1</td></tr>
+            </table>
+            <p class="note">↑ All 4 combinations for 2 inputs</p>
+        </div>
+        <div class="card">
+            <span class="card-title badge-blue">🔢 Number of Rows = 2ⁿ</span>
+            <p class="note" style="margin-top:0;">For <b>n</b> Boolean inputs, the truth table has <b>2ⁿ</b> rows
+                (combinations).</p>
+            <table>
+                <tr>
+                    <th>Inputs (n)</th>
+                    <th>Rows (2ⁿ)</th>
+                </tr>
+                <tr><td>1</td><td><b>2</b></td></tr>
+                <tr><td>2</td><td><b>4</b></td></tr>
+                <tr><td>3</td><td><b>8</b></td></tr>
+                <tr><td>4</td><td><b>16</b></td></tr>
+            </table>
+            <div class="callout">💡 3 variables A, B, C → 2³ = <b>8 combinations</b></div>
+        </div>
+    </div>
+
+    <!-- 3. THREE OPERATORS -->
+    <div class="section-label"><span class="num">3</span> The Three Boolean Operators</div>
+    <div class="card">
+        <span class="card-title badge-green">⚡ NOT, OR, AND — Comparison</span>
+        <table>
+            <tr>
+                <th>Feature</th>
+                <th>NOT</th>
+                <th>OR</th>
+                <th>AND</th>
+            </tr>
+            <tr>
+                <td><b>Type</b></td>
+                <td>Unary</td>
+                <td>Binary</td>
+                <td>Binary</td>
+            </tr>
+            <tr>
+                <td><b>Inputs</b></td>
+                <td>1</td>
+                <td>2 or more</td>
+                <td>2 or more</td>
+            </tr>
+            <tr>
+                <td><b>Symbol</b></td>
+                <td>' or bar</td>
+                <td>+</td>
+                <td>· or no symbol</td>
+            </tr>
+            <tr>
+                <td><b>Operation</b></td>
+                <td>Complementation</td>
+                <td>Logical Addition</td>
+                <td>Logical Multiplication</td>
+            </tr>
+            <tr>
+                <td><b>Output = 1 when</b></td>
+                <td>Input is 0</td>
+                <td>Any input is 1</td>
+                <td>All inputs are 1</td>
+            </tr>
+        </table>
+        <div style="margin-top:8px;">
+            <span class="flash">NOT → REVERSE</span>
+            <span class="flash">OR → ANY 1</span>
+            <span class="flash">AND → ALL 1</span>
+        </div>
+    </div>
+
+    <!-- 4. NOT OPERATOR -->
+    <div class="section-label"><span class="num">4</span> NOT Operator &amp; NOT Gate</div>
+    <div class="grid-2">
+        <div class="card">
+            <span class="card-title badge-pink">🔄 NOT — Complement / Inverter</span>
+            <p class="note" style="margin-top:0;">NOT is a <b>unary</b> operator — it operates on <b>one</b> input and
+                <b>reverses</b> its value. Also called <b>Complementation</b>.</p>
+            <table>
+                <tr>
+                    <th>A</th>
+                    <th>A'</th>
+                </tr>
+                <tr><td>0</td><td><b>1</b></td></tr>
+                <tr><td>1</td><td><b>0</b></td></tr>
+            </table>
+            <div class="gate-visual">
+                NOT 0 = 1<br>
+                NOT 1 = 0<br>
+                <div class="result">Changes 0 → 1 and 1 → 0</div>
+            </div>
+        </div>
+        <div class="card">
+            <span class="card-title badge-blue">🔌 NOT Gate (Inverter)</span>
+            <p class="note" style="margin-top:0;">The NOT gate has <b>one input</b> and <b>one output</b>. The output is
+                always the <b>opposite</b> (complement) of the input.</p>
+            <div class="gate-visual">
+                Input ──▷○── Output<br><br>
+                0 ──▷○── 1<br>
+                1 ──▷○── 0
+            </div>
+            <div class="callout">💡 The NOT gate is also called an <b>Inverter</b> because it inverts the signal.</div>
+        </div>
+    </div>
+
+    <!-- 5. OR OPERATOR -->
+    <div class="section-label"><span class="num">5</span> OR Operator &amp; OR Gate</div>
+    <div class="grid-2">
+        <div class="card">
+            <span class="card-title badge-green">➕ OR — Logical Addition</span>
+            <p class="note" style="margin-top:0;">OR is a <b>binary</b> operator — produces 1 if <b>at least one
+                    input</b> is 1. Symbol: <b>+</b></p>
+            <table>
+                <tr>
+                    <th>X</th>
+                    <th>Y</th>
+                    <th>X + Y</th>
+                </tr>
+                <tr><td>0</td><td>0</td><td><b>0</b></td></tr>
+                <tr><td>0</td><td>1</td><td><b>1</b></td></tr>
+                <tr><td>1</td><td>0</td><td><b>1</b></td></tr>
+                <tr><td>1</td><td>1</td><td><b>1</b></td></tr>
+            </table>
+            <div class="callout">💡 <b>Only 0+0 = 0.</b> Everything else = 1. Think: "ANY 1 → 1"</div>
+        </div>
+        <div class="card">
+            <span class="card-title badge-purple">🔌 OR Gate &amp; 3-Input OR</span>
+            <p class="note" style="margin-top:0;">OR gate has <b>2 or more inputs</b>, <b>1 output</b>. Output = 1 if
+                any input = 1.</p>
+            <table>
+                <tr>
+                    <th>X</th>
+                    <th>Y</th>
+                    <th>Z</th>
+                    <th>X+Y+Z</th>
+                </tr>
+                <tr><td>0</td><td>0</td><td>0</td><td><b>0</b></td></tr>
+                <tr><td>0</td><td>0</td><td>1</td><td><b>1</b></td></tr>
+                <tr><td>0</td><td>1</td><td>0</td><td><b>1</b></td></tr>
+                <tr><td>0</td><td>1</td><td>1</td><td><b>1</b></td></tr>
+                <tr><td>1</td><td>0</td><td>0</td><td><b>1</b></td></tr>
+                <tr><td>1</td><td>0</td><td>1</td><td><b>1</b></td></tr>
+                <tr><td>1</td><td>1</td><td>0</td><td><b>1</b></td></tr>
+                <tr><td>1</td><td>1</td><td>1</td><td><b>1</b></td></tr>
+            </table>
+            <p class="note">↑ Only when ALL inputs are 0 does the output become 0.</p>
+        </div>
+    </div>
+
+    <!-- 6. AND OPERATOR -->
+    <div class="section-label"><span class="num">6</span> AND Operator &amp; AND Gate</div>
+    <div class="grid-2">
+        <div class="card">
+            <span class="card-title badge-blue">✖️ AND — Logical Multiplication</span>
+            <p class="note" style="margin-top:0;">AND is a <b>binary</b> operator — produces 1 <b>only when ALL
+                    inputs</b> are 1. Symbol: <b>·</b> or written as <b>XY</b></p>
+            <table>
+                <tr>
+                    <th>X</th>
+                    <th>Y</th>
+                    <th>X · Y</th>
+                </tr>
+                <tr><td>0</td><td>0</td><td><b>0</b></td></tr>
+                <tr><td>0</td><td>1</td><td><b>0</b></td></tr>
+                <tr><td>1</td><td>0</td><td><b>0</b></td></tr>
+                <tr><td>1</td><td>1</td><td><b>1</b></td></tr>
+            </table>
+            <div class="callout">💡 <b>Only 1·1 = 1.</b> Everything else = 0. Think: "ALL 1 → 1"</div>
+        </div>
+        <div class="card">
+            <span class="card-title badge-pink">🔌 AND Gate &amp; 3-Input AND</span>
+            <p class="note" style="margin-top:0;">AND gate has <b>2 or more inputs</b>, <b>1 output</b>. Output = 1
+                only when ALL inputs = 1.</p>
+            <table>
+                <tr>
+                    <th>X</th>
+                    <th>Y</th>
+                    <th>Z</th>
+                    <th>X·Y·Z</th>
+                </tr>
+                <tr><td>0</td><td>0</td><td>0</td><td><b>0</b></td></tr>
+                <tr><td>0</td><td>0</td><td>1</td><td><b>0</b></td></tr>
+                <tr><td>0</td><td>1</td><td>0</td><td><b>0</b></td></tr>
+                <tr><td>0</td><td>1</td><td>1</td><td><b>0</b></td></tr>
+                <tr><td>1</td><td>0</td><td>0</td><td><b>0</b></td></tr>
+                <tr><td>1</td><td>0</td><td>1</td><td><b>0</b></td></tr>
+                <tr><td>1</td><td>1</td><td>0</td><td><b>0</b></td></tr>
+                <tr><td>1</td><td>1</td><td>1</td><td><b>1</b></td></tr>
+            </table>
+            <p class="note">↑ Only when ALL inputs are 1 does the output become 1.</p>
+        </div>
+    </div>
+
+    <!-- 7. LOGIC GATES -->
+    <div class="section-label"><span class="num">7</span> Logic Gates — The Big Picture</div>
+    <div class="card">
+        <span class="card-title badge-green">🔌 What is a Logic Gate?</span>
+        <p class="note" style="margin-top:0;">A <b>logic gate</b> is an electronic circuit that operates on one or more
+            input signals and produces an output signal. Each gate implements a Boolean operator.</p>
+        <div class="flow-container" style="background:var(--babyblue); border-color:var(--babyblue-dark);">
+            <div class="flow-box">🧮 OPERATOR<br><span>NOT, OR, AND</span></div>
+            <div class="flow-arrow" style="color:var(--babyblue-dark);">➔</div>
+            <div class="flow-box" style="background:#e8f4ff; border:1px solid var(--babyblue-dark);">🔌 GATE<br><span>Electronic circuit</span></div>
+            <div class="flow-arrow" style="color:var(--babyblue-dark);">➔</div>
+            <div class="flow-box">📤 OUTPUT<br><span>0 or 1</span></div>
+        </div>
+        <div class="tag-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+            <div class="tag-item"><b>NOT Gate</b>Also called Inverter. 1 input, 1 output. Reverses the signal.</div>
+            <div class="tag-item blue"><b>OR Gate</b>2+ inputs, 1 output. Output = 1 if ANY input = 1.</div>
+            <div class="tag-item" style="border-left-color:var(--mint-dark); background:#f2fdf7;"><b>AND Gate</b>2+
+                inputs, 1 output. Output = 1 only if ALL inputs = 1.</div>
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- 8. DE MORGAN'S THEOREMS -->
+    <div class="section-label"><span class="num">8</span> De Morgan's Theorems</div>
+    <div class="grid-2">
+        <div class="card">
+            <span class="card-title badge-purple">📜 First Theorem</span>
+            <div class="theorem-card">
+                <b>Complement of OR = AND of Complements</b>
+                <div class="theorem-formula">(A + B)' = A' · B'</div>
+            </div>
+            <p class="note">When the bar enters → <b>OR changes to AND</b> and each variable gets complemented.</p>
+            <table>
+                <tr>
+                    <th>X</th>
+                    <th>Y</th>
+                    <th>X+Y</th>
+                    <th>(X+Y)'</th>
+                    <th>X'</th>
+                    <th>Y'</th>
+                    <th>X'·Y'</th>
+                </tr>
+                <tr><td>0</td><td>0</td><td>0</td><td><b>1</b></td><td>1</td><td>1</td><td><b>1</b></td></tr>
+                <tr><td>0</td><td>1</td><td>1</td><td><b>0</b></td><td>1</td><td>0</td><td><b>0</b></td></tr>
+                <tr><td>1</td><td>0</td><td>1</td><td><b>0</b></td><td>0</td><td>1</td><td><b>0</b></td></tr>
+                <tr><td>1</td><td>1</td><td>1</td><td><b>0</b></td><td>0</td><td>0</td><td><b>0</b></td></tr>
+            </table>
+            <p class="note">✅ (X+Y)' and X'·Y' are identical!</p>
+        </div>
+        <div class="card">
+            <span class="card-title badge-pink">📜 Second Theorem</span>
+            <div class="theorem-card">
+                <b>Complement of AND = OR of Complements</b>
+                <div class="theorem-formula">(A · B)' = A' + B'</div>
+            </div>
+            <p class="note">When the bar enters → <b>AND changes to OR</b> and each variable gets complemented.</p>
+            <table>
+                <tr>
+                    <th>X</th>
+                    <th>Y</th>
+                    <th>X·Y</th>
+                    <th>(X·Y)'</th>
+                    <th>X'</th>
+                    <th>Y'</th>
+                    <th>X'+Y'</th>
+                </tr>
+                <tr><td>0</td><td>0</td><td>0</td><td><b>1</b></td><td>1</td><td>1</td><td><b>1</b></td></tr>
+                <tr><td>0</td><td>1</td><td>0</td><td><b>1</b></td><td>1</td><td>0</td><td><b>1</b></td></tr>
+                <tr><td>1</td><td>0</td><td>0</td><td><b>1</b></td><td>0</td><td>1</td><td><b>1</b></td></tr>
+                <tr><td>1</td><td>1</td><td>1</td><td><b>0</b></td><td>0</td><td>0</td><td><b>0</b></td></tr>
+            </table>
+            <p class="note">✅ (X·Y)' and X'+Y' are identical!</p>
+        </div>
+    </div>
+    <div class="card">
+        <span class="card-title badge-green">⭐ De Morgan's — Must Memorise</span>
+        <div class="tag-grid">
+            <div class="tag-item">
+                <b>First Theorem</b>
+                (A + B)' = A'B'<br>
+                (A + B + C)' = A'B'C'<br>
+                <b>OR → AND</b>
+            </div>
+            <div class="tag-item blue">
+                <b>Second Theorem</b>
+                (AB)' = A' + B'<br>
+                (ABC)' = A' + B' + C'<br>
+                <b>AND → OR</b>
+            </div>
+        </div>
+        <div class="callout">💡 <b>Shortcut:</b> Bar enters bracket → <b>operator changes</b> (+ ↔ ·) and each
+            variable gets its own bar.</div>
+    </div>
+
+    <!-- 9. CIRCUIT DESIGN -->
+    <div class="section-label"><span class="num">9</span> Circuit Design from Boolean Expressions</div>
+    <div class="card">
+        <span class="card-title badge-blue">🏗️ How to Design a Circuit</span>
+        <p class="note" style="margin-top:0;">Given: <b>F(A,B,C) = AB + AC' + B'A'C</b></p>
+        <div class="flow-container" style="background:var(--mint); border-color:var(--mint-dark);">
+            <div class="flow-box">🔍 IDENTIFY<br><span>complemented vars</span></div>
+            <div class="flow-arrow" style="color:var(--mint-dark);">➔</div>
+            <div class="flow-box" style="background:#f2fdf7; border:1px solid var(--mint-dark);">🔄
+                NOT<br><span>generate A', B', C'</span></div>
+            <div class="flow-arrow" style="color:var(--mint-dark);">➔</div>
+            <div class="flow-box">✖️ AND<br><span>create each term</span></div>
+            <div class="flow-arrow" style="color:var(--mint-dark);">➔</div>
+            <div class="flow-box">➕ OR<br><span>combine terms → F</span></div>
+        </div>
+        <div class="tag-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+            <div class="tag-item">
+                <b>Term 1: AB</b>
+                A AND B<br>
+                → AND gate (A, B)
+            </div>
+            <div class="tag-item blue">
+                <b>Term 2: AC'</b>
+                A AND NOT C<br>
+                → NOT gate (C), then AND gate (A, C')
+            </div>
+            <div class="tag-item" style="border-left-color:var(--mint-dark); background:#f2fdf7;">
+                <b>Term 3: B'A'C</b>
+                NOT B AND NOT A AND C<br>
+                → NOT gates (B, A), then AND gate (B', A', C)
+            </div>
+        </div>
+        <p class="note" style="margin-top:8px;">Finally: OR gate combines AB, AC', and B'A'C to produce F.</p>
+    </div>
+
+    <div class="card">
+        <span class="card-title badge-purple">📖 Reading Boolean Expressions</span>
+        <div class="def-list">
+            <div class="def-item"><b>A'</b>NOT A</div>
+            <div class="def-item"><b>AB</b>A AND B</div>
+            <div class="def-item"><b>A + B</b>A OR B</div>
+            <div class="def-item"><b>AB + C</b>(A AND B) OR C</div>
+            <div class="def-item"><b>A'BC</b>(NOT A) AND B AND C</div>
+            <div class="def-item"><b>AB + C'</b>(A AND B) OR (NOT C)</div>
+        </div>
+        <div class="callout">💡 <b>Priority:</b> NOT first → AND second → OR last. So AB + C' = (AB) + (C')</div>
+    </div>
+
+    <!-- 10. DEFINITIONS -->
+    <div class="section-label"><span class="num">10</span> Must-Know Definitions</div>
+    <div class="card">
+        <span class="card-title badge-pink">📌 Flashcard Glossary</span>
+        <div class="def-list">
+            <div class="def-item"><b>Boolean Logic</b>A system of logic where variables have only two values: 0 and 1.
+            </div>
+            <div class="def-item"><b>Boolean Variable</b>A variable that can hold only two values: 0 (False) or 1
+                (True).</div>
+            <div class="def-item"><b>Truth Table</b>A table showing all possible input combinations and their
+                corresponding outputs.</div>
+            <div class="def-item"><b>NOT Operator</b>Unary operator that produces the complement of its input.</div>
+            <div class="def-item"><b>OR Operator</b>Binary operator (symbol: +); output is 1 if at least one input is
+                1.</div>
+            <div class="def-item"><b>AND Operator</b>Binary operator (symbol: ·); output is 1 only when all inputs are
+                1.</div>
+            <div class="def-item"><b>Logic Gate</b>An electronic circuit that operates on input signals to produce an
+                output signal.</div>
+            <div class="def-item"><b>Inverter</b>Another name for the NOT gate.</div>
+            <div class="def-item"><b>Complement</b>The opposite Boolean value: 0' = 1, 1' = 0.</div>
+            <div class="def-item"><b>De Morgan's Theorems</b>(A+B)' = A'B' and (AB)' = A'+B'</div>
+        </div>
+    </div>
+
+    <!-- 11. CHECKLIST -->
+    <div class="section-label"><span class="num">11</span> Pre-Exam Quick Revision</div>
+    <div class="card">
+        <span class="card-title badge-blue">✅ Understand Before Questions</span>
+        <div class="tag-grid">
+            <ul>
+                <li>Boolean values: 0 = False, 1 = True</li>
+                <li>Truth table rows = 2ⁿ</li>
+                <li>NOT: 0→1, 1→0 (unary, complement)</li>
+                <li>OR: ANY 1 → 1 (symbol: +)</li>
+                <li>AND: ALL 1 → 1 (symbol: ·)</li>
+                <li>NOT/OR/AND truth tables (2 &amp; 3 inputs)</li>
+            </ul>
+            <ul>
+                <li>Logic gate = electronic circuit</li>
+                <li>NOT gate = Inverter</li>
+                <li>De Morgan 1: (A+B)' = A'B'</li>
+                <li>De Morgan 2: (AB)' = A'+B'</li>
+                <li>Read Boolean expressions correctly</li>
+                <li>Circuit design: NOT → AND → OR</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-note">Source: Official CBSE Class XI Computer Science (083), 2026–27 syllabus — Unit 1: Computer
+        Systems and Organisation — Chapter 3: Boolean Logic</div>
+
+</body>
+
+</html>

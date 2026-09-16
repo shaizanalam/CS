@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Class XI CS - Data Representation</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;800&display=swap');
+
+        :root {
+            --lavender: #e6e0fa;
+            --lavender-dark: #8b7fd6;
+            --blush: #fde2e9;
+            --blush-dark: #e0729a;
+            --mint: #dcf5e8;
+            --mint-dark: #4a9d78;
+            --babyblue: #dbeeff;
+            --babyblue-dark: #4a90d9;
+            --cream: #faf9f6;
+            --ink: #2d3748;
+            --ink-soft: #5a6478;
+        }
+
+        @page {
+            size: A4 portrait;
+            margin: 12mm;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: var(--cream);
+            color: var(--ink);
+            line-height: 1.45;
+            margin: 0;
+            padding: 6px;
+            font-size: 12.5px;
+        }
+
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+        }
+
+        /* ---------- HEADER ---------- */
+        .header-card {
+            background: linear-gradient(120deg, var(--lavender) 0%, var(--blush) 50%, var(--babyblue) 100%);
+            border-radius: 20px;
+            padding: 20px 24px;
+            text-align: center;
+            margin-bottom: 14px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+
+        .header-card h1 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--ink);
+            letter-spacing: 0.3px;
+        }
+
+        .header-card p {
+            margin: 6px 0 0;
+            font-size: 12px;
+            color: var(--ink-soft);
+            font-weight: 600;
+        }
+
+        .header-tags {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .htag {
+            background: rgba(255, 255, 255, 0.65);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 10.5px;
+            font-weight: 700;
+            color: var(--ink-soft);
+        }
+
+        /* ---------- SECTION LABEL ---------- */
+        .section-label {
+            font-size: 13px;
+            font-weight: 800;
+            margin: 14px 2px 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            break-after: avoid;
+        }
+
+        .section-label .num {
+            background: var(--lavender-dark);
+            color: #fff;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10.5px;
+        }
+
+        /* ---------- CARDS ---------- */
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 14px 16px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            break-inside: avoid;
+            page-break-inside: avoid;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 13.5px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-pink {
+            color: var(--blush-dark);
+        }
+
+        .badge-purple {
+            color: var(--lavender-dark);
+        }
+
+        .badge-blue {
+            color: var(--babyblue-dark);
+        }
+
+        .badge-green {
+            color: var(--mint-dark);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        p.note {
+            font-size: 11.5px;
+            color: var(--ink-soft);
+            margin: 4px 0 8px;
+        }
+
+        /* ---------- FLOW DIAGRAM ---------- */
+        .flow-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--blush);
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 8px;
+            border: 1.5px dashed var(--blush-dark);
+            gap: 4px;
+        }
+
+        .flow-box {
+            background: #fff;
+            padding: 9px 8px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 11px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            flex: 1;
+        }
+
+        .flow-box span {
+            font-weight: 500;
+            font-size: 9.5px;
+            color: var(--ink-soft);
+        }
+
+        .flow-arrow {
+            color: var(--blush-dark);
+            font-weight: bold;
+            font-size: 16px;
+            padding: 0 4px;
+        }
+
+        .flow-sub {
+            text-align: center;
+            font-size: 10.5px;
+            color: var(--ink-soft);
+        }
+
+        /* ---------- TABLES ---------- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11.5px;
+            margin-top: 6px;
+        }
+
+        th {
+            background: var(--lavender);
+            color: #4b3f91;
+            padding: 7px 9px;
+            text-align: left;
+            font-weight: 700;
+        }
+
+        th:first-child {
+            border-radius: 8px 0 0 8px;
+        }
+
+        th:last-child {
+            border-radius: 0 8px 8px 0;
+        }
+
+        td {
+            padding: 6px 9px;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        tr:nth-child(even) td {
+            background: #faf8ff;
+        }
+
+        ul {
+            margin: 0;
+            padding-left: 16px;
+            font-size: 11.5px;
+        }
+
+        li {
+            margin-bottom: 4px;
+        }
+
+        /* ---------- CONVERSION STEP BLOCK ---------- */
+        .step-block {
+            background: #f9f8ff;
+            border-radius: 12px;
+            padding: 10px 14px;
+            margin: 6px 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 11.5px;
+            line-height: 1.6;
+            border-left: 3px solid var(--lavender-dark);
+        }
+
+        .step-block .result {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 800;
+            color: var(--lavender-dark);
+            margin-top: 6px;
+            font-size: 12.5px;
+        }
+
+        /* ---------- LADDER ---------- */
+        .ladder {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            align-items: center;
+            margin-top: 6px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .ladder-pill {
+            background: var(--mint);
+            color: var(--mint-dark);
+            border: 1px solid #b7ecd0;
+            padding: 4px 8px;
+            border-radius: 20px;
+        }
+
+        .ladder-arrow {
+            color: var(--mint-dark);
+            font-size: 11px;
+        }
+
+        /* ---------- TAG GRID & ITEMS ---------- */
+        .tag-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 11.5px;
+        }
+
+        .tag-item {
+            background: #fdf4ff;
+            border-radius: 10px;
+            padding: 8px 10px;
+            border-left: 3px solid #d946ef;
+        }
+
+        .tag-item.blue {
+            background: #f0f8ff;
+            border-left-color: var(--babyblue-dark);
+        }
+
+        .flash {
+            background: var(--mint);
+            border-radius: 10px;
+            padding: 7px 10px;
+            font-size: 10.5px;
+            font-weight: 700;
+            color: #1f5f43;
+            display: inline-block;
+            margin: 3px 4px 0 0;
+        }
+
+        .callout {
+            background: #fff7e6;
+            border: 1.5px dashed #f0c469;
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: 11px;
+            color: #7a5c14;
+            margin-top: 8px;
+            break-inside: avoid;
+        }
+
+        .def-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 14px;
+        }
+
+        .def-item {
+            font-size: 10.8px;
+            padding: 6px 8px;
+            background: #f9f8ff;
+            border-radius: 8px;
+        }
+
+        .def-item b {
+            color: var(--lavender-dark);
+            display: block;
+            font-size: 11px;
+            margin-bottom: 1px;
+        }
+
+        /* ---------- RULE CARD ---------- */
+        .rule-card {
+            background: linear-gradient(120deg, #fff7e6, #fff2f8);
+            border: 1.5px dashed #f0c469;
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin: 8px 0;
+            font-size: 11.5px;
+        }
+
+        .rule-card b {
+            color: var(--blush-dark);
+        }
+
+        /* ---------- EXAMPLE CARD ---------- */
+        .example-card {
+            background: #fdf9ff;
+            border: 1.5px solid var(--lavender);
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin: 8px 0;
+        }
+
+        .example-card .example-title {
+            font-weight: 800;
+            font-size: 12px;
+            color: var(--lavender-dark);
+            margin-bottom: 6px;
+        }
+
+        .page-break {
+            break-before: page;
+            page-break-before: always;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 9.5px;
+            color: var(--ink-soft);
+            margin-top: 10px;
+            padding-top: 6px;
+            border-top: 1px dashed #ddd;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <div class="header-card">
+        <h1>🌸 Class XI Computer Science (083)</h1>
+        <p>Data Representation • Number System Conversions — Visual Concept Notes</p>
+        <div class="header-tags">
+            <span class="htag">📘 Session 2026–27</span>
+            <span class="htag">🧠 Conversions &amp; Concepts</span>
+            <span class="htag">⭐ 5 Marks Blueprint</span>
+        </div>
+    </div>
+
+    <!-- 1. NUMBER SYSTEMS -->
+    <div class="section-label"><span class="num">1</span> Number Systems &amp; Their Bases</div>
+    <div class="card">
+        <span class="card-title badge-pink">🔢 What is a Number System?</span>
+        <p class="note" style="margin-top:0;">A <b>number system</b> is a method of representing numbers using a
+            specific set of digits and a particular base (radix).</p>
+        <table>
+            <tr>
+                <th>Number System</th>
+                <th>Base</th>
+                <th>Digits Used</th>
+            </tr>
+            <tr>
+                <td><b>Binary</b></td>
+                <td>2</td>
+                <td>0, 1</td>
+            </tr>
+            <tr>
+                <td><b>Octal</b></td>
+                <td>8</td>
+                <td>0 – 7</td>
+            </tr>
+            <tr>
+                <td><b>Decimal</b></td>
+                <td>10</td>
+                <td>0 – 9</td>
+            </tr>
+            <tr>
+                <td><b>Hexadecimal</b></td>
+                <td>16</td>
+                <td>0 – 9, A – F</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="grid-2">
+        <div class="card">
+            <span class="card-title badge-purple">🔤 Hexadecimal Digit Values</span>
+            <table>
+                <tr>
+                    <th>Decimal</th>
+                    <th>Hex</th>
+                    <th>Decimal</th>
+                    <th>Hex</th>
+                </tr>
+                <tr>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>8</td>
+                    <td>8</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>9</td>
+                    <td>9</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>2</td>
+                    <td>10</td>
+                    <td><b>A</b></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>3</td>
+                    <td>11</td>
+                    <td><b>B</b></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>4</td>
+                    <td>12</td>
+                    <td><b>C</b></td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>5</td>
+                    <td>13</td>
+                    <td><b>D</b></td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>6</td>
+                    <td>14</td>
+                    <td><b>E</b></td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>7</td>
+                    <td>15</td>
+                    <td><b>F</b></td>
+                </tr>
+            </table>
+        </div>
+        <div class="card">
+            <span class="card-title badge-blue">📍 MSB &amp; LSB</span>
+            <div class="tag-item" style="margin-bottom:6px;"><b>MSB — Most Significant Bit</b>The leftmost bit/digit
+                with the greatest positional value.</div>
+            <div class="tag-item blue" style="margin-bottom:6px;"><b>LSB — Least Significant Bit</b>The rightmost
+                bit/digit with the smallest positional value.</div>
+            <div class="step-block" style="text-align:center;">
+                <b style="color:var(--blush-dark);">↓ MSB</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b
+                    style="color:var(--babyblue-dark);">LSB ↓</b><br>
+                1 &nbsp; 0 &nbsp; 1 &nbsp; 0 &nbsp; 1 &nbsp; 1
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. POSITIONAL VALUE -->
+    <div class="section-label"><span class="num">2</span> Positional Value &amp; Notation</div>
+    <div class="card">
+        <span class="card-title badge-green">📐 How Positional Value Works</span>
+        <p class="note" style="margin-top:0;">In a positional number system, the value of a digit depends on: <b>(1)</b>
+            the digit itself, <b>(2)</b> its position, and <b>(3)</b> the base of the number system.</p>
+        <div class="example-card">
+            <div class="example-title">✨ Example: (11011)₂ → Decimal</div>
+            <div class="step-block">
+                Position: &nbsp; 4 &nbsp;&nbsp; 3 &nbsp;&nbsp; 2 &nbsp;&nbsp; 1 &nbsp;&nbsp; 0<br>
+                Digit: &nbsp;&nbsp;&nbsp; 1 &nbsp;&nbsp; 1 &nbsp;&nbsp; 0 &nbsp;&nbsp; 1 &nbsp;&nbsp; 1<br><br>
+                = 1×2⁴ + 1×2³ + 0×2² + 1×2¹ + 1×2⁰<br>
+                = 16 + 8 + 0 + 2 + 1<br>
+                <div class="result">= (27)₁₀</div>
+            </div>
+        </div>
+        <div class="callout">💡 The <b>rightmost</b> digit always has position <b>0</b>. Positions increase towards
+            the left.</div>
+    </div>
+
+    <div class="card">
+        <span class="card-title badge-pink">🔸 Fractional Positional Notation</span>
+        <p class="note" style="margin-top:0;">For digits <b>after</b> the decimal/binary point, positions become
+            <b>negative</b>.</p>
+        <div class="example-card">
+            <div class="example-title">✨ Example: (101.101)₂</div>
+            <div class="step-block">
+                Position: &nbsp; 2 &nbsp;&nbsp; 1 &nbsp;&nbsp; 0 &nbsp; . &nbsp; -1 &nbsp; -2 &nbsp; -3<br>
+                Digit: &nbsp;&nbsp;&nbsp; 1 &nbsp;&nbsp; 0 &nbsp;&nbsp; 1 &nbsp; . &nbsp;&nbsp; 1 &nbsp;&nbsp; 0
+                &nbsp;&nbsp; 1<br><br>
+                = 1×2² + 0×2¹ + 1×2⁰ + 1×2⁻¹ + 0×2⁻² + 1×2⁻³
+            </div>
+        </div>
+        <div>
+            <span class="flash">2⁻¹ = 1/2 = 0.5</span>
+            <span class="flash">2⁻² = 1/4 = 0.25</span>
+            <span class="flash">2⁻³ = 1/8 = 0.125</span>
+        </div>
+    </div>
+
+    <!-- 3. THE GOLDEN RULES -->
+    <div class="section-label"><span class="num">3</span> The Golden Conversion Rules</div>
+    <div class="card">
+        <span class="card-title badge-purple">⭐ Master Rules — Memorize These!</span>
+        <div class="flow-container">
+            <div class="flow-box">🔢 DECIMAL<br><span>Integer</span></div>
+            <div class="flow-arrow">➔</div>
+            <div class="flow-box" style="background:#fdf2f8; border:1px solid var(--blush-dark);">➗ DIVIDE<br><span>by
+                    base</span></div>
+            <div class="flow-arrow">➔</div>
+            <div class="flow-box">📖 READ<br><span>remainders ↑ bottom→top</span></div>
+        </div>
+        <div class="flow-container" style="background:var(--mint); border-color:var(--mint-dark);">
+            <div class="flow-box">🔢 DECIMAL<br><span>Fraction</span></div>
+            <div class="flow-arrow" style="color:var(--mint-dark);">➔</div>
+            <div class="flow-box" style="background:#f2fdf7; border:1px solid var(--mint-dark);">✖️
+                MULTIPLY<br><span>by base</span></div>
+            <div class="flow-arrow" style="color:var(--mint-dark);">➔</div>
+            <div class="flow-box">📖 READ<br><span>integer parts ↓ top→bottom</span></div>
+        </div>
+        <div class="flow-container" style="background:var(--babyblue); border-color:var(--babyblue-dark);">
+            <div class="flow-box">🔀 OTHER BASE<br><span>to Decimal</span></div>
+            <div class="flow-arrow" style="color:var(--babyblue-dark);">➔</div>
+            <div class="flow-box" style="background:#e8f4ff; border:1px solid var(--babyblue-dark);">⚡ POSITIONAL
+                WEIGHTS<br><span>digit × base^position</span></div>
+            <div class="flow-arrow" style="color:var(--babyblue-dark);">➔</div>
+            <div class="flow-box">➕ ADD<br><span>all values</span></div>
+        </div>
+        <div class="callout">💡 <b>Integer → DIVIDE</b> &nbsp;|&nbsp; <b>Fraction → MULTIPLY</b> &nbsp;|&nbsp;
+            <b>To Decimal → Positional Weights</b></div>
+    </div>
+
+    <!-- 4. DECIMAL → BINARY -->
+    <div class="section-label"><span class="num">4</span> Decimal → Binary Conversion</div>
+    <div class="grid-2">
+        <div class="card">
+            <span class="card-title badge-pink">🔄 Integer: Repeated Division by 2</span>
+            <ul>
+                <li>Divide the decimal number by 2</li>
+                <li>Record the remainder</li>
+                <li>Continue until quotient = 0</li>
+                <li>Read remainders <b>bottom → top</b></li>
+            </ul>
+            <div class="example-card">
+                <div class="example-title">✨ Convert (43)₁₀ → Binary</div>
+                <div class="step-block">
+                    43 ÷ 2 = 21 &nbsp; R <b>1</b><br>
+                    21 ÷ 2 = 10 &nbsp; R <b>1</b><br>
+                    10 ÷ 2 = 5 &nbsp;&nbsp; R <b>0</b><br>
+                    &nbsp;5 ÷ 2 = 2 &nbsp;&nbsp; R <b>1</b><br>
+                    &nbsp;2 ÷ 2 = 1 &nbsp;&nbsp; R <b>0</b><br>
+                    &nbsp;1 ÷ 2 = 0 &nbsp;&nbsp; R <b>1</b><br>
+                    <div class="result">Read ↑ : (43)₁₀ = (101011)₂</div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <span class="card-title badge-green">🔄 Fraction: Repeated Multiplication by 2</span>
+            <ul>
+                <li>Multiply the fraction by 2</li>
+                <li>Take the integer part (0 or 1)</li>
+                <li>Continue with the fractional part</li>
+                <li>Read integer parts <b>top → bottom</b></li>
+            </ul>
+            <div class="example-card">
+                <div class="example-title">✨ Convert (0.375)₁₀ → Binary</div>
+                <div class="step-block">
+                    0.375 × 2 = 0.750 → <b>0</b><br>
+                    0.750 × 2 = 1.500 → <b>1</b><br>
+                    0.500 × 2 = 1.000 → <b>1</b><br>
+                    <div class="result">Read ↓ : (0.375)₁₀ = (0.011)₂</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. DECIMAL → OCTAL -->
+    <div class="section-label"><span class="num">5</span> Decimal → Octal Conversion</div>
+    <div class="grid-2">
+        <div class="card">
+            <span class="card-title badge-blue">🔄 Integer: Repeated Division by 8</span>
+            <div class="example-card">
+                <div class="example-title">✨ Convert (266)₁₀ → Octal</div>
+                <div class="step-block">
+                    266 ÷ 8 = 33 &nbsp; R <b>2</b><br>
+                    &nbsp;33 ÷ 8 = 4 &nbsp;&nbsp; R <b>1</b><br>
+                    &nbsp;&nbsp;4 ÷ 8 = 0 &nbsp;&nbsp; R <b>4</b><br>
+                    <div class="result">Read ↑ : (266)₁₀ = (412)₈</div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <span class="card-title badge-purple">🔄 Fraction: Repeated Multiplication by 8</span>
+            <div class="example-card">
+                <div class="example-title">✨ Convert (0.375)₁₀ → Octal</div>
+                <div class="step-block">
+                    0.375 × 8 = 3.000 → <b>3</b><br>
+                    <div class="result">Read ↓ : (0.375)₁₀ = (0.3)₈</div>
+                </div>
+            </div>
+            <div class="example-card">
+                <div class="example-title">✨ Convert (0.015625)₁₀ → Octal</div>
+                <div class="step-block">
+                    0.015625 × 8 = 0.125 → <b>0</b><br>
+                    0.125 &nbsp;&nbsp; × 8 = 1.000 → <b>1</b><br>
+                    <div class="result">Read ↓ : (0.015625)₁₀ = (0.01)₈</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. DECIMAL → HEXADECIMAL -->
+    <div class="section-label"><span class="num">6</span> Decimal → Hexadecimal Conversion</div>
+    <div class="grid-2">
+        <div class="card">
+            <span class="card-title badge-pink">🔄 Integer: Repeated Division by 16</span>
+            <ul>
+                <li>Divide by 16, record remainder</li>
+                <li>Convert remainders 10–15 → A–F</li>
+                <li>Read remainders <b>bottom → top</b></li>
+            </ul>
+            <div class="example-card">
+                <div class="example-title">✨ Convert (423)₁₀ → Hexadecimal</div>
+                <div class="step-block">
+                    423 ÷ 16 = 26 &nbsp; R <b>7</b><br>
+                    &nbsp;26 ÷ 16 = 1 &nbsp;&nbsp; R <b>10 = A</b><br>
+                    &nbsp;&nbsp;1 ÷ 16 = 0 &nbsp;&nbsp; R <b>1</b><br>
+                    <div class="result">Read ↑ : (423)₁₀ = (1A7)₁₆</div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <span class="card-title badge-green">🔄 Fraction: Repeated Multiplication by 16</span>
+            <div class="example-card">
+                <div class="example-title">✨ Convert (0.03125)₁₀ → Hexadecimal</div>
+                <div class="step-block">
+                    0.03125 × 16 = 0.5 → <b>0</b><br>
+                    0.5 &nbsp;&nbsp;&nbsp; × 16 = 8.0 → <b>8</b><br>
+                    <div class="result">Read ↓ : (0.03125)₁₀ = (0.08)₁₆</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- 7. BINARY → DECIMAL -->
+    <div class="section-label"><span class="num">7</span> Binary → Decimal Conversion</div>
+    <div class="grid-2">
+        <div class="card">
+            <span class="card-title badge-blue">⚡ Integer: Positional Weights (powers of 2)</span>
+            <div class="example-card">
+                <div class="example-title">✨ Convert (11011)₂ → Decimal</div>
+                <div class="step-block">
+                    = 1×2⁴ + 1×2³ + 0×2² + 1×2¹ + 1×2⁰<br>
+                    = 16 &nbsp; + 8 &nbsp;&nbsp; + 0 &nbsp;&nbsp; + 2 &nbsp;&nbsp; + 1<br>
+                    <div class="result">= (27)₁₀</div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <span class="card-title badge-purple">⚡ Fraction: Negative powers of 2</span>
+            <div class="example-card">
+                <div class="example-title">✨ Convert (0.0101)₂ → Decimal</div>
+                <div class="step-block">
+                    = 0×2⁻¹ + 1×2⁻² + 0×2⁻³ + 1×2⁻⁴<br>
+                    = 0 + 0.25 + 0 + 0.0625<br>
+                    <div class="result">= (0.3125)₁₀</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 8. OCTAL → DECIMAL -->
+    <div class="section-label"><span class="num">8</span> Octal → Decimal Conversion</div>
+    <div class="grid-2">
+        <div class="card">
+            <span class="card-title badge-green">⚡ Integer: Powers of 8</span>
+            <div class="example-card">
+                <div class="example-title">✨ Convert (372)₈ → Decimal</div>
+                <div class="step-block">
+                    = 3×8² + 7×8¹ + 2×8⁰<br>
+                    = 192 &nbsp; + 56 &nbsp; + 2<br>
+                    <div class="result">= (250)₁₀</div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <span class="card-title badge-pink">⚡ Fraction: Negative powers of 8</span>
+            <div class="example-card">
+                <div class="example-title">✨ Convert (24.6)₈ → Decimal</div>
+                <div class="step-block">
+                    = 2×8¹ + 4×8⁰ + 6×8⁻¹<br>
+                    = 16 &nbsp; + 4 &nbsp;&nbsp; + 0.75<br>
+                    <div class="result">= (20.75)₁₀</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. HEX → DECIMAL -->
+    <div class="section-label"><span class="num">9</span> Hexadecimal → Decimal Conversion</div>
+    <div class="card">
+        <span class="card-title badge-blue">⚡ Powers of 16</span>
+        <p class="note" style="margin-top:0;">Multiply every hex digit by the corresponding power of 16. Remember: A=10,
+            B=11, C=12, D=13, E=14, F=15.</p>
+        <div class="example-card">
+            <div class="example-title">✨ Convert (356)₁₆ → Decimal</div>
+            <div class="step-block">
+                = 3×16² + 5×16¹ + 6×16⁰<br>
+                = 768 &nbsp; + 80 &nbsp; + 6<br>
+                <div class="result">= (854)₁₀</div>
+            </div>
+        </div>
+        <div class="callout">💡 <b>Quick Formula (any base → decimal):</b> For integer part: digit × base^position
+            (rightmost = 0). For fractional part: digit × base^(negative position).</div>
+    </div>
+
+    <!-- 10. BINARY ↔ OCTAL -->
+    <div class="section-label"><span class="num">10</span> Binary ↔ Octal (Shortcut: 3 Bits = 1 Octal Digit)</div>
+    <div class="card">
+        <span class="card-title badge-purple">🔗 Why? Because 8 = 2³</span>
+        <table>
+            <tr>
+                <th>Binary</th>
+                <th>Octal</th>
+                <th>Binary</th>
+                <th>Octal</th>
+            </tr>
+            <tr>
+                <td>000</td>
+                <td>0</td>
+                <td>100</td>
+                <td>4</td>
+            </tr>
+            <tr>
+                <td>001</td>
+                <td>1</td>
+                <td>101</td>
+                <td>5</td>
+            </tr>
+            <tr>
+                <td>010</td>
+                <td>2</td>
+                <td>110</td>
+                <td>6</td>
+            </tr>
+            <tr>
+                <td>011</td>
+                <td>3</td>
+                <td>111</td>
+                <td>7</td>
+            </tr>
+        </table>
+    </div>
+    <div class="grid-2">
+        <div class="card">
+            <span class="card-title badge-pink">➡️ Binary Integer → Octal</span>
+            <p class="note" style="margin-top:0;">Group binary digits into groups of <b>3 from right to left</b>. Pad
+                zeros on the <b>left</b> if needed.</p>
+            <div class="example-card">
+                <div class="example-title">✨ Convert (100111010)₂ → Octal</div>
+                <div class="step-block">
+                    Group: 100 | 111 | 010<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4 &nbsp;&nbsp; 7 &nbsp;&nbsp; 2<br>
+                    <div class="result">= (472)₈</div>
+                </div>
+            </div>
+            <div class="example-card">
+                <div class="example-title">✨ Convert (11010110)₂ → Octal</div>
+                <div class="step-block">
+                    Group: 11 | 010 | 110<br>
+                    Pad: &nbsp; 0<b>11</b> | 010 | 110<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3 &nbsp;&nbsp; 2 &nbsp;&nbsp; 6<br>
+                    <div class="result">= (326)₈</div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <span class="card-title badge-green">➡️ Binary Fraction → Octal</span>
+            <p class="note" style="margin-top:0;">After the binary point, group bits into sets of <b>3 from left to
+                    right</b>. Pad zeros on the <b>right</b>.</p>
+            <div class="example-card">
+                <div class="example-title">✨ Convert (0.0101)₂ → Octal</div>
+                <div class="step-block">
+                    Group: 010 | 1<br>
+                    Pad: &nbsp; 010 | 100<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2 &nbsp;&nbsp; 4<br>
+                    <div class="result">= (0.24)₈</div>
+                </div>
+            </div>
+            <div class="example-card">
+                <div class="example-title">⬅️ Octal → Binary: Each digit → 3 bits</div>
+                <div class="step-block">
+                    (472.12)₈<br>
+                    4→100 &nbsp; 7→111 &nbsp; 2→010<br>
+                    1→001 &nbsp; 2→010<br>
+                    <div class="result">= (100111010.001010)₂</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 11. BINARY ↔ HEXADECIMAL -->
+    <div class="section-label"><span class="num">11</span> Binary ↔ Hexadecimal (Shortcut: 4 Bits = 1 Hex Digit)</div>
+    <div class="card">
+        <span class="card-title badge-blue">🔗 Why? Because 16 = 2⁴</span>
+        <table>
+            <tr>
+                <th>Binary</th>
+                <th>Hex</th>
+                <th>Binary</th>
+                <th>Hex</th>
+                <th>Binary</th>
+                <th>Hex</th>
+                <th>Binary</th>
+                <th>Hex</th>
+            </tr>
+            <tr>
+                <td>0000</td>
+                <td>0</td>
+                <td>0100</td>
+                <td>4</td>
+                <td>1000</td>
+                <td>8</td>
+                <td>1100</td>
+                <td>C</td>
+            </tr>
+            <tr>
+                <td>0001</td>
+                <td>1</td>
+                <td>0101</td>
+                <td>5</td>
+                <td>1001</td>
+                <td>9</td>
+                <td>1101</td>
+                <td>D</td>
+            </tr>
+            <tr>
+                <td>0010</td>
+                <td>2</td>
+                <td>0110</td>
+                <td>6</td>
+                <td>1010</td>
+                <td>A</td>
+                <td>1110</td>
+                <td>E</td>
+            </tr>
+            <tr>
+                <td>0011</td>
+                <td>3</td>
+                <td>0111</td>
+                <td>7</td>
+                <td>1011</td>
+                <td>B</td>
+                <td>1111</td>
+                <td>F</td>
+            </tr>
+        </table>
+    </div>
+    <div class="grid-2">
+        <div class="card">
+            <span class="card-title badge-purple">➡️ Binary Integer → Hex</span>
+            <p class="note" style="margin-top:0;">Group binary digits into groups of <b>4 from right to left</b>. Pad
+                zeros on the <b>left</b> if needed.</p>
+            <div class="example-card">
+                <div class="example-title">✨ Convert (001010111010)₂ → Hex</div>
+                <div class="step-block">
+                    Group: 0010 | 1011 | 1010<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2 &nbsp;&nbsp;&nbsp; B &nbsp;&nbsp;&nbsp; A<br>
+                    <div class="result">= (2BA)₁₆</div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <span class="card-title badge-pink">➡️ Binary Fraction → Hex</span>
+            <p class="note" style="margin-top:0;">After binary point, group bits into sets of <b>4 from left to
+                    right</b>. Pad zeros on the <b>right</b>.</p>
+            <div class="example-card">
+                <div class="example-title">✨ Convert (0.01011100)₂ → Hex</div>
+                <div class="step-block">
+                    Group: 0101 | 1100<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5 &nbsp;&nbsp;&nbsp; C<br>
+                    <div class="result">= (0.5C)₁₆</div>
+                </div>
+            </div>
+            <div class="example-card">
+                <div class="example-title">⬅️ Hex → Binary: Each digit → 4 bits</div>
+                <div class="step-block">
+                    (9F2)₁₆<br>
+                    9→1001 &nbsp; F→1111 &nbsp; 2→0010<br>
+                    <div class="result">= (100111110010)₂</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- 12. COMPLETE CONVERSION SUMMARY -->
+    <div class="section-label"><span class="num">12</span> Complete Conversion Methods Summary</div>
+    <div class="card">
+        <span class="card-title badge-green">📋 All 10 Conversions at a Glance</span>
+        <table>
+            <tr>
+                <th>Conversion</th>
+                <th>Method</th>
+            </tr>
+            <tr>
+                <td><b>Decimal integer → Binary</b></td>
+                <td>Divide repeatedly by 2</td>
+            </tr>
+            <tr>
+                <td><b>Decimal fraction → Binary</b></td>
+                <td>Multiply repeatedly by 2</td>
+            </tr>
+            <tr>
+                <td><b>Decimal integer → Octal</b></td>
+                <td>Divide repeatedly by 8</td>
+            </tr>
+            <tr>
+                <td><b>Decimal fraction → Octal</b></td>
+                <td>Multiply repeatedly by 8</td>
+            </tr>
+            <tr>
+                <td><b>Decimal integer → Hex</b></td>
+                <td>Divide repeatedly by 16</td>
+            </tr>
+            <tr>
+                <td><b>Decimal fraction → Hex</b></td>
+                <td>Multiply repeatedly by 16</td>
+            </tr>
+            <tr>
+                <td><b>Binary → Decimal</b></td>
+                <td>Positional weights / powers of 2</td>
+            </tr>
+            <tr>
+                <td><b>Octal → Decimal</b></td>
+                <td>Positional weights / powers of 8</td>
+            </tr>
+            <tr>
+                <td><b>Hex → Decimal</b></td>
+                <td>Positional weights / powers of 16</td>
+            </tr>
+            <tr>
+                <td><b>Binary ↔ Octal</b></td>
+                <td>Groups of 3 bits</td>
+            </tr>
+            <tr>
+                <td><b>Binary ↔ Hex</b></td>
+                <td>Groups of 4 bits</td>
+            </tr>
+            <tr>
+                <td><b>Octal → Binary</b></td>
+                <td>Each digit → 3 bits</td>
+            </tr>
+            <tr>
+                <td><b>Hex → Binary</b></td>
+                <td>Each digit → 4 bits</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 13. COMMON MISTAKES -->
+    <div class="section-label"><span class="num">13</span> Common Mistakes to Avoid</div>
+    <div class="card">
+        <span class="card-title badge-pink">⚠️ Don't Make These Errors!</span>
+        <div class="tag-grid" style="grid-template-columns: 1fr 1fr;">
+            <div class="tag-item">
+                <b>❌ Wrong remainder direction</b>
+                Division remainders → Read <b>bottom to top</b>, NOT top to bottom.
+            </div>
+            <div class="tag-item blue">
+                <b>❌ Division for fractions</b>
+                Fractions use <b>multiplication</b>, NOT division.
+            </div>
+            <div class="tag-item" style="border-left-color:var(--mint-dark); background:#f2fdf7;">
+                <b>❌ Wrong hex values</b>
+                A=10, B=11, C=12, D=13, E=14, F=15. Memorize!
+            </div>
+            <div class="tag-item">
+                <b>❌ Wrong bit grouping</b>
+                Binary→Octal = <b>3 bits</b>. Binary→Hex = <b>4 bits</b>.
+            </div>
+            <div class="tag-item blue">
+                <b>❌ Padding on wrong side</b>
+                Integer → pad zeros on <b>LEFT</b>. Fraction → pad zeros on <b>RIGHT</b>.
+            </div>
+            <div class="tag-item" style="border-left-color:var(--mint-dark); background:#f2fdf7;">
+                <b>❌ Wrong powers</b>
+                Integer positions: 2⁰, 2¹, 2²…<br>
+                Fraction positions: 2⁻¹, 2⁻², 2⁻³…
+            </div>
+        </div>
+    </div>
+
+    <!-- 14. PRACTICE QUESTIONS -->
+    <div class="section-label"><span class="num">14</span> Practice Questions from PDF</div>
+    <div class="card">
+        <span class="card-title badge-blue">📝 Try These Conversions</span>
+        <div class="tag-grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+            <div class="tag-item">
+                <b>Binary → Decimal</b>
+                <ul style="padding-left:14px; margin-top:4px;">
+                    <li>10010₂</li>
+                    <li>101010₂</li>
+                    <li>1010100.011₂</li>
+                    <li>10110.01₂</li>
+                    <li>101011111₂</li>
+                </ul>
+            </div>
+            <div class="tag-item blue">
+                <b>Binary → Octal</b>
+                <ul style="padding-left:14px; margin-top:4px;">
+                    <li>11111011110101₂</li>
+                    <li>1011110100011000111₂</li>
+                    <li>11110111100₂</li>
+                    <li>101011111₂</li>
+                    <li>10110111011011₂</li>
+                </ul>
+            </div>
+            <div class="tag-item" style="border-left-color:var(--mint-dark); background:#f2fdf7;">
+                <b>Binary → Hexadecimal</b>
+                <ul style="padding-left:14px; margin-top:4px;">
+                    <li>1010110110111₂</li>
+                    <li>1111011101011011₂</li>
+                    <li>11010111010111₂</li>
+                    <li>10011011101₂</li>
+                    <li>1111101110101111₂</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 15. ONE-PAGE REVISION / CHECKLIST -->
+    <div class="section-label"><span class="num">15</span> Pre-Exam Quick Revision Checklist</div>
+    <div class="card">
+        <span class="card-title badge-purple">✅ Must-Know Before the Exam</span>
+        <div class="tag-grid">
+            <ul>
+                <li>Binary, Octal, Decimal &amp; Hex bases</li>
+                <li>Hex A–F values (A=10 … F=15)</li>
+                <li>MSB and LSB concept</li>
+                <li>Positional notation (integer &amp; fraction)</li>
+                <li>Positive &amp; negative positional powers</li>
+                <li>Decimal → Binary (divide by 2)</li>
+                <li>Binary → Decimal (positional weights)</li>
+            </ul>
+            <ul>
+                <li>Decimal → Octal (divide by 8)</li>
+                <li>Octal → Decimal (powers of 8)</li>
+                <li>Decimal → Hex (divide by 16)</li>
+                <li>Hex → Decimal (powers of 16)</li>
+                <li>Binary ↔ Octal (3-bit groups)</li>
+                <li>Binary ↔ Hex (4-bit groups)</li>
+                <li>Integer &amp; fractional conversions</li>
+            </ul>
+        </div>
+        <div class="rule-card" style="margin-top:10px;">
+            <b>🔥 Highest-Priority Rules:</b><br>
+            DIVIDE for decimal integers &nbsp;•&nbsp; MULTIPLY for decimal fractions<br>
+            Bottom → Top for division remainders &nbsp;•&nbsp; Top → Bottom for multiplication results<br>
+            3 bits = 1 octal digit &nbsp;•&nbsp; 4 bits = 1 hex digit<br>
+            Integer padding → LEFT &nbsp;•&nbsp; Fraction padding → RIGHT
+        </div>
+    </div>
+
+    <div class="footer-note">Source: Official CBSE Class XI Computer Science (083), 2026–27 syllabus — Unit 1: Computer
+        Systems and Organisation — Chapter 2: Data Representation</div>
+
+</body>
+
+</html>

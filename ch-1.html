@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Class XI CS - Computer System Overview</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;800&display=swap');
+
+        :root {
+            --lavender: #e6e0fa;
+            --lavender-dark: #8b7fd6;
+            --blush: #fde2e9;
+            --blush-dark: #e0729a;
+            --mint: #dcf5e8;
+            --mint-dark: #4a9d78;
+            --babyblue: #dbeeff;
+            --babyblue-dark: #4a90d9;
+            --cream: #faf9f6;
+            --ink: #2d3748;
+            --ink-soft: #5a6478;
+        }
+
+        @page {
+            size: A4 portrait;
+            margin: 12mm;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: var(--cream);
+            color: var(--ink);
+            line-height: 1.45;
+            margin: 0;
+            padding: 6px;
+            font-size: 12.5px;
+        }
+
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+        }
+
+        /* ---------- HEADER ---------- */
+        .header-card {
+            background: linear-gradient(120deg, var(--lavender) 0%, var(--blush) 50%, var(--babyblue) 100%);
+            border-radius: 20px;
+            padding: 20px 24px;
+            text-align: center;
+            margin-bottom: 14px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+
+        .header-card h1 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--ink);
+            letter-spacing: 0.3px;
+        }
+
+        .header-card p {
+            margin: 6px 0 0;
+            font-size: 12px;
+            color: var(--ink-soft);
+            font-weight: 600;
+        }
+
+        .header-tags {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .htag {
+            background: rgba(255, 255, 255, 0.65);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 10.5px;
+            font-weight: 700;
+            color: var(--ink-soft);
+        }
+
+        /* ---------- SECTION LABEL ---------- */
+        .section-label {
+            font-size: 13px;
+            font-weight: 800;
+            margin: 14px 2px 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            break-after: avoid;
+        }
+
+        .section-label .num {
+            background: var(--lavender-dark);
+            color: #fff;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10.5px;
+        }
+
+        /* ---------- CARDS ---------- */
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 14px 16px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            break-inside: avoid;
+            page-break-inside: avoid;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 13.5px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-pink {
+            color: var(--blush-dark);
+        }
+
+        .badge-purple {
+            color: var(--lavender-dark);
+        }
+
+        .badge-blue {
+            color: var(--babyblue-dark);
+        }
+
+        .badge-green {
+            color: var(--mint-dark);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        p.note {
+            font-size: 11.5px;
+            color: var(--ink-soft);
+            margin: 4px 0 8px;
+        }
+
+        /* ---------- FLOW DIAGRAM ---------- */
+        .flow-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--blush);
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 8px;
+            border: 1.5px dashed var(--blush-dark);
+            gap: 4px;
+        }
+
+        .flow-box {
+            background: #fff;
+            padding: 9px 8px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 11px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            flex: 1;
+        }
+
+        .flow-box span {
+            font-weight: 500;
+            font-size: 9.5px;
+            color: var(--ink-soft);
+        }
+
+        .flow-arrow {
+            color: var(--blush-dark);
+            font-weight: bold;
+            font-size: 16px;
+            padding: 0 4px;
+        }
+
+        .flow-sub {
+            text-align: center;
+            font-size: 10.5px;
+            color: var(--ink-soft);
+        }
+
+        /* ---------- TABLES ---------- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11.5px;
+            margin-top: 6px;
+        }
+
+        th {
+            background: var(--lavender);
+            color: #4b3f91;
+            padding: 7px 9px;
+            text-align: left;
+            font-weight: 700;
+        }
+
+        th:first-child {
+            border-radius: 8px 0 0 8px;
+        }
+
+        th:last-child {
+            border-radius: 0 8px 8px 0;
+        }
+
+        td {
+            padding: 6px 9px;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        tr:nth-child(even) td {
+            background: #faf8ff;
+        }
+
+        ul {
+            margin: 0;
+            padding-left: 16px;
+            font-size: 11.5px;
+        }
+
+        li {
+            margin-bottom: 4px;
+        }
+
+        /* ---------- CPU LAYOUT ---------- */
+        .cpu-layout {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            background: var(--babyblue);
+            border: 1.5px solid #bcdcfc;
+            border-radius: 14px;
+            padding: 10px;
+            margin-top: 6px;
+            text-align: center;
+        }
+
+        .cpu-inner {
+            background: #fff;
+            padding: 8px 5px;
+            border-radius: 10px;
+            font-size: 10.5px;
+        }
+
+        .cpu-inner strong {
+            display: block;
+            margin-bottom: 3px;
+            color: var(--babyblue-dark);
+            font-size: 11.5px;
+        }
+
+        /* ---------- MEMORY LADDER ---------- */
+        .ladder {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            align-items: center;
+            margin-top: 6px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .ladder-pill {
+            background: var(--mint);
+            color: var(--mint-dark);
+            border: 1px solid #b7ecd0;
+            padding: 4px 8px;
+            border-radius: 20px;
+        }
+
+        .ladder-arrow {
+            color: var(--mint-dark);
+            font-size: 11px;
+        }
+
+        /* ---------- DEFINITION / FLASHCARD PILLS ---------- */
+        .tag-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 11.5px;
+        }
+
+        .tag-item {
+            background: #fdf4ff;
+            border-radius: 10px;
+            padding: 8px 10px;
+            border-left: 3px solid #d946ef;
+        }
+
+        .tag-item.blue {
+            background: #f0f8ff;
+            border-left-color: var(--babyblue-dark);
+        }
+
+        .flash {
+            background: var(--mint);
+            border-radius: 10px;
+            padding: 7px 10px;
+            font-size: 10.5px;
+            font-weight: 700;
+            color: #1f5f43;
+            display: inline-block;
+            margin: 3px 4px 0 0;
+        }
+
+        .callout {
+            background: #fff7e6;
+            border: 1.5px dashed #f0c469;
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: 11px;
+            color: #7a5c14;
+            margin-top: 8px;
+            break-inside: avoid;
+        }
+
+        .def-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 14px;
+        }
+
+        .def-item {
+            font-size: 10.8px;
+            padding: 6px 8px;
+            background: #f9f8ff;
+            border-radius: 8px;
+        }
+
+        .def-item b {
+            color: var(--lavender-dark);
+            display: block;
+            font-size: 11px;
+            margin-bottom: 1px;
+        }
+
+        .page-break {
+            break-before: page;
+            page-break-before: always;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 9.5px;
+            color: var(--ink-soft);
+            margin-top: 10px;
+            padding-top: 6px;
+            border-top: 1px dashed #ddd;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <div class="header-card">
+        <h1>🌸 Class XI Computer Science (083)</h1>
+        <p>Computer System Overview • Visual Concept Revision Notes</p>
+        <div class="header-tags">
+            <span class="htag">📘 Session 2026–27</span>
+            <span class="htag">🧠 Concepts Only</span>
+            <span class="htag">✅ No MCQs</span>
+        </div>
+    </div>
+
+    <!-- 1. COMPUTER SYSTEM + CYCLE -->
+    <div class="section-label"><span class="num">1</span> Computer System &amp; Core Processing Cycle</div>
+    <div class="card">
+        <span class="card-title badge-pink">🔄 What is a Computer System?</span>
+        <p class="note" style="margin-top:0;"><b>Computer:</b> An electronic programmable machine that accepts
+            data/instructions as input, processes them, stores data/results, and produces output. &nbsp;<b>Computer
+                System:</b> hardware + software working together to perform useful tasks.</p>
+        <div class="flow-container">
+            <div class="flow-box">🌸 INPUT<br><span>Keyboard, Mouse, Scanner</span></div>
+            <div class="flow-arrow">➔</div>
+            <div class="flow-box" style="background:#fdf2f8; border:1px solid var(--blush-dark);">🧠
+                PROCESSING<br><span>CPU &amp; Memory</span></div>
+            <div class="flow-arrow">➔</div>
+            <div class="flow-box">🌷 OUTPUT<br><span>Monitor, Printer</span></div>
+        </div>
+        <div class="flow-sub">⬇ Managed throughout by the <b>Operating System</b> &nbsp;|&nbsp; Data/instructions
+            retained in <b>Secondary Storage</b></div>
+    </div>
+
+    <!-- 2. HARDWARE VS SOFTWARE + I/O -->
+    <div class="section-label"><span class="num">2</span> Hardware, Software &amp; I/O Devices</div>
+    <div class="grid-2">
+        <div class="card">
+            <span class="card-title badge-purple">🩰 Hardware vs. Software</span>
+            <table>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Hardware</th>
+                    <th>Software</th>
+                </tr>
+                <tr>
+                    <td><b>Nature</b></td>
+                    <td>Physical components</td>
+                    <td>Programs/instructions</td>
+                </tr>
+                <tr>
+                    <td><b>Touch?</b></td>
+                    <td>Yes</td>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <td><b>Examples</b></td>
+                    <td>CPU, keyboard, RAM, SSD</td>
+                    <td>OS, browser, word processor</td>
+                </tr>
+            </table>
+        </div>
+        <div class="card">
+            <span class="card-title badge-blue">🎀 Input &amp; Output Devices</span>
+            <div class="tag-grid">
+                <div class="tag-item">
+                    <b>📥 Input</b>
+                    <ul style="padding-left:14px; margin-top:4px;">
+                        <li>Keyboard – text/commands</li>
+                        <li>Mouse – pointing/selecting</li>
+                        <li>Scanner – digitises documents</li>
+                        <li>Microphone – audio input</li>
+                        <li>Webcam – image/video input</li>
+                    </ul>
+                </div>
+                <div class="tag-item blue">
+                    <b>📤 Output</b>
+                    <ul style="padding-left:14px; margin-top:4px;">
+                        <li>Monitor – visual output</li>
+                        <li>Printer – physical printout</li>
+                        <li>Speakers/Headphones – audio</li>
+                        <li>Projector – enlarged display</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. CPU -->
+    <div class="section-label"><span class="num">3</span> The Central Processing Unit (CPU)</div>
+    <div class="card">
+        <span class="card-title badge-pink">🧠 CPU — the Main Processing Component</span>
+        <p class="note" style="margin-top:0;">The CPU executes instructions and performs the operations required to
+            process data.</p>
+        <div class="cpu-layout">
+            <div class="cpu-inner"><strong>🧮 ALU</strong>Arithmetic Logic Unit — performs arithmetic (+, −, ×, ÷) and
+                logical/comparison operations (&lt;, &gt;, ==).</div>
+            <div class="cpu-inner"><strong>🕹️ Control Unit</strong>Controls and coordinates the execution of
+                instructions and movement of data.</div>
+            <div class="cpu-inner"><strong>⚡ Registers</strong>Very small, very fast storage locations used as temporary
+                working memory during processing.</div>
+        </div>
+        <div class="callout">💡 <b>Memory Cue:</b> ALU = calculate/compare &nbsp;•&nbsp; CU = control/coordinate
+            &nbsp;•&nbsp; Registers = temporary working storage.</div>
+    </div>
+
+    <!-- 4. MEMORY -->
+    <div class="section-label"><span class="num">4</span> Memory: Types, RAM/ROM &amp; Units</div>
+    <div class="grid-2">
+        <div class="card">
+            <span class="card-title badge-green">📏 Memory Hierarchy</span>
+            <table>
+                <tr>
+                    <th>Type</th>
+                    <th>Concept</th>
+                </tr>
+                <tr>
+                    <td><b>Cache</b></td>
+                    <td>Very fast, small memory reducing access time for frequently needed data</td>
+                </tr>
+                <tr>
+                    <td><b>Primary</b></td>
+                    <td>RAM &amp; ROM — used directly for active processing</td>
+                </tr>
+                <tr>
+                    <td><b>Secondary</b></td>
+                    <td>Long-term storage: SSD, HDD, pen drive, optical media</td>
+                </tr>
+            </table>
+            <div class="ladder">
+                <span class="ladder-pill">1 bit (0/1)</span><span class="ladder-arrow">➔</span>
+                <span class="ladder-pill">1 Byte = 8 bits</span><span class="ladder-arrow">➔</span>
+                <span class="ladder-pill">KB</span><span class="ladder-arrow">➔</span>
+                <span class="ladder-pill">MB</span><span class="ladder-arrow">➔</span>
+                <span class="ladder-pill">GB</span><span class="ladder-arrow">➔</span>
+                <span class="ladder-pill">TB</span><span class="ladder-arrow">➔</span>
+                <span class="ladder-pill">PB</span>
+            </div>
+        </div>
+        <div class="card">
+            <span class="card-title badge-blue">🔋 RAM vs. ROM</span>
+            <table>
+                <tr>
+                    <th>Feature</th>
+                    <th>RAM</th>
+                    <th>ROM</th>
+                </tr>
+                <tr>
+                    <td><b>Full form</b></td>
+                    <td>Random Access Memory</td>
+                    <td>Read Only Memory</td>
+                </tr>
+                <tr>
+                    <td><b>Volatility</b></td>
+                    <td>Volatile (loses data on power-off)</td>
+                    <td>Non-volatile (retains data)</td>
+                </tr>
+                <tr>
+                    <td><b>Role</b></td>
+                    <td>Working memory for running programs</td>
+                    <td>Stores firmware/start-up instructions</td>
+                </tr>
+            </table>
+            <div>
+                <span class="flash">Volatile = needs power</span>
+                <span class="flash">Non-volatile = retains without power</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. SOFTWARE FAMILY -->
+    <div class="section-label"><span class="num">5</span> Types of Software</div>
+    <div class="grid-2">
+        <div class="card">
+            <span class="card-title badge-purple">🧁 System Software</span>
+            <ul>
+                <li><b>Operating System:</b> manages resources, provides user/application services.</li>
+                <li><b>System Utilities:</b> maintenance, protection &amp; optimization tools.</li>
+                <li><b>Device Drivers:</b> let the OS communicate with specific hardware.</li>
+            </ul>
+            <p class="note">🍰 <b>Application Software</b> — user-oriented tasks: word processing, browsing,
+                presentations, media playback, education.</p>
+        </div>
+        <div class="card">
+            <span class="card-title badge-pink">🔤 Language Translators</span>
+            <div class="tag-item" style="margin-bottom:6px;"><b>Assembler</b> — Assembly language ➔ Machine code.</div>
+            <div class="tag-item blue" style="margin-bottom:6px;"><b>Compiler</b> — Translates the entire program to
+                machine code before execution.</div>
+            <div class="tag-item" style="border-left-color:var(--mint-dark); background:#f2fdf7;"><b>Interpreter</b> —
+                Translates &amp; runs the program line-by-line.</div>
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <!-- 6. OS & UI -->
+    <div class="section-label"><span class="num">6</span> Operating System &amp; User Interfaces</div>
+    <div class="card">
+        <span class="card-title badge-blue">💻 What Does an OS Do?</span>
+        <div class="tag-grid" style="grid-template-columns: repeat(3,1fr);">
+            <div class="tag-item"><b>⚙️ Process Mgmt</b>Manages running programs &amp; processing resources.</div>
+            <div class="tag-item blue"><b>🧩 Memory Mgmt</b>Handles allocation &amp; use of memory.</div>
+            <div class="tag-item" style="border-left-color:var(--mint-dark); background:#f2fdf7;"><b>📁 File
+                    Mgmt</b>Organizes files/folders &amp; controls access.</div>
+            <div class="tag-item"><b>🔌 Device Mgmt</b>Coordinates hardware via drivers.</div>
+            <div class="tag-item blue"><b>🖥️ User Interface</b>Provides a way to interact with the system.</div>
+            <div class="tag-item" style="border-left-color:var(--mint-dark); background:#f2fdf7;"><b>🔐
+                    Security</b>Controls access to resources &amp; data.</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <span class="card-title badge-purple">🖼️ GUI vs. CLI</span>
+        <table>
+            <tr>
+                <th>Feature</th>
+                <th>🖼️ GUI (Graphical)</th>
+                <th>⌨️ CLI (Command-Line)</th>
+            </tr>
+            <tr>
+                <td><b>Elements</b></td>
+                <td>Windows, icons, menus, pointer</td>
+                <td>Text commands</td>
+            </tr>
+            <tr>
+                <td><b>Usability</b></td>
+                <td>Beginner-friendly &amp; visual</td>
+                <td>Requires remembering syntax</td>
+            </tr>
+            <tr>
+                <td><b>Input Method</b></td>
+                <td>Mouse/touch + keyboard</td>
+                <td>Keyboard only</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- HOW IT CONNECTS -->
+    <div class="section-label"><span class="num">7</span> How Everything Connects</div>
+    <div class="card">
+        <span class="card-title badge-green">🔗 The Big Picture</span>
+        <div class="flow-container" style="background:var(--mint); border-color:var(--mint-dark);">
+            <div class="flow-box">👤 USER</div>
+            <div class="flow-arrow" style="color:var(--mint-dark);">➔</div>
+            <div class="flow-box">📥 INPUT</div>
+            <div class="flow-arrow" style="color:var(--mint-dark);">➔</div>
+            <div class="flow-box">🧠 CPU/MEMORY</div>
+            <div class="flow-arrow" style="color:var(--mint-dark);">➔</div>
+            <div class="flow-box">📤 OUTPUT</div>
+        </div>
+        <p class="note">The Operating System manages resources and provides services/interface throughout this cycle.
+            Secondary storage keeps programs and data safe for long-term use.</p>
+    </div>
+
+    <!-- 8. MUST-KNOW DEFINITIONS -->
+    <div class="section-label"><span class="num">8</span> Must-Know Definitions</div>
+    <div class="card">
+        <span class="card-title badge-pink">📌 Flashcard Glossary</span>
+        <div class="def-list">
+            <div class="def-item"><b>Computer System</b>Hardware + software working together to input, process, store
+                &amp; output information.</div>
+            <div class="def-item"><b>Hardware</b>Physical components of a computer.</div>
+            <div class="def-item"><b>Software</b>Programs/instructions controlling computer operations.</div>
+            <div class="def-item"><b>CPU</b>Main processing component; executes instructions.</div>
+            <div class="def-item"><b>ALU</b>Performs arithmetic &amp; logical operations.</div>
+            <div class="def-item"><b>Control Unit</b>Controls &amp; coordinates instruction execution.</div>
+            <div class="def-item"><b>Input Device</b>Hardware used to enter data/instructions.</div>
+            <div class="def-item"><b>Output Device</b>Hardware used to present results.</div>
+            <div class="def-item"><b>RAM</b>Volatile working memory for active programs/data.</div>
+            <div class="def-item"><b>ROM</b>Non-volatile memory retaining stored info.</div>
+            <div class="def-item"><b>Operating System</b>System software managing resources &amp; providing
+                services/interface.</div>
+            <div class="def-item"><b>Device Driver</b>Software enabling OS ↔ hardware communication.</div>
+            <div class="def-item"><b>Compiler</b>Translates a whole program before execution.</div>
+            <div class="def-item"><b>Interpreter</b>Translates &amp; runs a program line-by-line.</div>
+        </div>
+    </div>
+
+    <!-- 9. CHECKLIST -->
+    <div class="section-label"><span class="num">9</span> Pre-Exam Concept Checklist</div>
+    <div class="card">
+        <span class="card-title badge-blue">✅ Understand Before Questions</span>
+        <div class="tag-grid">
+            <ul>
+                <li>Hardware vs software</li>
+                <li>Input vs output devices</li>
+                <li>CPU, ALU, Control Unit &amp; registers</li>
+                <li>Primary vs cache vs secondary memory</li>
+                <li>RAM vs ROM &amp; volatile vs non-volatile</li>
+            </ul>
+            <ul>
+                <li>Bit, byte &amp; KB→MB→GB→TB→PB sequence</li>
+                <li>System software vs application software</li>
+                <li>OS, utilities &amp; device drivers</li>
+                <li>Assembler vs compiler vs interpreter</li>
+                <li>Main OS functions &amp; GUI vs CLI</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-note">Source: Official CBSE Class XI Computer Science (083), 2026–27 syllabus — Unit 1: Computer
+        Systems and Organisation • MCQs intentionally omitted</div>
+
+</body>
+
+</html>
