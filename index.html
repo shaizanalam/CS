@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Class XI CS - Revision Hub</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;800&display=swap');
@@ -283,6 +284,13 @@
             content: '🔒';
             opacity: 0.6;
             transform: none;
+        }
+        
+        @media (max-width: 600px) {
+            .header-card h1 { font-size: 26px; }
+            .header-card { padding: 20px 16px; }
+            .blueprint-card { margin-bottom: 24px; padding: 8px; }
+            .chapters-grid { grid-template-columns: 1fr; }
         }
 
     </style>
