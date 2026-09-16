@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Class XI CS - Revision Hub</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;800&display=swap');
+
+        :root {
+            --lavender: #e6e0fa;
+            --lavender-dark: #8b7fd6;
+            --blush: #fde2e9;
+            --blush-dark: #e0729a;
+            --mint: #dcf5e8;
+            --mint-dark: #3f9d72;
+            --babyblue: #dbeeff;
+            --babyblue-dark: #4a90d9;
+            --peach: #ffebd6;
+            --peach-dark: #f09e51;
+            --cream: #faf9f6;
+            --ink: #2d3748;
+            --ink-soft: #5a6478;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: var(--cream);
+            color: var(--ink);
+            line-height: 1.5;
+            padding: 20px 16px 60px;
+        }
+
+        .wrap {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* HEADER */
+        .header-card {
+            background: linear-gradient(135deg, var(--lavender) 0%, var(--blush) 50%, var(--babyblue) 100%);
+            border-radius: 24px;
+            padding: 30px 24px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-card::before {
+            content: '✨';
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            font-size: 24px;
+            opacity: 0.6;
+        }
+        
+        .header-card::after {
+            content: '🚀';
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            font-size: 30px;
+            opacity: 0.6;
+        }
+
+        .header-card h1 {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--ink);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .header-card p {
+            font-size: 15px;
+            color: var(--ink-soft);
+            font-weight: 700;
+        }
+
+        /* BLUEPRINT SECTION */
+        .section-title {
+            font-size: 20px;
+            font-weight: 800;
+            margin: 0 0 16px 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--ink);
+        }
+
+        .section-title .icon {
+            background: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+            font-size: 18px;
+        }
+
+        .blueprint-card {
+            background: #fff;
+            border-radius: 24px;
+            padding: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            text-align: center;
+        }
+        
+        .blueprint-card img {
+            max-width: 100%;
+            border-radius: 16px;
+            display: block;
+            margin: 0 auto;
+            border: 4px solid var(--cream);
+        }
+        
+        .blueprint-card .caption {
+            margin-top: 12px;
+            margin-bottom: 4px;
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--ink-soft);
+        }
+
+        /* CHAPTERS GRID */
+        .chapters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .chapter-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chapter-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+        }
+        
+        .chapter-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+        }
+
+        .card-1::before { background: var(--lavender-dark); }
+        .card-2::before { background: var(--blush-dark); }
+        .card-3::before { background: var(--babyblue-dark); }
+        .card-4::before { background: var(--mint-dark); }
+        .card-5::before, .card-6::before, .card-7::before { background: var(--peach-dark); }
+
+        .ch-num {
+            display: inline-block;
+            background: #f1f3f5;
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--ink-soft);
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .card-1 .ch-num { background: var(--lavender); color: #4b3f91; }
+        .card-2 .ch-num { background: var(--blush); color: #9c2f4d; }
+        .card-3 .ch-num { background: var(--babyblue); color: #2c5a8d; }
+        .card-4 .ch-num { background: var(--mint); color: #1f6b46; }
+
+        .chapter-card h3 {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: var(--ink);
+            min-height: 54px;
+        }
+
+        .action-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+        
+        .btn span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Note Button */
+        .btn-notes {
+            background: #fdfdfd;
+            border: 1.5px solid #ece8fb;
+            color: var(--ink);
+        }
+        .btn-notes:hover {
+            border-color: var(--lavender-dark);
+            background: #f9f8ff;
+        }
+        .btn-notes i { font-style: normal; font-size: 16px; }
+
+        /* Questions Button */
+        .btn-questions {
+            background: #fdfdfd;
+            border: 1.5px solid #fdeaf0;
+            color: var(--ink);
+        }
+        .btn-questions:hover {
+            border-color: var(--blush-dark);
+            background: #fff5f8;
+        }
+        .btn-questions i { font-style: normal; font-size: 16px; }
+
+        /* PDF Button */
+        .btn-pdf {
+            background: #fdfdfd;
+            border: 1.5px solid #e2f1ff;
+            color: var(--ink);
+        }
+        .btn-pdf:hover {
+            border-color: var(--babyblue-dark);
+            background: #f0f8ff;
+        }
+        .btn-pdf i { font-style: normal; font-size: 16px; }
+        
+        .btn-locked {
+            background: #f4f5f7;
+            border: 1.5px dashed #e2e8f0;
+            color: #a0aec0;
+            cursor: not-allowed;
+        }
+        
+        .btn::after {
+            content: '→';
+            font-size: 16px;
+            opacity: 0;
+            transform: translateX(-5px);
+            transition: all 0.2s ease;
+        }
+        
+        .btn:hover:not(.btn-locked)::after {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .btn-locked::after {
+            content: '🔒';
+            opacity: 0.6;
+            transform: none;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+
+        <div class="header-card">
+            <h1>Class XI CS Hub</h1>
+            <p>Your Ultimate Study Portal & Question Bank</p>
+        </div>
+
+        <div class="section-title">
+            <span class="icon">📊</span> KPS Half-Yearly Blueprint
+        </div>
+        
+        <div class="blueprint-card">
+            <!-- Ensure no spaces in the URL if possible, using URL encoding %20 -->
+            <img src="pdfs/blue%20print%20cs.jpeg" alt="CS Blueprint">
+            <div class="caption">Official marks distribution for half-yearly examination.</div>
+        </div>
+
+        <div class="section-title">
+            <span class="icon">📚</span> Chapter Modules
+        </div>
+
+        <div class="chapters-grid">
+            
+            <!-- Chapter 1 -->
+            <div class="chapter-card card-1">
+                <span class="ch-num">Chapter 1</span>
+                <h3>Computer System Overview</h3>
+                <div class="action-links">
+                    <a href="ch-1.html" class="btn btn-notes">
+                        <span><i>📝</i> HTML Notes</span>
+                    </a>
+                    <a href="ch-1-question.html" class="btn btn-questions">
+                        <span><i>🎯</i> Interactive Questions</span>
+                    </a>
+                    <a href="pdfs/Class_11_CS_Computer_System_Overview_Notes.pdf" target="_blank" class="btn btn-pdf">
+                        <span><i>📕</i> Classroom PDF</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Chapter 2 -->
+            <div class="chapter-card card-2">
+                <span class="ch-num">Chapter 2</span>
+                <h3>Data Representation</h3>
+                <div class="action-links">
+                    <a href="ch-2.html" class="btn btn-notes">
+                        <span><i>📝</i> HTML Notes</span>
+                    </a>
+                    <a href="ch-2-question.html" class="btn btn-questions">
+                        <span><i>🎯</i> Interactive Questions</span>
+                    </a>
+                    <a href="pdfs/data%20representation.pdf" target="_blank" class="btn btn-pdf">
+                        <span><i>📕</i> Classroom PDF</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Chapter 3 -->
+            <div class="chapter-card card-3">
+                <span class="ch-num">Chapter 3</span>
+                <h3>Boolean Logic</h3>
+                <div class="action-links">
+                    <a href="ch-3.html" class="btn btn-notes">
+                        <span><i>📝</i> HTML Notes</span>
+                    </a>
+                    <a href="ch-3-question.html" class="btn btn-questions">
+                        <span><i>🎯</i> Interactive Questions</span>
+                    </a>
+                    <a href="pdfs/Boolean%20Logic_2023_24.pdf" target="_blank" class="btn btn-pdf">
+                        <span><i>📕</i> Classroom PDF</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Chapter 4 -->
+            <div class="chapter-card card-4">
+                <span class="ch-num">Chapter 4</span>
+                <h3>Getting Started with Python</h3>
+                <div class="action-links">
+                    <a href="ch-4.html" class="btn btn-notes">
+                        <span><i>📝</i> HTML Notes</span>
+                    </a>
+                    <a href="ch-4-question.html" class="btn btn-questions">
+                        <span><i>🎯</i> Interactive Questions</span>
+                    </a>
+                    <a href="pdfs/Getting%20Started%20With%20Python.pdf" target="_blank" class="btn btn-pdf">
+                        <span><i>📕</i> Classroom PDF</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Chapter 5 -->
+            <div class="chapter-card card-5">
+                <span class="ch-num">Chapter 5</span>
+                <h3>Python Fundamentals</h3>
+                <div class="action-links">
+                    <a href="#" class="btn btn-locked">
+                        <span><i>📝</i> HTML Notes</span>
+                    </a>
+                    <a href="#" class="btn btn-locked">
+                        <span><i>🎯</i> Interactive Questions</span>
+                    </a>
+                    <a href="#" class="btn btn-locked">
+                        <span><i>📕</i> Classroom PDF</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Chapter 6 -->
+            <div class="chapter-card card-6">
+                <span class="ch-num">Chapter 6</span>
+                <h3>Data Handling</h3>
+                <div class="action-links">
+                    <a href="#" class="btn btn-locked">
+                        <span><i>📝</i> HTML Notes</span>
+                    </a>
+                    <a href="#" class="btn btn-locked">
+                        <span><i>🎯</i> Interactive Questions</span>
+                    </a>
+                    <a href="#" class="btn btn-locked">
+                        <span><i>📕</i> Classroom PDF</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Chapter 7 -->
+            <div class="chapter-card card-7">
+                <span class="ch-num">Chapter 7</span>
+                <h3>Flow of Control</h3>
+                <div class="action-links">
+                    <a href="#" class="btn btn-locked">
+                        <span><i>📝</i> HTML Notes</span>
+                    </a>
+                    <a href="#" class="btn btn-locked">
+                        <span><i>🎯</i> Interactive Questions</span>
+                    </a>
+                    <a href="#" class="btn btn-locked">
+                        <span><i>📕</i> Classroom PDF</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</body>
+
+</html>

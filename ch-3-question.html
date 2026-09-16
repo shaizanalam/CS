@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Class XI CS - Boolean Logic | Practice Question Bank</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;800&display=swap');
+
+        :root {
+            --lavender: #e6e0fa;
+            --lavender-dark: #8b7fd6;
+            --blush: #fde2e9;
+            --blush-dark: #e0729a;
+            --mint: #dcf5e8;
+            --mint-dark: #3f9d72;
+            --babyblue: #dbeeff;
+            --babyblue-dark: #4a90d9;
+            --cream: #faf9f6;
+            --ink: #2d3748;
+            --ink-soft: #5a6478;
+            --correct: #3f9d72;
+            --correct-bg: #e4f9ee;
+            --wrong: #e0567a;
+            --wrong-bg: #fdeaf0;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: var(--cream);
+            color: var(--ink);
+            margin: 0;
+            padding: 0 0 60px;
+            line-height: 1.5;
+        }
+
+        .wrap { max-width: 880px; margin: 0 auto; padding: 16px; }
+
+        /* HEADER */
+        .header-card {
+            background: linear-gradient(120deg, var(--lavender) 0%, var(--blush) 50%, var(--babyblue) 100%);
+            border-radius: 22px;
+            padding: 26px 24px;
+            text-align: center;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+        }
+
+        .header-card h1 { margin: 0; font-size: 24px; font-weight: 800; }
+        .header-card p { margin: 6px 0 0; font-size: 13px; color: var(--ink-soft); font-weight: 600; }
+
+        /* SCORE BAR */
+        .scorebar {
+            position: sticky; top: 10px; z-index: 50;
+            background: #fff; border-radius: 18px; padding: 12px 18px;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08); margin-bottom: 18px;
+            border: 1.5px solid var(--lavender); flex-wrap: wrap; gap: 8px;
+        }
+        .scorebar .label { font-weight: 800; font-size: 13.5px; color: var(--lavender-dark); }
+        .scorebar .stat { font-size: 13px; font-weight: 700; }
+        .scorebar .stat.correct-txt { color: var(--correct); }
+        .scorebar .stat.wrong-txt { color: var(--wrong); }
+
+        .barouter { flex: 1; min-width: 140px; height: 10px; background: #f1eefc; border-radius: 10px; overflow: hidden; margin: 0 10px; }
+        .barinner { height: 100%; width: 0%; background: linear-gradient(90deg, var(--mint-dark), var(--babyblue-dark)); transition: width .4s ease; }
+
+        .reset-btn {
+            background: var(--blush); color: var(--blush-dark); border: none;
+            padding: 6px 14px; border-radius: 20px; font-family: 'Quicksand', sans-serif;
+            font-weight: 700; font-size: 12px; cursor: pointer;
+        }
+        .reset-btn:hover { background: var(--blush-dark); color: #fff; }
+
+        /* SECTION LABEL */
+        .section-title { font-size: 16px; font-weight: 800; margin: 26px 4px 10px; display: flex; align-items: center; gap: 10px; }
+        .section-title .chip { background: var(--lavender-dark); color: #fff; font-size: 11px; padding: 4px 11px; border-radius: 20px; }
+        .subsection-title { font-size: 13px; font-weight: 700; margin: 16px 2px 8px; color: var(--lavender-dark); }
+
+        /* QUESTION CARD */
+        .qcard {
+            background: #fff; border-radius: 16px; padding: 14px 16px; margin-bottom: 10px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04); border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .qtext { font-weight: 700; font-size: 13.5px; margin-bottom: 10px; }
+        .qnum { color: var(--babyblue-dark); margin-right: 4px; }
+
+        .options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .options.two-col-wide { grid-template-columns: 1fr; }
+
+        .opt-btn {
+            text-align: left; background: #f9f8ff; border: 1.5px solid #ece8fb; border-radius: 12px;
+            padding: 9px 12px; font-family: 'Quicksand', sans-serif; font-size: 12.5px;
+            font-weight: 600; color: var(--ink); cursor: pointer; transition: all .15s ease;
+        }
+        .opt-btn:hover:not(.locked) { border-color: var(--lavender-dark); background: #f1eefe; transform: translateY(-1px); }
+        .opt-btn.correct-pick { background: var(--correct-bg); border-color: var(--correct); color: #1f6b46; }
+        .opt-btn.wrong-pick { background: var(--wrong-bg); border-color: var(--wrong); color: #9c2f4d; }
+        .opt-btn.reveal-correct { background: var(--correct-bg); border-color: var(--correct); color: #1f6b46; }
+        .opt-btn.locked { cursor: default; }
+
+        .feedback { margin-top: 9px; font-size: 12px; font-weight: 700; border-radius: 10px; padding: 7px 11px; display: none; }
+        .feedback.show { display: block; }
+        .feedback.ok { background: var(--correct-bg); color: #1f6b46; }
+        .feedback.no { background: var(--wrong-bg); color: #9c2f4d; }
+
+        /* TF pills */
+        .tf-options { display: flex; gap: 10px; }
+        .tf-btn {
+            flex: 1; text-align: center; background: #f9f8ff; border: 1.5px solid #ece8fb;
+            border-radius: 20px; padding: 8px 10px; font-family: 'Quicksand', sans-serif;
+            font-weight: 700; font-size: 12.5px; cursor: pointer;
+        }
+        .tf-btn:hover:not(.locked) { border-color: var(--lavender-dark); }
+        .tf-btn.correct-pick { background: var(--correct-bg); border-color: var(--correct); color: #1f6b46; }
+        .tf-btn.wrong-pick { background: var(--wrong-bg); border-color: var(--wrong); color: #9c2f4d; }
+        .tf-btn.reveal-correct { background: var(--correct-bg); border-color: var(--correct); color: #1f6b46; }
+        .tf-btn.locked { cursor: default; }
+
+        /* Reference / written sections */
+        details.ref-card {
+            background: #fff; border-radius: 16px; padding: 0; margin-bottom: 10px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04); border: 1px solid rgba(0, 0, 0, 0.05); overflow: hidden;
+        }
+        details.ref-card summary {
+            cursor: pointer; list-style: none; padding: 13px 16px; font-weight: 800; font-size: 13.5px;
+            display: flex; align-items: center; justify-content: space-between;
+            background: linear-gradient(90deg, #f9f8ff, #fff);
+        }
+        details.ref-card summary::-webkit-details-marker { display: none; }
+        details.ref-card summary .arrow { transition: transform .2s ease; color: var(--lavender-dark); font-size: 14px; }
+        details.ref-card[open] summary .arrow { transform: rotate(90deg); }
+        .ref-body { padding: 4px 18px 16px; }
+        .ref-body ol { margin: 0; padding-left: 20px; font-size: 12.5px; }
+        .ref-body ol li { margin-bottom: 8px; }
+
+        .priority-card {
+            background: linear-gradient(120deg, #fff7e6, #fff2f8); border: 1.5px dashed #f0c469;
+            border-radius: 16px; padding: 14px 16px; margin: 14px 0 22px; font-size: 12.5px;
+        }
+        .priority-card ol { padding-left: 18px; margin: 6px 0 0; }
+        .priority-card li { margin-bottom: 5px; }
+
+        .footer-note { text-align: center; font-size: 11px; color: var(--ink-soft); margin-top: 26px; }
+
+        @media (max-width:520px) { .options { grid-template-columns: 1fr; } }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+
+        <div class="header-card">
+            <h1>🔘 Boolean Logic</h1>
+            <p>Class XI Computer Science (083) • Interactive Practice Question Bank</p>
+        </div>
+
+        <div class="scorebar">
+            <span class="label">🎯 Your Score</span>
+            <div class="barouter"><div class="barinner" id="barinner"></div></div>
+            <span class="stat correct-txt" id="correctStat">✅ 0</span>
+            <span class="stat wrong-txt" id="wrongStat">❌ 0</span>
+            <span class="stat" id="totalStat" style="color:var(--ink-soft);">/ 0 answered</span>
+            <button class="reset-btn" onclick="resetAll()">↺ Reset</button>
+        </div>
+
+        <!-- SECTION A: MCQ -->
+        <div class="section-title"><span class="chip">Section A</span> Multiple Choice Questions</div>
+        <div id="mcq-container"></div>
+
+        <!-- SECTION B: TRUE/FALSE -->
+        <div class="section-title"><span class="chip">Section B</span> True / False</div>
+        <p style="font-size:12px;color:var(--ink-soft);margin:-4px 4px 10px;">Tap True or False — wrong statements
+            auto-show the correction.</p>
+        <div id="tf-container"></div>
+
+        <!-- SECTION C: ASSERTION-REASON -->
+        <div class="section-title"><span class="chip">Section C</span> Assertion &amp; Reason</div>
+        <p style="font-size:12px;color:var(--ink-soft);margin:-4px 4px 10px;">A: Both true, R explains A &nbsp;|&nbsp;
+            B: Both true, R does not explain A &nbsp;|&nbsp; C: A true, R false &nbsp;|&nbsp; D: A false, R true</p>
+        <div id="ar-container"></div>
+
+        <!-- SECTION D: WRITTEN PRACTICE -->
+        <div class="section-title"><span class="chip">Section D</span> 2-Mark Written Practice (self-answer, then
+            expand to recheck)</div>
+
+        <details class="ref-card">
+            <summary>📘 A. Definitions <span class="arrow">▶</span></summary>
+            <div class="ref-body">
+                <ol>
+                    <li>Define a truth table.</li>
+                    <li>What is a Boolean logical operator? Name the three logical operators given in the chapter.</li>
+                    <li>What is a logic gate?</li>
+                    <li>What is an inverter? State its number of inputs and outputs.</li>
+                    <li>What is a Boolean complement? Give an example.</li>
+                </ol>
+            </div>
+        </details>
+
+        <details class="ref-card">
+            <summary>🔄 B. NOT Operator <span class="arrow">▶</span></summary>
+            <div class="ref-body">
+                <ol start="6">
+                    <li>What is the NOT operator? Write its symbol and truth table.</li>
+                    <li>Why is NOT called a unary operator? Give one example.</li>
+                    <li>If X = 0, find X'. If Y = 1, find Y'.</li>
+                    <li>Write the truth table for the NOT operation.</li>
+                </ol>
+            </div>
+        </details>
+
+        <details class="ref-card">
+            <summary>➕ C. OR Operator <span class="arrow">▶</span></summary>
+            <div class="ref-body">
+                <ol start="10">
+                    <li>Define the OR operator. State its symbol and operation name.</li>
+                    <li>Write the truth table of a 2-input OR operation.</li>
+                    <li>Evaluate: (i) 0+0 (ii) 0+1 (iii) 1+0 (iv) 1+1</li>
+                    <li>When does an OR gate produce output 1? Explain with an example.</li>
+                    <li>Write the truth table for a 3-input OR gate.</li>
+                </ol>
+            </div>
+        </details>
+
+        <details class="ref-card">
+            <summary>✖️ D. AND Operator <span class="arrow">▶</span></summary>
+            <div class="ref-body">
+                <ol start="15">
+                    <li>Define the AND operator. State its symbol and operation name.</li>
+                    <li>Write the truth table of a 2-input AND operation.</li>
+                    <li>Evaluate: (i) 0·0 (ii) 0·1 (iii) 1·0 (iv) 1·1</li>
+                    <li>When does an AND gate produce output 1? Explain.</li>
+                    <li>Write the truth table for a 3-input AND gate.</li>
+                </ol>
+            </div>
+        </details>
+
+        <details class="ref-card">
+            <summary>⚖️ E. Comparison Questions <span class="arrow">▶</span></summary>
+            <div class="ref-body">
+                <ol start="20">
+                    <li>Differentiate between NOT, OR and AND operators on the basis of type and symbol.</li>
+                    <li>Differentiate between OR gate and AND gate based on their output conditions.</li>
+                    <li>Differentiate between a logical operator and a logic gate.</li>
+                    <li>Differentiate between an OR operation and an AND operation using their truth tables.</li>
+                </ol>
+            </div>
+        </details>
+
+        <details class="ref-card">
+            <summary>📜 F. De Morgan's Theorems <span class="arrow">▶</span></summary>
+            <div class="ref-body">
+                <ol start="24">
+                    <li>State De Morgan's First Theorem.</li>
+                    <li>State De Morgan's Second Theorem.</li>
+                    <li>Write both De Morgan's theorems.</li>
+                    <li>Using De Morgan's First Theorem, simplify: (A + B)'</li>
+                    <li>Using De Morgan's Second Theorem, simplify: (A · B)'</li>
+                    <li>Simplify (A+B+C)' using De Morgan's theorem.</li>
+                    <li>Simplify (ABC)' using De Morgan's theorem.</li>
+                    <li>Verify De Morgan's First Theorem using a truth table.</li>
+                    <li>Verify De Morgan's Second Theorem using a truth table.</li>
+                </ol>
+            </div>
+        </details>
+
+        <details class="ref-card">
+            <summary>🏗️ G. Circuit Design <span class="arrow">▶</span></summary>
+            <div class="ref-body">
+                <ol start="33">
+                    <li>Write the Boolean expression given in the PDF for circuit design.</li>
+                    <li>For F = AB + AC' + B'A'C, identify the three separate terms.</li>
+                    <li>For F = AB + AC' + B'A'C, identify which variables require NOT gates.</li>
+                    <li>Explain how to implement AB using a logic gate.</li>
+                    <li>Explain how to implement AC' using NOT and AND gates.</li>
+                    <li>Explain how to implement B'A'C using NOT and AND gates.</li>
+                    <li>Explain the final step required to obtain F = AB + AC' + B'A'C.</li>
+                    <li>Describe the sequence of gates required to realise F(A,B,C) = AB + AC' + B'A'C.</li>
+                </ol>
+            </div>
+        </details>
+
+        <div class="priority-card">
+            <b style="font-size:13px;">🔥 Top Priority — Do These First</b>
+            <ol>
+                <li>NOT, OR, AND truth tables (2-input and 3-input)</li>
+                <li>NOT = reverse, OR = any 1, AND = all 1</li>
+                <li>De Morgan's First: (A+B)' = A'B'</li>
+                <li>De Morgan's Second: (AB)' = A'+B'</li>
+                <li>Identify operators, gates, and their symbols</li>
+                <li>Circuit design: NOT → AND → OR sequence</li>
+                <li>Read Boolean expressions correctly (A'BC = NOT A AND B AND C)</li>
+                <li>Truth table rows = 2ⁿ for n inputs</li>
+            </ol>
+        </div>
+
+        <div class="footer-note">Boolean Logic carries 4 questions = 5 marks in the KPS Half-Yearly blueprint
+            (3×1m + 1×2m). ✨</div>
+
+    </div>
+
+    <script>
+        // ---------------- DATA ----------------
+        const mcqData = [
+            {
+                sec: "Truth Tables", items: [
+                    { q: "A truth table represents:", o: ["Only the input values", "Only the output values", "All possible values of logical variables and their corresponding results", "Only mathematical operations"], a: 2 },
+                    { q: "A truth table is mainly used to represent:", o: ["Program instructions", "Possible combinations of logical variables and their results", "Memory locations", "Computer hardware"], a: 1 },
+                    { q: "If two Boolean variables X and Y are used, the number of possible input combinations is:", o: ["2", "3", "4", "8"], a: 2 },
+                    { q: "Which of the following is a logical operator mentioned in the chapter?", o: ["NOT", "OR", "AND", "All of the above"], a: 3 },
+                    { q: "Which operator is a unary operator?", o: ["AND", "OR", "NOT", "Both A and B"], a: 2 },
+                ]
+            },
+            {
+                sec: "NOT Operator", items: [
+                    { q: "The NOT operator is also called:", o: ["Addition", "Complementation", "Multiplication", "Union"], a: 1 },
+                    { q: "The NOT operator is a:", o: ["Unary operator", "Binary operator", "Ternary operator", "Arithmetic operator"], a: 0 },
+                    { q: "The NOT operator is represented by:", o: ["+", ".", "' or a bar", "="], a: 2 },
+                    { q: "X' represents:", o: ["X OR X", "X AND X", "Complement of X", "Square of X"], a: 2 },
+                    { q: "If X = 0, then X' is:", o: ["0", "1", "2", "Undefined"], a: 1 },
+                    { q: "If X = 1, then X' is:", o: ["0", "1", "2", "Undefined"], a: 0 },
+                    { q: "Which is the correct NOT truth table?", o: ["X:0→X':0, X:1→X':1", "X:0→X':1, X:1→X':0", "X:0→X':1, X:1→X':1", "X:0→X':0, X:1→X':0"], a: 1 },
+                ]
+            },
+            {
+                sec: "OR Operator", items: [
+                    { q: "The OR operator is a:", o: ["Unary operator", "Binary operator", "Arithmetic operator", "Complement operator"], a: 1 },
+                    { q: "The OR operation is called:", o: ["Logical Multiplication", "Logical Addition", "Complementation", "Logical Division"], a: 1 },
+                    { q: "The OR operator is represented by:", o: [".", "'", "+", "×"], a: 2 },
+                    { q: "X + Y means:", o: ["X AND Y", "X OR Y", "NOT X", "NOT Y"], a: 1 },
+                    { q: "What is 0 + 0?", o: ["0", "1", "2", "Undefined"], a: 0 },
+                    { q: "What is 0 + 1?", o: ["0", "1", "2", "Undefined"], a: 1 },
+                    { q: "What is 1 + 0?", o: ["0", "1", "2", "Undefined"], a: 1 },
+                    { q: "What is 1 + 1 in Boolean OR?", o: ["0", "1", "2", "10"], a: 1 },
+                    { q: "OR produces 0 only when:", o: ["Both inputs are 1", "One input is 1", "Both inputs are 0", "Inputs are different"], a: 2 },
+                    { q: "For an OR gate, if any input is 1, the output is:", o: ["0", "1", "Undefined", "Depends on the number of inputs"], a: 1 },
+                ]
+            },
+            {
+                sec: "AND Operator", items: [
+                    { q: "The AND operator is a:", o: ["Unary operator", "Binary operator", "Complement operator", "Arithmetic operator"], a: 1 },
+                    { q: "The AND operation is called:", o: ["Logical Addition", "Logical Multiplication", "Complementation", "Logical Subtraction"], a: 1 },
+                    { q: "The AND operator is represented by:", o: ["+", "'", ".", "="], a: 2 },
+                    { q: "X · Y means:", o: ["X OR Y", "X AND Y", "NOT X", "NOT Y"], a: 1 },
+                    { q: "What is 0 · 0?", o: ["0", "1", "2", "Undefined"], a: 0 },
+                    { q: "What is 0 · 1?", o: ["0", "1", "2", "Undefined"], a: 0 },
+                    { q: "What is 1 · 0?", o: ["0", "1", "2", "Undefined"], a: 0 },
+                    { q: "What is 1 · 1?", o: ["0", "1", "2", "10"], a: 1 },
+                    { q: "AND produces 1 only when:", o: ["Any input is 1", "All inputs are 1", "All inputs are 0", "Inputs are different"], a: 1 },
+                    { q: "For a 3-input AND gate, the output is 1 when:", o: ["At least one input is 1", "Any two inputs are 1", "All three inputs are 1", "All three inputs are 0"], a: 2 },
+                ]
+            },
+            {
+                sec: "Logic Gates", items: [
+                    { q: "A logic gate is:", o: ["A programming language", "An electronic circuit operating on input signals to produce an output", "A storage device", "A type of memory"], a: 1 },
+                    { q: "How many types of basic gates are discussed in the chapter?", o: ["2", "3", "4", "5"], a: 1 },
+                    { q: "Which of the following is one of the gates given in the chapter?", o: ["Inverter", "OR", "AND", "All of the above"], a: 3 },
+                    { q: "Another name for the NOT gate is:", o: ["Converter", "Inverter", "Processor", "Encoder"], a: 1 },
+                    { q: "An inverter has:", o: ["One input and one output", "Two inputs and one output", "Three inputs and one output", "One input and two outputs"], a: 0 },
+                    { q: "The output of an inverter is:", o: ["Always the same as input", "Always opposite to input", "Always 1", "Always 0"], a: 1 },
+                    { q: "An OR gate has:", o: ["One input only", "Two or more inputs and one output", "One input and two outputs", "No input"], a: 1 },
+                    { q: "An AND gate has:", o: ["Two or more inputs and one output", "One input and one output", "Only one input", "No output"], a: 0 },
+                ]
+            },
+            {
+                sec: "De Morgan's First Theorem", items: [
+                    { q: "De Morgan's First Theorem is:", o: ["(X + Y)' = X' · Y'", "(X · Y)' = X' + Y'", "X + Y = XY", "X' = X"], a: 0 },
+                    { q: "According to De Morgan's First Theorem, when a complement is applied to an OR expression:", o: ["OR remains OR", "OR changes to AND and each variable is complemented", "AND changes to OR", "Variables remain unchanged"], a: 1 },
+                    { q: "(A + B)' is equal to:", o: ["A' + B'", "AB", "A'B'", "AB'"], a: 2 },
+                    { q: "(X + Y + Z)' is equal to:", o: ["X' + Y' + Z'", "X'Y'Z'", "XYZ", "X + Y + Z"], a: 1 },
+                ]
+            },
+            {
+                sec: "De Morgan's Second Theorem", items: [
+                    { q: "De Morgan's Second Theorem is:", o: ["(X + Y)' = X'Y'", "(X · Y)' = X' + Y'", "X + Y = X · Y", "X' = Y'"], a: 1 },
+                    { q: "According to De Morgan's Second Theorem, AND changes into:", o: ["NOT", "OR", "AND", "Addition"], a: 1 },
+                    { q: "(A · B)' is equal to:", o: ["A'B'", "A' + B'", "AB", "A + B"], a: 1 },
+                    { q: "(ABC)' is equal to:", o: ["A'B'C'", "A' + B' + C'", "ABC", "A+B+C"], a: 1 },
+                ]
+            },
+            {
+                sec: "Circuit Design", items: [
+                    { q: "The Boolean expression given in the chapter for circuit design is:", o: ["F = A + B + C", "F = AB + AC' + B'A'C", "F = ABC", "F = A' + B' + C'"], a: 1 },
+                    { q: "In AB, the operation represented is:", o: ["OR", "AND", "NOT", "Complementation"], a: 1 },
+                    { q: "In AC', which operation is performed first?", o: ["AND", "OR", "NOT C", "NOT A"], a: 2 },
+                    { q: "In B'A'C, the complemented variables are:", o: ["B only", "A only", "A and B", "A and C"], a: 2 },
+                    { q: "The expression AB + AC' + B'A'C ultimately combines its terms using:", o: ["AND", "NOT", "OR", "Inverter"], a: 2 },
+                    { q: "To implement C', which gate is required?", o: ["OR", "AND", "NOT", "None"], a: 2 },
+                    { q: "To implement AB, which gate is required?", o: ["AND", "OR", "NOT", "Inverter"], a: 0 },
+                    { q: "To combine AB, AC' and B'A'C, which gate is required at the final stage?", o: ["NOT", "AND", "OR", "Inverter"], a: 2 },
+                    { q: "The circuit for F = AB + AC' + B'A'C requires which types of gates?", o: ["Only AND", "Only OR", "NOT, AND and OR", "Only NOT"], a: 2 },
+                ]
+            },
+        ];
+
+        const tfData = [
+            { s: "A truth table represents possible values of logical variables and their corresponding results.", a: true },
+            { s: "NOT is a binary operator.", a: false, fix: "NOT is a unary operator — it operates on one input only." },
+            { s: "NOT is called complementation.", a: true },
+            { s: "X' represents the complement of X.", a: true },
+            { s: "The NOT operation changes 0 to 1.", a: true },
+            { s: "The NOT operation changes 1 to 0.", a: true },
+            { s: "OR is called logical addition.", a: true },
+            { s: "The OR operator is represented by '.'", a: false, fix: "The OR operator is represented by '+'. The dot '.' represents AND." },
+            { s: "The OR operator is represented by '+'.", a: true },
+            { s: "0 + 0 = 0.", a: true },
+            { s: "0 + 1 = 0.", a: false, fix: "0 + 1 = 1 in Boolean OR — if any input is 1, output is 1." },
+            { s: "1 + 0 = 1.", a: true },
+            { s: "1 + 1 = 1 in Boolean OR.", a: true },
+            { s: "OR gives 1 when any input is 1.", a: true },
+            { s: "AND is called logical multiplication.", a: true },
+            { s: "The AND operator is represented by '.'.", a: true },
+            { s: "0 · 1 = 1.", a: false, fix: "0 · 1 = 0. AND produces 1 only when ALL inputs are 1." },
+            { s: "1 · 1 = 1.", a: true },
+            { s: "AND gives 1 only when all inputs are 1.", a: true },
+            { s: "A logic gate is an electronic circuit that operates on input signals to produce an output.", a: true },
+            { s: "An inverter has one input and one output.", a: true },
+            { s: "The output of a NOT gate is always the same as its input.", a: false, fix: "The output of a NOT gate is always the OPPOSITE of its input." },
+            { s: "An OR gate can have two or more inputs.", a: true },
+            { s: "An AND gate can have two or more inputs.", a: true },
+            { s: "For a 3-input OR gate, 000 produces output 0.", a: true },
+            { s: "For a 3-input OR gate, 001 produces output 1.", a: true },
+            { s: "For a 3-input AND gate, 111 produces output 1.", a: true },
+            { s: "For a 3-input AND gate, 110 produces output 1.", a: false, fix: "110 produces 0. AND needs ALL inputs = 1 for output 1." },
+            { s: "De Morgan's First Theorem changes OR into AND when the complement is applied.", a: true },
+            { s: "De Morgan's Second Theorem changes AND into OR when the complement is applied.", a: true },
+            { s: "(X + Y)' = X'Y'.", a: true },
+            { s: "(X · Y)' = X' + Y'.", a: true },
+            { s: "(A+B)' = A'+B'.", a: false, fix: "(A+B)' = A'B' by De Morgan's First Theorem. OR changes to AND." },
+            { s: "(AB)' = A'B'.", a: false, fix: "(AB)' = A'+B' by De Morgan's Second Theorem. AND changes to OR." },
+            { s: "The circuit-design expression in the PDF is F(A,B,C) = AB + AC' + B'A'C.", a: true },
+            { s: "AC' means A OR NOT C.", a: false, fix: "AC' means A AND NOT C. Variables written together imply AND." },
+            { s: "AB represents A AND B.", a: true },
+            { s: "B'A'C contains complements of A and B.", a: true },
+            { s: "The final operation in the given circuit expression is OR.", a: true },
+            { s: "The given circuit design uses NOT, AND and OR operations.", a: true },
+        ];
+
+        const arData = [
+            { a: "NOT is called a unary operator.", r: "NOT operates on one input variable.", ans: "A", exp: "Both true; the reason correctly explains why NOT is unary — it takes only one input." },
+            { a: "The output of a NOT gate is opposite to its input.", r: "NOT performs complementation.", ans: "A", exp: "Both true; complementation is exactly why the output is the opposite." },
+            { a: "OR is called logical addition.", r: "OR is represented by the + symbol.", ans: "A", exp: "Both true and correctly linked — the + symbol represents addition, hence 'logical addition'." },
+            { a: "0 + 0 = 0 in Boolean OR.", r: "OR produces 1 only when at least one input is 1.", ans: "A", exp: "Both true; since neither input is 1, the output is 0." },
+            { a: "1 + 0 = 1.", r: "In OR operation, if any input is 1, output is 1.", ans: "A", exp: "Both true and correctly linked." },
+            { a: "AND is called logical multiplication.", r: "AND is represented by the · symbol.", ans: "A", exp: "Both true; the · symbol represents multiplication, hence 'logical multiplication'." },
+            { a: "1 · 1 = 1.", r: "AND produces 1 when all inputs are 1.", ans: "A", exp: "Both true; all inputs being 1 is exactly when AND outputs 1." },
+            { a: "1 · 0 = 1.", r: "AND requires all inputs to be 1 for output 1.", ans: "D", exp: "Assertion is false (1·0 = 0, not 1); the reason is true — AND needs all inputs = 1." },
+            { a: "An inverter has one input and one output.", r: "The output of an inverter is the complement of its input.", ans: "A", exp: "Both true and correctly linked." },
+            { a: "An OR gate produces 0 when all its inputs are 0.", r: "OR produces 1 if any input is 1.", ans: "A", exp: "Both true; since no input is 1, the output is 0." },
+            { a: "A 3-input OR gate produces 1 for inputs 0, 0, 1.", r: "At least one input of the OR gate is 1.", ans: "A", exp: "Both true; 1 input being 1 is sufficient for OR to output 1." },
+            { a: "A 3-input AND gate produces 1 for inputs 1, 1, 0.", r: "AND produces 1 only when all inputs are 1.", ans: "D", exp: "Assertion is false (110 → 0 for AND); the reason is true." },
+            { a: "(X + Y)' = X'Y'.", r: "De Morgan's First Theorem changes OR into AND and complements each variable.", ans: "A", exp: "Both true and correctly linked." },
+            { a: "(X · Y)' = X' + Y'.", r: "De Morgan's Second Theorem changes AND into OR and complements each variable.", ans: "A", exp: "Both true and correctly linked." },
+            { a: "(A+B)' = A'+B'.", r: "The first De Morgan's theorem changes OR into AND.", ans: "C", exp: "Assertion is false — (A+B)' = A'B', not A'+B'. The reason is true." },
+            { a: "(AB)' = A'B'.", r: "The second De Morgan's theorem changes AND into OR.", ans: "D", exp: "Assertion is false — (AB)' = A'+B', not A'B'. The reason is true." },
+            { a: "AC' requires a NOT operation.", r: "C is complemented in AC'.", ans: "A", exp: "Both true; since C needs to be complemented, a NOT gate is needed." },
+            { a: "AB requires an AND operation.", r: "The dot representing AND may be omitted between variables.", ans: "A", exp: "Both true; AB is shorthand for A·B which is AND." },
+            { a: "AB + AC' requires an OR operation at the final stage.", r: "The + symbol represents OR.", ans: "A", exp: "Both true and correctly linked." },
+            { a: "The circuit for F=AB+AC'+B'A'C requires NOT, AND and OR gates.", r: "The expression contains complemented variables, AND terms and OR between the terms.", ans: "A", exp: "Both true; the reason correctly explains why all three gate types are needed." },
+        ];
+
+        // ---------------- STATE ----------------
+        let correctCount = 0, wrongCount = 0;
+
+        function updateScore() {
+            const total = correctCount + wrongCount;
+            document.getElementById('correctStat').textContent = '✅ ' + correctCount;
+            document.getElementById('wrongStat').textContent = '❌ ' + wrongCount;
+            document.getElementById('totalStat').textContent = '/ ' + total + ' answered';
+            const totalQ = mcqData.reduce((n, s) => n + s.items.length, 0) + tfData.length + arData.length;
+            document.getElementById('barinner').style.width = (totalQ ? (total / totalQ * 100) : 0) + '%';
+        }
+
+        // ---------------- RENDER MCQ ----------------
+        const mcqContainer = document.getElementById('mcq-container');
+        let mcqIndex = 0;
+        mcqData.forEach(section => {
+            const h = document.createElement('div');
+            h.className = 'subsection-title';
+            h.textContent = section.sec;
+            mcqContainer.appendChild(h);
+            section.items.forEach(item => {
+                mcqIndex++;
+                const card = document.createElement('div');
+                card.className = 'qcard';
+                const qt = document.createElement('div');
+                qt.className = 'qtext';
+                qt.innerHTML = '<span class="qnum">Q' + mcqIndex + '.</span>' + item.q;
+                card.appendChild(qt);
+                const opts = document.createElement('div');
+                opts.className = 'options';
+                const fb = document.createElement('div');
+                fb.className = 'feedback';
+                item.o.forEach((optText, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'opt-btn';
+                    btn.textContent = String.fromCharCode(65 + idx) + '. ' + optText;
+                    btn.onclick = () => {
+                        if (btn.classList.contains('locked')) return;
+                        const allBtns = opts.querySelectorAll('.opt-btn');
+                        allBtns.forEach(b => b.classList.add('locked'));
+                        if (idx === item.a) {
+                            btn.classList.add('correct-pick');
+                            fb.className = 'feedback show ok';
+                            fb.textContent = '🎉 Correct! ' + optText + ' is right.';
+                            correctCount++;
+                        } else {
+                            btn.classList.add('wrong-pick');
+                            allBtns[item.a].classList.add('reveal-correct');
+                            fb.className = 'feedback show no';
+                            fb.textContent = '❌ Not quite — correct answer: ' + item.o[item.a];
+                            wrongCount++;
+                        }
+                        updateScore();
+                    };
+                    opts.appendChild(btn);
+                });
+                card.appendChild(opts);
+                card.appendChild(fb);
+                mcqContainer.appendChild(card);
+            });
+        });
+
+        // ---------------- RENDER TF ----------------
+        const tfContainer = document.getElementById('tf-container');
+        tfData.forEach((item, i) => {
+            const card = document.createElement('div');
+            card.className = 'qcard';
+            const qt = document.createElement('div');
+            qt.className = 'qtext';
+            qt.innerHTML = '<span class="qnum">' + (i + 1) + '.</span>' + item.s;
+            card.appendChild(qt);
+            const opts = document.createElement('div');
+            opts.className = 'tf-options';
+            const fb = document.createElement('div');
+            fb.className = 'feedback';
+            ['True', 'False'].forEach((label) => {
+                const val = (label === 'True');
+                const btn = document.createElement('button');
+                btn.className = 'tf-btn';
+                btn.textContent = (val ? '✔️ ' : '✖️ ') + label;
+                btn.onclick = () => {
+                    if (btn.classList.contains('locked')) return;
+                    const allBtns = opts.querySelectorAll('.tf-btn');
+                    allBtns.forEach(b => b.classList.add('locked'));
+                    if (val === item.a) {
+                        btn.classList.add('correct-pick');
+                        fb.className = 'feedback show ok';
+                        fb.textContent = '🎉 Correct!' + (item.a ? '' : ' ' + item.fix);
+                        correctCount++;
+                    } else {
+                        btn.classList.add('wrong-pick');
+                        allBtns[item.a ? 0 : 1].classList.add('reveal-correct');
+                        fb.className = 'feedback show no';
+                        fb.textContent = '❌ Actually ' + (item.a ? 'True' : 'False') + '.' + (item.fix ? ' ' + item.fix : '');
+                        wrongCount++;
+                    }
+                    updateScore();
+                };
+                opts.appendChild(btn);
+            });
+            card.appendChild(opts);
+            card.appendChild(fb);
+            tfContainer.appendChild(card);
+        });
+
+        // ---------------- RENDER ASSERTION-REASON ----------------
+        const arContainer = document.getElementById('ar-container');
+        const arChoices = {
+            A: "Both Assertion and Reason are true, and Reason correctly explains Assertion.",
+            B: "Both are true, but Reason does not correctly explain Assertion.",
+            C: "Assertion is true, but Reason is false.",
+            D: "Assertion is false, but Reason is true."
+        };
+        arData.forEach((item, i) => {
+            const card = document.createElement('div');
+            card.className = 'qcard';
+            const qt = document.createElement('div');
+            qt.className = 'qtext';
+            qt.innerHTML = '<span class="qnum">' + (i + 1) + '.</span> <b>Assertion:</b> ' + item.a + '<br><b>Reason:</b> ' + item.r;
+            card.appendChild(qt);
+            const opts = document.createElement('div');
+            opts.className = 'options two-col-wide';
+            const fb = document.createElement('div');
+            fb.className = 'feedback';
+            Object.keys(arChoices).forEach(letter => {
+                const btn = document.createElement('button');
+                btn.className = 'opt-btn';
+                btn.textContent = letter + '. ' + arChoices[letter];
+                btn.onclick = () => {
+                    if (btn.classList.contains('locked')) return;
+                    const allBtns = opts.querySelectorAll('.opt-btn');
+                    allBtns.forEach(b => b.classList.add('locked'));
+                    const correctIdx = Object.keys(arChoices).indexOf(item.ans);
+                    if (letter === item.ans) {
+                        btn.classList.add('correct-pick');
+                        fb.className = 'feedback show ok';
+                        fb.textContent = '🎉 Correct! ' + item.exp;
+                        correctCount++;
+                    } else {
+                        btn.classList.add('wrong-pick');
+                        allBtns[correctIdx].classList.add('reveal-correct');
+                        fb.className = 'feedback show no';
+                        fb.textContent = '❌ Correct answer: ' + item.ans + '. ' + item.exp;
+                        wrongCount++;
+                    }
+                    updateScore();
+                };
+                opts.appendChild(btn);
+            });
+            card.appendChild(opts);
+            card.appendChild(fb);
+            arContainer.appendChild(card);
+        });
+
+        function resetAll() {
+            correctCount = 0; wrongCount = 0;
+            updateScore();
+            document.querySelectorAll('.opt-btn, .tf-btn').forEach(b => {
+                b.classList.remove('locked', 'correct-pick', 'wrong-pick', 'reveal-correct');
+            });
+            document.querySelectorAll('.feedback').forEach(f => { f.className = 'feedback'; f.textContent = ''; });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        updateScore();
+    </script>
+</body>
+
+</html>

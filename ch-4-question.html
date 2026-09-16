@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Class XI CS - Getting Started with Python | Practice Question Bank</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;800&display=swap');
+
+        :root {
+            --lavender: #e6e0fa;
+            --lavender-dark: #8b7fd6;
+            --blush: #fde2e9;
+            --blush-dark: #e0729a;
+            --mint: #dcf5e8;
+            --mint-dark: #3f9d72;
+            --babyblue: #dbeeff;
+            --babyblue-dark: #4a90d9;
+            --cream: #faf9f6;
+            --ink: #2d3748;
+            --ink-soft: #5a6478;
+            --correct: #3f9d72;
+            --correct-bg: #e4f9ee;
+            --wrong: #e0567a;
+            --wrong-bg: #fdeaf0;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: var(--cream);
+            color: var(--ink);
+            margin: 0;
+            padding: 0 0 60px;
+            line-height: 1.5;
+        }
+
+        .wrap { max-width: 880px; margin: 0 auto; padding: 16px; }
+
+        /* HEADER */
+        .header-card {
+            background: linear-gradient(120deg, var(--lavender) 0%, var(--blush) 50%, var(--babyblue) 100%);
+            border-radius: 22px;
+            padding: 26px 24px;
+            text-align: center;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+        }
+
+        .header-card h1 { margin: 0; font-size: 24px; font-weight: 800; }
+        .header-card p { margin: 6px 0 0; font-size: 13px; color: var(--ink-soft); font-weight: 600; }
+
+        /* SCORE BAR */
+        .scorebar {
+            position: sticky; top: 10px; z-index: 50;
+            background: #fff; border-radius: 18px; padding: 12px 18px;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08); margin-bottom: 18px;
+            border: 1.5px solid var(--lavender); flex-wrap: wrap; gap: 8px;
+        }
+        .scorebar .label { font-weight: 800; font-size: 13.5px; color: var(--lavender-dark); }
+        .scorebar .stat { font-size: 13px; font-weight: 700; }
+        .scorebar .stat.correct-txt { color: var(--correct); }
+        .scorebar .stat.wrong-txt { color: var(--wrong); }
+
+        .barouter { flex: 1; min-width: 140px; height: 10px; background: #f1eefc; border-radius: 10px; overflow: hidden; margin: 0 10px; }
+        .barinner { height: 100%; width: 0%; background: linear-gradient(90deg, var(--mint-dark), var(--babyblue-dark)); transition: width .4s ease; }
+
+        .reset-btn {
+            background: var(--blush); color: var(--blush-dark); border: none;
+            padding: 6px 14px; border-radius: 20px; font-family: 'Quicksand', sans-serif;
+            font-weight: 700; font-size: 12px; cursor: pointer;
+        }
+        .reset-btn:hover { background: var(--blush-dark); color: #fff; }
+
+        /* SECTION LABEL */
+        .section-title { font-size: 16px; font-weight: 800; margin: 26px 4px 10px; display: flex; align-items: center; gap: 10px; }
+        .section-title .chip { background: var(--lavender-dark); color: #fff; font-size: 11px; padding: 4px 11px; border-radius: 20px; }
+        .subsection-title { font-size: 13px; font-weight: 700; margin: 16px 2px 8px; color: var(--lavender-dark); }
+
+        /* QUESTION CARD */
+        .qcard {
+            background: #fff; border-radius: 16px; padding: 14px 16px; margin-bottom: 10px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04); border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .qtext { font-weight: 700; font-size: 13.5px; margin-bottom: 10px; }
+        .qnum { color: var(--babyblue-dark); margin-right: 4px; }
+
+        .options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .options.two-col-wide { grid-template-columns: 1fr; }
+
+        .opt-btn {
+            text-align: left; background: #f9f8ff; border: 1.5px solid #ece8fb; border-radius: 12px;
+            padding: 9px 12px; font-family: 'Quicksand', sans-serif; font-size: 12.5px;
+            font-weight: 600; color: var(--ink); cursor: pointer; transition: all .15s ease;
+        }
+        .opt-btn:hover:not(.locked) { border-color: var(--lavender-dark); background: #f1eefe; transform: translateY(-1px); }
+        .opt-btn.correct-pick { background: var(--correct-bg); border-color: var(--correct); color: #1f6b46; }
+        .opt-btn.wrong-pick { background: var(--wrong-bg); border-color: var(--wrong); color: #9c2f4d; }
+        .opt-btn.reveal-correct { background: var(--correct-bg); border-color: var(--correct); color: #1f6b46; }
+        .opt-btn.locked { cursor: default; }
+
+        .feedback { margin-top: 9px; font-size: 12px; font-weight: 700; border-radius: 10px; padding: 7px 11px; display: none; }
+        .feedback.show { display: block; }
+        .feedback.ok { background: var(--correct-bg); color: #1f6b46; }
+        .feedback.no { background: var(--wrong-bg); color: #9c2f4d; }
+
+        /* TF pills */
+        .tf-options { display: flex; gap: 10px; }
+        .tf-btn {
+            flex: 1; text-align: center; background: #f9f8ff; border: 1.5px solid #ece8fb;
+            border-radius: 20px; padding: 8px 10px; font-family: 'Quicksand', sans-serif;
+            font-weight: 700; font-size: 12.5px; cursor: pointer;
+        }
+        .tf-btn:hover:not(.locked) { border-color: var(--lavender-dark); }
+        .tf-btn.correct-pick { background: var(--correct-bg); border-color: var(--correct); color: #1f6b46; }
+        .tf-btn.wrong-pick { background: var(--wrong-bg); border-color: var(--wrong); color: #9c2f4d; }
+        .tf-btn.reveal-correct { background: var(--correct-bg); border-color: var(--correct); color: #1f6b46; }
+        .tf-btn.locked { cursor: default; }
+
+        /* Reference / written sections */
+        details.ref-card {
+            background: #fff; border-radius: 16px; padding: 0; margin-bottom: 10px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04); border: 1px solid rgba(0, 0, 0, 0.05); overflow: hidden;
+        }
+        details.ref-card summary {
+            cursor: pointer; list-style: none; padding: 13px 16px; font-weight: 800; font-size: 13.5px;
+            display: flex; align-items: center; justify-content: space-between;
+            background: linear-gradient(90deg, #f9f8ff, #fff);
+        }
+        details.ref-card summary::-webkit-details-marker { display: none; }
+        details.ref-card summary .arrow { transition: transform .2s ease; color: var(--lavender-dark); font-size: 14px; }
+        details.ref-card[open] summary .arrow { transform: rotate(90deg); }
+        .ref-body { padding: 4px 18px 16px; }
+        .ref-body ol { margin: 0; padding-left: 20px; font-size: 12.5px; }
+        .ref-body ol li { margin-bottom: 8px; }
+
+        .priority-card {
+            background: linear-gradient(120deg, #fff7e6, #fff2f8); border: 1.5px dashed #f0c469;
+            border-radius: 16px; padding: 14px 16px; margin: 14px 0 22px; font-size: 12.5px;
+        }
+        .priority-card ol { padding-left: 18px; margin: 6px 0 0; }
+        .priority-card li { margin-bottom: 5px; }
+
+        .footer-note { text-align: center; font-size: 11px; color: var(--ink-soft); margin-top: 26px; }
+
+        @media (max-width:520px) { .options { grid-template-columns: 1fr; } }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+
+        <div class="header-card">
+            <h1>🐍 Getting Started with Python</h1>
+            <p>Class XI Computer Science (083) • Interactive Practice Question Bank</p>
+        </div>
+
+        <div class="scorebar">
+            <span class="label">🎯 Your Score</span>
+            <div class="barouter"><div class="barinner" id="barinner"></div></div>
+            <span class="stat correct-txt" id="correctStat">✅ 0</span>
+            <span class="stat wrong-txt" id="wrongStat">❌ 0</span>
+            <span class="stat" id="totalStat" style="color:var(--ink-soft);">/ 0 answered</span>
+            <button class="reset-btn" onclick="resetAll()">↺ Reset</button>
+        </div>
+
+        <!-- SECTION A: MCQ -->
+        <div class="section-title"><span class="chip">Section A</span> Multiple Choice Questions</div>
+        <div id="mcq-container"></div>
+
+        <!-- SECTION B: TRUE/FALSE -->
+        <div class="section-title"><span class="chip">Section B</span> True / False</div>
+        <p style="font-size:12px;color:var(--ink-soft);margin:-4px 4px 10px;">Tap True or False — wrong statements
+            auto-show the correction.</p>
+        <div id="tf-container"></div>
+
+        <!-- SECTION C: ASSERTION-REASON -->
+        <div class="section-title"><span class="chip">Section C</span> Assertion &amp; Reason</div>
+        <p style="font-size:12px;color:var(--ink-soft);margin:-4px 4px 10px;">A: Both true, R explains A &nbsp;|&nbsp;
+            B: Both true, R does not explain A &nbsp;|&nbsp; C: A true, R false &nbsp;|&nbsp; D: A false, R true</p>
+        <div id="ar-container"></div>
+
+        <!-- SECTION D: WRITTEN PRACTICE -->
+        <div class="section-title"><span class="chip">Section D</span> 2-Mark Written Practice (self-answer, then
+            expand to recheck)</div>
+
+        <details class="ref-card">
+            <summary>📘 Python Introduction <span class="arrow">▶</span></summary>
+            <div class="ref-body">
+                <ol>
+                    <li>What is Python? Who developed it?</li>
+                    <li>When was Python developed?</li>
+                    <li>Name the two languages that influenced Python.</li>
+                    <li>Why was Python named "Python"?</li>
+                    <li>Write any two basic facts about Python given in the chapter.</li>
+                    <li>State the developer and development year of Python.</li>
+                </ol>
+            </div>
+        </details>
+
+        <details class="ref-card">
+            <summary>➕ Python Pluses <span class="arrow">▶</span></summary>
+            <div class="ref-body">
+                <ol start="7">
+                    <li>Write any two advantages of Python.</li>
+                    <li>Write any four advantages of Python.</li>
+                    <li>Why is Python considered easy to use?</li>
+                    <li>Why is Python called an expressive language?</li>
+                    <li>What is meant by Python being an interpreted language?</li>
+                    <li>State the advantage of Python being an interpreted language mentioned in the PDF.</li>
+                    <li>What is meant by a cross-platform language?</li>
+                    <li>What does "free and open source" mean in the context of Python?</li>
+                    <li>List the Python Pluses given in the chapter.</li>
+                    <li>Explain "Easy to use" and "Expressive language" as Python Pluses.</li>
+                    <li>Explain any two of the following: Completeness, Cross-platform, Free and Open Source, Variety of Usage/Applications.</li>
+                </ol>
+            </div>
+        </details>
+
+        <details class="ref-card">
+            <summary>🗣️ Expressive Language <span class="arrow">▶</span></summary>
+            <div class="ref-body">
+                <ol start="18">
+                    <li>Why is Python called an expressive language?</li>
+                    <li>Explain the Python swapping example: <code>a,b = 10,20; a,b = b,a</code></li>
+                    <li>How does the swapping example demonstrate Python's expressive nature?</li>
+                    <li>What is the advantage of using fewer lines of code?</li>
+                </ol>
+            </div>
+        </details>
+
+        <details class="ref-card">
+            <summary>➖ Python Minuses <span class="arrow">▶</span></summary>
+            <div class="ref-body">
+                <ol start="22">
+                    <li>Write any two disadvantages of Python.</li>
+                    <li>Write all four Python Minuses given in the PDF.</li>
+                    <li>Explain "Not the Fastest Language."</li>
+                    <li>Explain "Lesser Libraries than C, Java, Perl."</li>
+                    <li>What is meant by "Not Strong on Type-binding"?</li>
+                    <li>What is meant by "Not Easily Convertible"?</li>
+                    <li>Explain any two Python Minuses.</li>
+                    <li>Differentiate between Python Pluses and Python Minuses with two examples each.</li>
+                </ol>
+            </div>
+        </details>
+
+        <details class="ref-card">
+            <summary>🔗 Type-Binding <span class="arrow">▶</span></summary>
+            <div class="ref-body">
+                <ol start="30">
+                    <li>What is type-binding? Explain using the examples given in the PDF.</li>
+                    <li>Write the C++ and Python examples used in the chapter to explain type-binding.</li>
+                    <li>What is the significance of: <code>a,b = 10,20</code></li>
+                    <li>Explain: <code>a,b = b,a</code> with respect to Python.</li>
+                </ol>
+            </div>
+        </details>
+        
+        <details class="ref-card">
+            <summary>💻 Applications / Software <span class="arrow">▶</span></summary>
+            <div class="ref-body">
+                <ol start="34">
+                    <li>Name any four applications/software that can be used to write Python programs.</li>
+                    <li>Name all five applications/software listed in the PDF.</li>
+                    <li>Name the two applications associated with the Anaconda Distribution Suite.</li>
+                    <li>What is Python IDLE?</li>
+                    <li>List the software/applications mentioned in the chapter.</li>
+                </ol>
+            </div>
+        </details>
+        
+        <details class="ref-card">
+            <summary>🖥️ Python IDLE <span class="arrow">▶</span></summary>
+            <div class="ref-body">
+                <ol start="39">
+                    <li>What are the two modes of writing programs in Python IDLE?</li>
+                    <li>Explain Interactive Mode.</li>
+                    <li>Explain Script Mode.</li>
+                    <li>What is the purpose of the <code>&gt;&gt;&gt;</code> sign in Python IDLE?</li>
+                    <li>What happens when Enter is pressed in Interactive Mode?</li>
+                    <li>How does Script Mode differ from Interactive Mode?</li>
+                    <li>Write two differences between Interactive Mode and Script Mode.</li>
+                    <li>Which mode should be used when you want to execute multiple lines of code together? Explain.</li>
+                    <li>What is the difference between entering code line-by-line and executing a group of statements?</li>
+                </ol>
+            </div>
+        </details>
+        
+        <details class="ref-card">
+            <summary>🐛 TypeError <span class="arrow">▶</span></summary>
+            <div class="ref-body">
+                <ol start="48">
+                    <li>What error is produced by the following code according to the PDF?<br><code>x = 10<br>y = "20"<br>c = x+y<br>print(c)</code></li>
+                    <li>Why does the following statement produce an error? <code>c = x+y</code> when <code>x = 10</code> and <code>y = "20"</code></li>
+                    <li>Identify the types of x and y in: <code>x = 10; y = "20"</code></li>
+                    <li>Explain the TypeError shown in the chapter.</li>
+                    <li>What is the difference between <code>10</code> and <code>"20"</code> in the given example?</li>
+                    <li>At which statement does the error occur in the given program?</li>
+                </ol>
+            </div>
+        </details>
+
+        <div class="priority-card">
+            <b style="font-size:13px;">🔥 Top Priority — Do These First</b>
+            <ol>
+                <li>What is Python? Who developed it and when?</li>
+                <li>Name the two languages that influenced Python.</li>
+                <li>Why was Python named Python?</li>
+                <li>Write any two Python Pluses.</li>
+                <li>Why is Python called an expressive language?</li>
+                <li>Write all four Python Minuses.</li>
+                <li>Name all five Python programming applications/software.</li>
+                <li>What are the two modes of Python IDLE?</li>
+                <li>Differentiate between Interactive Mode and Script Mode.</li>
+                <li>Explain the <code>&gt;&gt;&gt;</code> prompt.</li>
+                <li>What is the TypeError in <code>x=10, y="20", c=x+y</code>?</li>
+                <li>Name the two applications associated with Anaconda Distribution Suite.</li>
+            </ol>
+        </div>
+
+        <div class="footer-note">Getting Started with Python carries 4 questions = 5 marks in the KPS Half-Yearly blueprint
+            (3×1m + 1×2m). ✨</div>
+
+    </div>
+
+    <script>
+        // ---------------- DATA ----------------
+        const mcqData = [
+            {
+                sec: "A. Introduction to Python", items: [
+                    { q: "Python is a:", o: ["Low-level programming language", "High-level programming language", "Machine language", "Assembly language"], a: 1 },
+                    { q: "Python was developed by:", o: ["James Gosling", "Dennis Ritchie", "Guido van Rossum", "Bjarne Stroustrup"], a: 2 },
+                    { q: "Python was developed in:", o: ["February 1981", "February 1991", "January 1991", "February 2001"], a: 1 },
+                    { q: "Python was influenced by which two languages according to the PDF?", o: ["C and C++", "Java and Perl", "ABC and Modula-3", "BASIC and Pascal"], a: 2 },
+                    { q: "Python was named after:", o: ["A snake", "A computer scientist", "Monty Python's Flying Circus", "A programming language"], a: 2 },
+                    { q: "Which of the following is associated with the development of Python?", o: ["Guido van Rossum", "Steve Jobs", "Charles Babbage", "Dennis Ritchie"], a: 0 },
+                    { q: "Which statement is correct?", o: ["Python is a low-level language.", "Python is a high-level programming language.", "Python is only a scripting language.", "Python is a hardware language."], a: 1 }
+                ]
+            },
+            {
+                sec: "B. Python Pluses", items: [
+                    { q: "Which of the following is an advantage of Python?", o: ["Easy to use", "Difficult syntax", "Not cross-platform", "Not open source"], a: 0 },
+                    { q: "Python is easy to use because it has:", o: ["Complex syntax", "Very simple syntax rules", "No syntax", "Machine-level instructions"], a: 1 },
+                    { q: "Python is called an expressive language because of:", o: ["More lines of code", "Fewer lines of code and simpler syntax", "Complex syntax", "Lack of libraries"], a: 1 },
+                    { q: "Which of the following is listed as a Python Plus?", o: ["Interpreted language", "Slow hardware", "Difficult syntax", "Limited usage"], a: 0 },
+                    { q: "According to the PDF, an advantage of Python being interpreted is:", o: ["It is easy to debug", "It cannot run programs", "It requires machine code", "It needs more syntax"], a: 0 },
+                    { q: "Which of the following is NOT listed as a Python Plus?", o: ["Completeness", "Cross-platform language", "Free and open source", "Not the fastest language"], a: 3 },
+                    { q: "Which of the following is a characteristic of Python mentioned in the PDF?", o: ["Cross-platform", "Machine-dependent only", "Hardware-dependent", "Closed source"], a: 0 },
+                    { q: "Python is:", o: ["Paid and closed source", "Free and open source", "Only available commercially", "Not available for general use"], a: 1 },
+                    { q: "Which of the following is mentioned as a Python Plus?", o: ["Variety of usage/applications", "Not easily convertible", "Lesser libraries", "Not the fastest"], a: 0 },
+                    { q: "Which advantage means Python can be used across different platforms?", o: ["Expressive", "Cross-platform", "Completeness", "Interpreted"], a: 1 },
+                    { q: "Which advantage is related to writing fewer lines of code?", o: ["Expressive language", "Cross-platform language", "Completeness", "Open source"], a: 0 },
+                    { q: "Which of the following belongs to Python Pluses?", o: ["Easy to use", "Not the fastest", "Not easily convertible", "Lesser libraries"], a: 0 },
+                    { q: "How many Python Pluses are listed in the PDF?", o: ["4", "5", "6", "7"], a: 3 }
+                ]
+            },
+            {
+                sec: "C. Python Expressiveness", items: [
+                    { q: "Python can perform certain tasks with:", o: ["More lines and complex syntax", "Fewer lines and simpler syntax", "Machine instructions only", "No code"], a: 1 },
+                    { q: "Which feature makes Python expressive?", o: ["Simpler syntax", "More complicated syntax", "More machine instructions", "Hardware dependence"], a: 0 },
+                    { q: "The PDF demonstrates Python's expressive nature using:", o: ["File handling", "Swapping two values", "Loops", "Classes"], a: 1 },
+                    { q: "Which Python statement is used in the PDF's swapping example?", o: ["a,b = b,a", "a+b = b+a", "a = b + a", "a,b = a+b"], a: 0 },
+                    { q: "In Python, `a, b = b, a` is used to:", o: ["Add two values", "Swap two values", "Delete two values", "Multiply two values"], a: 1 },
+                    { q: "In the C++ comparison given in the PDF, a temporary variable is used for:", o: ["Addition", "Swapping values", "Printing", "Input"], a: 1 }
+                ]
+            },
+            {
+                sec: "D. Python Minuses", items: [
+                    { q: "Which of the following is listed as a Python Minus?", o: ["Easy to use", "Not the fastest language", "Expressive", "Cross-platform"], a: 1 },
+                    { q: "According to the PDF, Python is:", o: ["The fastest language", "Not the fastest language", "Always faster than C++", "Hardware-level language"], a: 1 },
+                    { q: "Which languages are mentioned in the PDF while discussing lesser libraries?", o: ["C, Java and Perl", "Python, Java and C++", "HTML, CSS and JavaScript", "BASIC, Pascal and C"], a: 0 },
+                    { q: "Which of the following is listed as a Python Minus?", o: ["Free and open source", "Not strong on type-binding", "Easy to use", "Expressive language"], a: 1 },
+                    { q: "Which of the following is NOT listed as a Python Minus?", o: ["Not the fastest language", "Lesser libraries than C, Java, Perl", "Not strong on type-binding", "Cross-platform language"], a: 3 },
+                    { q: "The PDF lists Python as having:", o: ["Strong type-binding", "No type system", "Not strong on type-binding", "Hardware type-binding"], a: 2 },
+                    { q: "Which of the following is the fourth Python Minus listed in the PDF?", o: ["Not easily convertible", "Not open source", "Not expressive", "Not cross-platform"], a: 0 },
+                    { q: "How many Python Minuses are listed in the PDF?", o: ["2", "3", "4", "5"], a: 2 }
+                ]
+            },
+            {
+                sec: "E. Type-Binding", items: [
+                    { q: "Which language example is used in the PDF to explain type-binding?", o: ["Java", "C++", "HTML", "JavaScript"], a: 1 },
+                    { q: "Which statement is shown as a C++ example?", o: ["a,b = 10,20", "a,b = b,a", "int x = 10.25", "x = \"10\""], a: 2 },
+                    { q: "Which of the following is the Python multiple-assignment example from the PDF?", o: ["a,b = 10,20", "int a,b", "a+b = 10,20", "a = int(10,20)"], a: 0 },
+                    { q: "Which statement swaps the values of a and b in Python?", o: ["a,b = a,b", "a,b = b,a", "a+b = b+a", "swap(a,b)"], a: 1 },
+                    { q: "The type-binding comparison in the PDF mainly compares:", o: ["C++ and Python", "Java and Python", "C and Java", "Python and HTML"], a: 0 }
+                ]
+            },
+            {
+                sec: "F. Python Applications / Software", items: [
+                    { q: "Which application is listed first in the PDF?", o: ["PyCharm", "VS Code", "Python IDLE", "Spyder"], a: 2 },
+                    { q: "Which of the following is listed as software for writing Python programs?", o: ["Python IDLE", "Jupyter Notebook", "Spyder", "All of the above"], a: 3 },
+                    { q: "Which of the following is also listed?", o: ["PyCharm", "Photoshop", "Excel", "PowerPoint"], a: 0 },
+                    { q: "Which software is listed last in the PDF?", o: ["Spyder", "PyCharm", "VS Code", "IDLE"], a: 2 },
+                    { q: "Jupyter Notebook is associated in the PDF with:", o: ["Anaconda Distribution Suite", "Microsoft Office", "Windows Explorer", "Android Studio"], a: 0 },
+                    { q: "Spyder is associated in the PDF with:", o: ["Anaconda Distribution Suite", "Microsoft Office", "Google Workspace", "Adobe Suite"], a: 0 },
+                    { q: "Which pair is associated with the Anaconda Distribution Suite?", o: ["PyCharm and VS Code", "Jupyter Notebook and Spyder", "IDLE and PyCharm", "VS Code and IDLE"], a: 1 },
+                    { q: "How many applications/software options are listed in the PDF?", o: ["3", "4", "5", "6"], a: 2 }
+                ]
+            },
+            {
+                sec: "G. Python IDLE", items: [
+                    { q: "IDLE is mentioned as:", o: ["An application for writing Python programs", "A programming language", "A hardware component", "An operating system"], a: 0 },
+                    { q: "Python IDLE provides how many modes of writing programs according to the PDF?", o: ["One", "Two", "Three", "Four"], a: 1 },
+                    { q: "The two modes in Python IDLE are:", o: ["Input and Output", "Interactive and Script", "Compile and Run", "Debug and Execute"], a: 1 },
+                    { q: "Which mode uses the `>>>` sign?", o: ["Script Mode", "Interactive Mode", "Debug Mode", "Compilation Mode"], a: 1 },
+                    { q: "In Interactive Mode, code is:", o: ["Written one line at a time", "Always written in a separate file", "Never executed", "Converted to hardware instructions manually"], a: 0 },
+                    { q: "In Interactive Mode, after pressing Enter:", o: ["The code is executed and output comes", "The computer shuts down", "The code is deleted", "Nothing happens"], a: 0 },
+                    { q: "The Interactive Mode prompt is:", o: ["###", ">>>", "$$$", "@@@"], a: 1 },
+                    { q: "Script Mode allows the user to:", o: ["Write only one character", "Write multiple lines of code and execute them together", "Only perform calculations", "Only write comments"], a: 1 },
+                    { q: "Which mode is suitable for executing multiple lines together?", o: ["Interactive Mode", "Script Mode", "Prompt Mode", "Input Mode"], a: 1 },
+                    { q: "Which mode executes a line after pressing Enter?", o: ["Interactive Mode", "Script Mode", "Both always execute only one line", "Neither"], a: 0 },
+                    { q: "Which mode allows multiple lines of code to be written into a single window?", o: ["Interactive Mode", "Script Mode", "Prompt Mode", "Command Mode"], a: 1 }
+                ]
+            },
+            {
+                sec: "H. Error / TypeError", items: [
+                    { q: "In the PDF example `x = 10; y = \"20\"; c = x + y`, what error occurs?", o: ["SyntaxError", "TypeError", "NameError", "ValueError"], a: 1 },
+                    { q: "What is the type of `x` in: `x = 10`", o: ["String", "Integer", "Boolean", "Float"], a: 1 },
+                    { q: "What is the type of `y` in: `y = \"20\"`", o: ["Integer", "String", "Boolean", "Float"], a: 1 },
+                    { q: "Why does `x + y` produce the TypeError shown in the PDF?", o: ["Both are strings", "Both are integers", "One is an integer and the other is a string", "Both are Boolean values"], a: 2 },
+                    { q: "Which operation causes the error in the PDF?", o: ["x = 10", "y = \"20\"", "c = x+y", "print(c)"], a: 2 },
+                    { q: "The error message in the PDF identifies the unsupported operand types as:", o: ["float and str", "int and str", "int and float", "str and bool"], a: 1 }
+                ]
+            },
+            {
+                sec: "I. Mixed MCQs", items: [
+                    { q: "Which sequence correctly represents Python's development information?", o: ["Guido van Rossum → February 1991 → High-level language", "Dennis Ritchie → 1981 → Low-level language", "James Gosling → 1995 → High-level language", "Bjarne Stroustrup → 1985 → Machine language"], a: 0 },
+                    { q: "Which is correctly matched?", o: ["Expressive — fewer lines and simpler syntax", "Cross-platform — only one operating system", "Open source — closed source", "Interactive — multiple lines only"], a: 0 },
+                    { q: "Which is correctly matched?", o: ["Interactive Mode — >>>", "Script Mode — only one line", "Jupyter Notebook — C++ compiler", "Spyder — operating system"], a: 0 },
+                    { q: "Which is correctly matched?", o: ["Python IDLE — Interactive and Script Mode", "Python IDLE — only Script Mode", "Jupyter Notebook — only C++", "VS Code — Python language itself"], a: 0 },
+                    { q: "Which group contains only Python Pluses?", o: ["Easy, Expressive, Cross-platform", "Not fastest, Lesser libraries, Not easily convertible", "Lesser libraries, Expressive, Type-binding", "Not fastest, Easy, Not convertible"], a: 0 },
+                    { q: "Which group contains only Python Minuses?", o: ["Easy, Expressive, Complete", "Cross-platform, Open source, Interpreted", "Not fastest, Lesser libraries, Not strong on type-binding", "Expressive, Complete, Variety of applications"], a: 2 },
+                    { q: "Which statement about Script Mode is correct?", o: ["It uses only >>>", "It allows multiple lines to be executed together", "It executes only one character", "It cannot contain multiple statements"], a: 1 },
+                    { q: "Which statement about Interactive Mode is correct?", o: ["Code is written one line at a time after >>>", "It requires writing the whole program first", "It cannot produce output", "It is used only for C++"], a: 0 },
+                    { q: "Which pair represents the two modes of Python IDLE?", o: ["Interactive + Script", "Compile + Link", "Input + Output", "Debug + Release"], a: 0 },
+                    { q: "Which of these is NOT an application/software listed in the PDF?", o: ["PyCharm", "VS Code", "Spyder", "Microsoft Word"], a: 3 },
+                    { q: "Which statement is true according to the PDF?", o: ["Python is free and open source.", "Python is not cross-platform.", "Python is not expressive.", "Python has no applications."], a: 0 }
+                ]
+            }
+        ];
+
+        const tfData = [
+            { s: "Python is a high-level programming language.", a: true },
+            { s: "Python was developed by Guido van Rossum.", a: true },
+            { s: "Python was developed in February 1991.", a: true },
+            { s: "Python was influenced by ABC and Modula-3.", a: true },
+            { s: "Python was named after a snake.", a: false, fix: "It was named after the BBC comedy show Monty Python's Flying Circus." },
+            { s: "Python's name was inspired by Monty Python's Flying Circus.", a: true },
+            { s: "Guido van Rossum developed Python.", a: true },
+            { s: "Python is easy to use.", a: true },
+            { s: "Python has very simple syntax rules.", a: true },
+            { s: "Python is an expressive language.", a: true },
+            { s: "Python's expressiveness is associated with fewer lines of code and simpler syntax.", a: true },
+            { s: "Python is an interpreted language.", a: true },
+            { s: "The PDF states that Python is easy to debug.", a: true },
+            { s: "Completeness is listed as a Python Plus.", a: true },
+            { s: "Python is a cross-platform language.", a: true },
+            { s: "Python is free and open source.", a: true },
+            { s: "Variety of usage/applications is listed as a Python Plus.", a: true },
+            { s: "Python has no applications outside one specific field.", a: false, fix: "It has a variety of usage/applications like Web development, Automation, AI, etc." },
+            { s: "Python is listed as the fastest language.", a: false, fix: "Not the fastest language is listed as a Python Minus." },
+            { s: "Python is listed as not the fastest language.", a: true },
+            { s: "The PDF lists lesser libraries than C, Java and Perl as a disadvantage.", a: true },
+            { s: "Python is listed as strong on type-binding.", a: false, fix: "It is listed as NOT strong on type-binding." },
+            { s: "Python is listed as not strong on type-binding.", a: true },
+            { s: "Not easily convertible is listed as a Python Minus.", a: true },
+            { s: "Not the fastest language is a Python Plus.", a: false, fix: "It is a Python Minus." },
+            { s: "The PDF uses C++ for a type-binding comparison.", a: true },
+            { s: "int x = 10.25 is shown as a C++ example.", a: true },
+            { s: "a,b = 10,20 is shown as a Python example.", a: true },
+            { s: "a,b = b,a can be used to swap values in Python.", a: true },
+            { s: "Python requires the exact same type declaration syntax as the C++ example.", a: false, fix: "Python uses dynamic typing and does not require explicit type declaration." },
+            { s: "Python IDLE is listed as an application for writing Python programs.", a: true },
+            { s: "Jupyter Notebook is listed in the PDF.", a: true },
+            { s: "Spyder is listed in the PDF.", a: true },
+            { s: "PyCharm is listed in the PDF.", a: true },
+            { s: "VS Code is listed in the PDF.", a: true },
+            { s: "Jupyter Notebook is associated with Anaconda Distribution Suite.", a: true },
+            { s: "Spyder is associated with Anaconda Distribution Suite.", a: true },
+            { s: "The PDF lists Photoshop as a Python programming application.", a: false, fix: "Photoshop is not listed. Python applications listed are IDLE, Jupyter Notebook, Spyder, PyCharm, and VS Code." },
+            { s: "Python IDLE has two modes mentioned in the PDF.", a: true },
+            { s: "The two modes are Interactive Mode and Script Mode.", a: true },
+            { s: "Interactive Mode uses the `>>>` prompt.", a: true },
+            { s: "Interactive Mode executes code after pressing Enter.", a: true },
+            { s: "Script Mode allows multiple lines of code to be executed together.", a: true },
+            { s: "Script Mode allows only one line of code.", a: false, fix: "Script Mode allows multiple lines to be executed together." },
+            { s: "Interactive Mode is useful for entering code one line at a time.", a: true },
+            { s: "`x = 10` assigns an integer value to `x`.", a: true },
+            { s: "`y = \"20\"` assigns a string value to `y`.", a: true },
+            { s: "`c = x+y` in the PDF produces a TypeError.", a: true },
+            { s: "The error occurs because `x` and `y` have different types.", a: true },
+            { s: "The PDF shows an error involving `int` and `str`.", a: true }
+        ];
+
+        const arData = [
+            { a: "Python is a high-level programming language.", r: "The uploaded PDF identifies Python as a high-level programming language.", ans: "A", exp: "Both true; the reason is the correct explanation." },
+            { a: "Python was developed by Guido van Rossum.", r: "The PDF states that Python was developed by Guido van Rossum in February 1991.", ans: "A", exp: "Both true and correctly linked." },
+            { a: "Python was influenced by ABC and Modula-3.", r: "These two languages are mentioned in the PDF as influences on Python.", ans: "A", exp: "Both true and correctly linked." },
+            { a: "Python was named after Monty Python's Flying Circus.", r: "The name Python was inspired by a famous BBC comedy show.", ans: "A", exp: "Both true; reason explains assertion." },
+            { a: "Python is easy to use.", r: "Python has very simple syntax rules.", ans: "A", exp: "Both true; simple syntax makes it easy to use." },
+            { a: "Python is an expressive language.", r: "Python can use fewer lines of code and simpler syntax.", ans: "A", exp: "Both true; reason is the definition of expressive language." },
+            { a: "Python is interpreted.", r: "The PDF describes Python as an interpreted language and notes that it is easy to debug.", ans: "A", exp: "Both true; reason provides correct context." },
+            { a: "Cross-platform language is a Python Plus.", r: "Cross-platform language is listed among the Python Pluses in the PDF.", ans: "A", exp: "Both true and linked." },
+            { a: "Python is free and open source.", r: "Free and Open Source is explicitly listed as a Python Plus.", ans: "A", exp: "Both true and linked." },
+            { a: "Variety of usage/applications is an advantage of Python.", r: "It is listed among the Python Pluses.", ans: "A", exp: "Both true and linked." },
+            { a: "Python is the fastest language.", r: "The PDF lists 'Not the Fastest Language' as a Python Minus.", ans: "D", exp: "Assertion is false, Reason is true." },
+            { a: "Python is not the fastest language.", r: "'Not the Fastest Language' is explicitly given under Python Minuses.", ans: "A", exp: "Both true and linked." },
+            { a: "Lesser libraries than C, Java and Perl is listed as a Python Minus.", r: "The PDF explicitly lists this under Python Minuses.", ans: "A", exp: "Both true and linked." },
+            { a: "Python is not strong on type-binding.", r: "This is explicitly listed as a Python Minus.", ans: "A", exp: "Both true and linked." },
+            { a: "Not easily convertible is a Python Minus.", r: "It is listed as the fourth Python Minus.", ans: "A", exp: "Both true and linked." },
+            { a: "Python allows multiple assignment.", r: "The PDF gives the example `a,b = 10,20`.", ans: "A", exp: "Both true and linked." },
+            { a: "a,b = b,a can be used to swap values.", r: "Python permits multiple assignment in a single statement.", ans: "A", exp: "Both true; reason explains how swapping works." },
+            { a: "Python IDLE has two modes.", r: "The PDF lists Interactive Mode and Script Mode.", ans: "A", exp: "Both true and linked." },
+            { a: "Interactive Mode uses the `>>>` sign.", r: "The PDF states that the coder writes one line of code after the `>>>` sign.", ans: "A", exp: "Both true and linked." },
+            { a: "Interactive Mode executes code after Enter is pressed.", r: "The PDF states that after pressing Enter, the code is executed and output appears.", ans: "A", exp: "Both true and linked." },
+            { a: "Script Mode can execute multiple lines together.", r: "It allows the user to write multiple lines of code in a single window and execute them together.", ans: "A", exp: "Both true and linked." },
+            { a: "Jupyter Notebook and Spyder are associated with the Anaconda Distribution Suite.", r: "The PDF labels both as Anaconda Distribution Suite applications.", ans: "A", exp: "Both true and linked." },
+            { a: "x = 10 and y = \"20\" have different types.", r: "10 is an integer and \"20\" is a string.", ans: "A", exp: "Both true and linked." },
+            { a: "c = x+y in the PDF produces a TypeError.", r: "The operation attempts to add an int and a str.", ans: "A", exp: "Both true; reason correctly explains the error." },
+            { a: "print(c) causes the TypeError shown in the PDF.", r: "The error occurs at c = x+y.", ans: "D", exp: "Assertion is false (c = x+y causes it), Reason is true." },
+            { a: "Script Mode is different from Interactive Mode.", r: "Script Mode allows multiple lines to be written and executed together.", ans: "A", exp: "Both true and linked." },
+            { a: "Python IDLE can be used for writing Python programs.", r: "Python IDLE is one of the applications listed in the PDF for writing Python programs.", ans: "A", exp: "Both true and linked." },
+            { a: "PyCharm is listed in the PDF.", r: "PyCharm is one of the five applications/software options given for writing Python programs.", ans: "A", exp: "Both true and linked." },
+            { a: "VS Code is listed as a Python programming application in the chapter.", r: "VS Code appears in the chapter's list of applications/software for writing Python programs.", ans: "A", exp: "Both true and linked." },
+            { a: "Python is an expressive language.", r: "The PDF compares Python with C++ using a swapping example to demonstrate fewer lines/simpler syntax.", ans: "A", exp: "Both true and linked." }
+        ];
+
+        // ---------------- STATE ----------------
+        let correctCount = 0, wrongCount = 0;
+
+        function updateScore() {
+            const total = correctCount + wrongCount;
+            document.getElementById('correctStat').textContent = '✅ ' + correctCount;
+            document.getElementById('wrongStat').textContent = '❌ ' + wrongCount;
+            document.getElementById('totalStat').textContent = '/ ' + total + ' answered';
+            const totalQ = mcqData.reduce((n, s) => n + s.items.length, 0) + tfData.length + arData.length;
+            document.getElementById('barinner').style.width = (totalQ ? (total / totalQ * 100) : 0) + '%';
+        }
+
+        // ---------------- RENDER MCQ ----------------
+        const mcqContainer = document.getElementById('mcq-container');
+        let mcqIndex = 0;
+        mcqData.forEach(section => {
+            const h = document.createElement('div');
+            h.className = 'subsection-title';
+            h.textContent = section.sec;
+            mcqContainer.appendChild(h);
+            section.items.forEach(item => {
+                mcqIndex++;
+                const card = document.createElement('div');
+                card.className = 'qcard';
+                const qt = document.createElement('div');
+                qt.className = 'qtext';
+                qt.innerHTML = '<span class="qnum">Q' + mcqIndex + '.</span>' + item.q;
+                card.appendChild(qt);
+                const opts = document.createElement('div');
+                opts.className = 'options';
+                const fb = document.createElement('div');
+                fb.className = 'feedback';
+                item.o.forEach((optText, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'opt-btn';
+                    btn.textContent = String.fromCharCode(65 + idx) + '. ' + optText;
+                    btn.onclick = () => {
+                        if (btn.classList.contains('locked')) return;
+                        const allBtns = opts.querySelectorAll('.opt-btn');
+                        allBtns.forEach(b => b.classList.add('locked'));
+                        if (idx === item.a) {
+                            btn.classList.add('correct-pick');
+                            fb.className = 'feedback show ok';
+                            fb.textContent = '🎉 Correct! ' + optText + ' is right.';
+                            correctCount++;
+                        } else {
+                            btn.classList.add('wrong-pick');
+                            allBtns[item.a].classList.add('reveal-correct');
+                            fb.className = 'feedback show no';
+                            fb.textContent = '❌ Not quite — correct answer: ' + item.o[item.a];
+                            wrongCount++;
+                        }
+                        updateScore();
+                    };
+                    opts.appendChild(btn);
+                });
+                card.appendChild(opts);
+                card.appendChild(fb);
+                mcqContainer.appendChild(card);
+            });
+        });
+
+        // ---------------- RENDER TF ----------------
+        const tfContainer = document.getElementById('tf-container');
+        tfData.forEach((item, i) => {
+            const card = document.createElement('div');
+            card.className = 'qcard';
+            const qt = document.createElement('div');
+            qt.className = 'qtext';
+            qt.innerHTML = '<span class="qnum">' + (i + 1) + '.</span>' + item.s;
+            card.appendChild(qt);
+            const opts = document.createElement('div');
+            opts.className = 'tf-options';
+            const fb = document.createElement('div');
+            fb.className = 'feedback';
+            ['True', 'False'].forEach((label) => {
+                const val = (label === 'True');
+                const btn = document.createElement('button');
+                btn.className = 'tf-btn';
+                btn.textContent = (val ? '✔️ ' : '✖️ ') + label;
+                btn.onclick = () => {
+                    if (btn.classList.contains('locked')) return;
+                    const allBtns = opts.querySelectorAll('.tf-btn');
+                    allBtns.forEach(b => b.classList.add('locked'));
+                    if (val === item.a) {
+                        btn.classList.add('correct-pick');
+                        fb.className = 'feedback show ok';
+                        fb.textContent = '🎉 Correct!' + (item.a ? '' : ' ' + item.fix);
+                        correctCount++;
+                    } else {
+                        btn.classList.add('wrong-pick');
+                        allBtns[item.a ? 0 : 1].classList.add('reveal-correct');
+                        fb.className = 'feedback show no';
+                        fb.textContent = '❌ Actually ' + (item.a ? 'True' : 'False') + '.' + (item.fix ? ' ' + item.fix : '');
+                        wrongCount++;
+                    }
+                    updateScore();
+                };
+                opts.appendChild(btn);
+            });
+            card.appendChild(opts);
+            card.appendChild(fb);
+            tfContainer.appendChild(card);
+        });
+
+        // ---------------- RENDER ASSERTION-REASON ----------------
+        const arContainer = document.getElementById('ar-container');
+        const arChoices = {
+            A: "Both Assertion and Reason are true, and Reason correctly explains Assertion.",
+            B: "Both are true, but Reason does not correctly explain Assertion.",
+            C: "Assertion is true, but Reason is false.",
+            D: "Assertion is false, but Reason is true."
+        };
+        arData.forEach((item, i) => {
+            const card = document.createElement('div');
+            card.className = 'qcard';
+            const qt = document.createElement('div');
+            qt.className = 'qtext';
+            qt.innerHTML = '<span class="qnum">' + (i + 1) + '.</span> <b>Assertion:</b> ' + item.a + '<br><b>Reason:</b> ' + item.r;
+            card.appendChild(qt);
+            const opts = document.createElement('div');
+            opts.className = 'options two-col-wide';
+            const fb = document.createElement('div');
+            fb.className = 'feedback';
+            Object.keys(arChoices).forEach(letter => {
+                const btn = document.createElement('button');
+                btn.className = 'opt-btn';
+                btn.textContent = letter + '. ' + arChoices[letter];
+                btn.onclick = () => {
+                    if (btn.classList.contains('locked')) return;
+                    const allBtns = opts.querySelectorAll('.opt-btn');
+                    allBtns.forEach(b => b.classList.add('locked'));
+                    const correctIdx = Object.keys(arChoices).indexOf(item.ans);
+                    if (letter === item.ans) {
+                        btn.classList.add('correct-pick');
+                        fb.className = 'feedback show ok';
+                        fb.textContent = '🎉 Correct! ' + item.exp;
+                        correctCount++;
+                    } else {
+                        btn.classList.add('wrong-pick');
+                        allBtns[correctIdx].classList.add('reveal-correct');
+                        fb.className = 'feedback show no';
+                        fb.textContent = '❌ Correct answer: ' + item.ans + '. ' + item.exp;
+                        wrongCount++;
+                    }
+                    updateScore();
+                };
+                opts.appendChild(btn);
+            });
+            card.appendChild(opts);
+            card.appendChild(fb);
+            arContainer.appendChild(card);
+        });
+
+        function resetAll() {
+            correctCount = 0; wrongCount = 0;
+            updateScore();
+            document.querySelectorAll('.opt-btn, .tf-btn').forEach(b => {
+                b.classList.remove('locked', 'correct-pick', 'wrong-pick', 'reveal-correct');
+            });
+            document.querySelectorAll('.feedback').forEach(f => { f.className = 'feedback'; f.textContent = ''; });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        updateScore();
+    </script>
+</body>
+
+</html>

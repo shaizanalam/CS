@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Class XI CS - Getting Started with Python</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;800&display=swap');
+
+        :root {
+            --lavender: #e6e0fa;
+            --lavender-dark: #8b7fd6;
+            --blush: #fde2e9;
+            --blush-dark: #e0729a;
+            --mint: #dcf5e8;
+            --mint-dark: #4a9d78;
+            --babyblue: #dbeeff;
+            --babyblue-dark: #4a90d9;
+            --cream: #faf9f6;
+            --ink: #2d3748;
+            --ink-soft: #5a6478;
+        }
+
+        @page {
+            size: A4 portrait;
+            margin: 12mm;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: var(--cream);
+            color: var(--ink);
+            line-height: 1.45;
+            margin: 0;
+            padding: 6px;
+            font-size: 12.5px;
+        }
+
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        h1, h2, h3 {
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+        }
+
+        /* ---------- HEADER ---------- */
+        .header-card {
+            background: linear-gradient(120deg, var(--lavender) 0%, var(--blush) 50%, var(--babyblue) 100%);
+            border-radius: 20px;
+            padding: 20px 24px;
+            text-align: center;
+            margin-bottom: 14px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+
+        .header-card h1 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--ink);
+            letter-spacing: 0.3px;
+        }
+
+        .header-card p {
+            margin: 6px 0 0;
+            font-size: 12px;
+            color: var(--ink-soft);
+            font-weight: 600;
+        }
+
+        .header-tags {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .htag {
+            background: rgba(255, 255, 255, 0.65);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 10.5px;
+            font-weight: 700;
+            color: var(--ink-soft);
+        }
+
+        /* ---------- SECTION LABEL ---------- */
+        .section-label {
+            font-size: 13px;
+            font-weight: 800;
+            margin: 14px 2px 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            break-after: avoid;
+        }
+
+        .section-label .num {
+            background: var(--lavender-dark);
+            color: #fff;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10.5px;
+        }
+
+        /* ---------- CARDS ---------- */
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 14px 16px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            break-inside: avoid;
+            page-break-inside: avoid;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 13.5px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-pink { color: var(--blush-dark); }
+        .badge-purple { color: var(--lavender-dark); }
+        .badge-blue { color: var(--babyblue-dark); }
+        .badge-green { color: var(--mint-dark); }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        p.note {
+            font-size: 11.5px;
+            color: var(--ink-soft);
+            margin: 4px 0 8px;
+        }
+
+        /* ---------- TABLES ---------- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11.5px;
+            margin-top: 6px;
+        }
+
+        th {
+            background: var(--lavender);
+            color: #4b3f91;
+            padding: 7px 9px;
+            text-align: left;
+            font-weight: 700;
+        }
+
+        th:first-child { border-radius: 8px 0 0 8px; }
+        th:last-child { border-radius: 0 8px 8px 0; }
+
+        td {
+            padding: 6px 9px;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        tr:nth-child(even) td { background: #faf8ff; }
+
+        ul {
+            margin: 0;
+            padding-left: 16px;
+            font-size: 11.5px;
+        }
+
+        li { margin-bottom: 4px; }
+
+        /* ---------- TAG GRID & ITEMS ---------- */
+        .tag-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 11.5px;
+        }
+
+        .tag-item {
+            background: #fdf4ff;
+            border-radius: 10px;
+            padding: 8px 10px;
+            border-left: 3px solid #d946ef;
+        }
+
+        .tag-item.blue {
+            background: #f0f8ff;
+            border-left-color: var(--babyblue-dark);
+        }
+
+        .flash {
+            background: var(--mint);
+            border-radius: 10px;
+            padding: 7px 10px;
+            font-size: 10.5px;
+            font-weight: 700;
+            color: #1f5f43;
+            display: inline-block;
+            margin: 3px 4px 0 0;
+        }
+
+        .callout {
+            background: #fff7e6;
+            border: 1.5px dashed #f0c469;
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: 11px;
+            color: #7a5c14;
+            margin-top: 8px;
+            break-inside: avoid;
+        }
+
+        .def-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 14px;
+        }
+
+        .def-item {
+            font-size: 10.8px;
+            padding: 6px 8px;
+            background: #f9f8ff;
+            border-radius: 8px;
+        }
+
+        .def-item b {
+            color: var(--lavender-dark);
+            display: block;
+            font-size: 11px;
+            margin-bottom: 1px;
+        }
+
+        /* ---------- CODE BLOCK VISUAL ---------- */
+        .code-visual {
+            background: #2d3748;
+            color: #e2e8f0;
+            border-radius: 12px;
+            padding: 10px 14px;
+            margin: 6px 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 11.5px;
+            line-height: 1.6;
+            border-left: 3px solid var(--mint-dark);
+            text-align: left;
+        }
+
+        .code-visual .result {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 800;
+            color: var(--mint-dark);
+            margin-top: 6px;
+            font-size: 11.5px;
+            display: block;
+        }
+
+        .code-visual .error {
+            color: var(--blush-dark);
+        }
+        
+        .code-prompt {
+            color: var(--lavender-dark);
+            font-weight: bold;
+        }
+
+        /* ---------- THEOREM CARD (Reused for Important Info) ---------- */
+        .theorem-card {
+            background: linear-gradient(120deg, #fff7e6, #fff2f8);
+            border: 1.5px dashed #f0c469;
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin: 8px 0;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .theorem-card .theorem-formula {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--blush-dark);
+            margin: 8px 0;
+        }
+
+        .page-break {
+            break-before: page;
+            page-break-before: always;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+
+        <div class="header-card">
+            <h1>🐍 Getting Started with Python</h1>
+            <p>Class XI Computer Science (083) • Detailed Exam Notes</p>
+            <div class="header-tags">
+                <span class="htag">High-Level Language</span>
+                <span class="htag">Python Pluses</span>
+                <span class="htag">Python Minuses</span>
+                <span class="htag">Software/IDE</span>
+            </div>
+        </div>
+
+        <p class="note" style="text-align:center;">These notes are prepared directly from your uploaded PDF, expanding the concepts for easy understanding and exam writing.</p>
+
+        <!-- SECTION 1 -->
+        <div class="section-label"><span class="num">1</span> What is Python? & History</div>
+        
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-title badge-purple">📌 Basic Definition</div>
+                <p><b>Python is a high-level programming language.</b></p>
+                <ul>
+                    <li><b>Programming Language:</b> Used to give instructions to a computer.</li>
+                    <li><b>High-Level:</b> Designed to be relatively easy for humans to read and write, compared to low-level machine languages.</li>
+                </ul>
+                <div class="code-visual">
+                    print("Hello World")
+                    <span class="result">Hello World</span>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title badge-blue">🕰️ History & Influences</div>
+                <ul style="margin-bottom: 8px;">
+                    <li><b>Developer:</b> Guido van Rossum</li>
+                    <li><b>Developed:</b> February 1991</li>
+                    <li><b>Type:</b> High-level programming language</li>
+                </ul>
+                <b>Influenced by two languages:</b>
+                <ol style="margin: 4px 0 0; padding-left: 20px; font-size: 11.5px;">
+                    <li>ABC</li>
+                    <li>Modula-3</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title badge-pink">🐍 Why is Python called Python?</div>
+            <p style="margin: 0;">The name Python was inspired by the famous BBC comedy show: <b>Monty Python's Flying Circus</b>.</p>
+            <div class="callout">
+                ⚠️ <b>Important:</b> Python was <b>not named after the snake</b>. The programming language's name came from the comedy show.
+            </div>
+        </div>
+
+        <!-- SECTION 2 -->
+        <div class="section-label"><span class="num">2</span> Python Pluses (Advantages)</div>
+        
+        <p class="note" style="margin-left: 6px;">"Python Pluses" means the advantages or features of Python. There are 7 listed in your PDF.</p>
+
+        <div class="card">
+            <table style="margin-top: 0;">
+                <tr>
+                    <th width="30%">Advantage</th>
+                    <th width="70%">Meaning / Details</th>
+                </tr>
+                <tr>
+                    <td><b>1. Easy to use</b></td>
+                    <td>It has <b>very simple syntax rules</b> (rules for writing correctly). Programs are easy to write and understand.</td>
+                </tr>
+                <tr>
+                    <td><b>2. Expressive language</b></td>
+                    <td><b>Fewer lines of code and simpler syntax.</b> Can perform tasks using fewer instructions (e.g., swapping values: `a, b = b, a`).</td>
+                </tr>
+                <tr>
+                    <td><b>3. Interpreted language</b></td>
+                    <td>Executes instructions through an interpreter. Important advantage: <b>It is easy to debug</b> (find and fix errors).</td>
+                </tr>
+                <tr>
+                    <td><b>4. Completeness</b></td>
+                    <td>It is a general-purpose language that provides facilities for developing different kinds of programs.</td>
+                </tr>
+                <tr>
+                    <td><b>5. Cross-platform language</b></td>
+                    <td>Programs can be used across different operating-system platforms (e.g., Windows, Linux, macOS).</td>
+                </tr>
+                <tr>
+                    <td><b>6. Free and open source</b></td>
+                    <td>Available for use without purchasing (Free) and its source code is openly available under its license (Open Source).</td>
+                </tr>
+                <tr>
+                    <td><b>7. Variety of usage/applications</b></td>
+                    <td>Used for many different purposes: Web development, Automation, Data processing, AI/ML, Education, etc.</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-title badge-green">🔄 Expressive Example (Swapping)</div>
+                <p>The PDF compares swapping two values in C++ and Python.</p>
+                <b>Traditional Approach:</b>
+                <div class="code-visual" style="border-left-color: #5a6478;">
+                    TEMP = a<br>
+                    a = b<br>
+                    b = TEMP
+                </div>
+                <b>Python Approach:</b>
+                <div class="code-visual">
+                    a, b = 10, 20<br>
+                    a, b = b, a
+                </div>
+                <p style="margin: 8px 0 0; font-size: 11px;"><i>Expressive language → fewer lines + simpler syntax</i></p>
+            </div>
+            
+            <div class="card">
+                <div class="card-title badge-pink">🐛 Debugging & TypeError</div>
+                <p><b>Debugging</b> is finding and fixing errors.</p>
+                <div class="code-visual">
+                    x = 10     <span style="color: #a0aec0;"># integer</span><br>
+                    y = "20"   <span style="color: #a0aec0;"># string</span><br>
+                    c = x + y<br>
+                    print(c)<br>
+                    <span class="error">TypeError: unsupported operand type(s) for +: 'int' and 'str'</span>
+                </div>
+                <p style="margin: 8px 0 0; font-size: 11px;">Error occurs because it tries to add an integer and a string.</p>
+            </div>
+        </div>
+
+        <!-- SECTION 3 -->
+        <div class="section-label"><span class="num">3</span> Python Minuses (Disadvantages)</div>
+
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-title badge-purple">📉 1. Not the Fastest Language</div>
+                <p>Its execution can be slower than some other programming languages (like C++ or Java) because it is interpreted and emphasizes simplicity over maximum speed.</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-title badge-purple">📚 2. Lesser Libraries</div>
+                <p>According to the PDF wording: <b>"Lesser Libraries than C, Java, Perl"</b>.</p>
+                <p style="font-size: 11px; margin: 4px 0 0;"><i>(A library is a collection of pre-written code).</i></p>
+            </div>
+            
+            <div class="card">
+                <div class="card-title badge-purple">🔗 3. Not Strong on Type-Binding</div>
+                <p>Python uses <b>dynamic typing</b>, where a variable does not need an explicit type declaration.</p>
+                <p style="font-size: 11px;"><b>C++:</b> <code>int x = 10.25</code> (Type declared)<br>
+                <b>Python:</b> <code>a, b = 10, 20</code> (No type declared, can change later)</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-title badge-purple">🔄 4. Not Easily Convertible</div>
+                <p>Listed as the fourth disadvantage in the PDF. Because of its lack of syntax (like strong type binding), converting Python code to other languages can be difficult.</p>
+            </div>
+        </div>
+
+        <!-- SECTION 4 -->
+        <div class="section-label"><span class="num">4</span> Software / Applications</div>
+
+        <div class="card">
+            <div class="card-title badge-blue">💻 5 Applications to Write Python</div>
+            <p>The PDF lists the following options:</p>
+            <div class="tag-grid">
+                <div class="tag-item blue"><b>1. Python IDLE</b><br><span style="font-size: 10.5px; color: var(--ink-soft);">Has Interactive and Script modes.</span></div>
+                <div class="tag-item blue"><b>2. Jupyter Notebook</b><br><span style="font-size: 10.5px; color: var(--ink-soft);">Part of Anaconda Distribution.</span></div>
+                <div class="tag-item blue"><b>3. Spyder</b><br><span style="font-size: 10.5px; color: var(--ink-soft);">Part of Anaconda Distribution.</span></div>
+                <div class="tag-item blue"><b>4. PyCharm</b><br><span style="font-size: 10.5px; color: var(--ink-soft);">Dedicated Python IDE.</span></div>
+                <div class="tag-item blue"><b>5. VS Code</b><br><span style="font-size: 10.5px; color: var(--ink-soft);">Popular code editor.</span></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title badge-pink">🖥️ Python IDLE Modes</div>
+            <table>
+                <tr>
+                    <th width="50%">Interactive Mode</th>
+                    <th width="50%">Script Mode</th>
+                </tr>
+                <tr>
+                    <td>Code is entered <b>line by line</b>.</td>
+                    <td><b>Multiple lines</b> are written together.</td>
+                </tr>
+                <tr>
+                    <td>Uses the <span class="code-prompt">&gt;&gt;&gt;</span> prompt.</td>
+                    <td>Uses a program/script window.</td>
+                </tr>
+                <tr>
+                    <td>Executes immediately after pressing Enter.</td>
+                    <td>Program can be executed as a group.</td>
+                </tr>
+                <tr>
+                    <td>Best suited for <b>quick testing</b>.</td>
+                    <td>Best suited for <b>complete programs</b>.</td>
+                </tr>
+            </table>
+            
+            <div class="grid-2" style="margin-top: 10px; margin-bottom: 0;">
+                <div class="code-visual">
+                    <span class="code-prompt">&gt;&gt;&gt;</span> 8 * 8<br>
+                    <span class="result">64</span>
+                </div>
+                <div class="code-visual">
+                    a = 15<br>
+                    b = 25<br>
+                    print(a + b)<br>
+                    <span class="result">40</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- REVISION SECTION -->
+        <div class="page-break"></div>
+        <div class="section-label"><span class="num">5</span> Quick Revision & Definitions</div>
+
+        <div class="card">
+            <div class="def-list">
+                <div class="def-item">
+                    <b>High-Level Language</b>
+                    Language designed to be easier for humans to understand and write.
+                </div>
+                <div class="def-item">
+                    <b>Syntax</b>
+                    Rules for writing valid statements in a programming language.
+                </div>
+                <div class="def-item">
+                    <b>Expressive Language</b>
+                    Capable of expressing operations with fewer lines and simpler syntax.
+                </div>
+                <div class="def-item">
+                    <b>Interpreted Language</b>
+                    Programs are executed through an interpreter (makes debugging easy).
+                </div>
+                <div class="def-item">
+                    <b>Cross-Platform</b>
+                    Capable of being used across different operating-system platforms.
+                </div>
+                <div class="def-item">
+                    <b>Open Source</b>
+                    Software whose source code is available under an open-source license.
+                </div>
+            </div>
+        </div>
+
+        <div class="theorem-card">
+            <div class="card-title badge-purple" style="justify-content: center; margin-bottom: 2px;">🧠 Memory Trick: P-H-G-A-M-7P-4M-5S</div>
+            <p style="margin: 8px 0; font-size: 11.5px; text-align: left; padding: 0 10px;">
+                <b>P</b>ython = <b>H</b>igh-level = <b>G</b>uido van Rossum = <b>A</b>BC = <b>M</b>odula-3
+            </p>
+            <div class="grid-3" style="text-align: left; margin: 10px 10px 0;">
+                <div>
+                    <b>7 Pluses (EEICCFV)</b><br>
+                    <span style="font-size: 10.5px;">
+                    • <b>E</b>asy<br>
+                    • <b>E</b>xpressive<br>
+                    • <b>I</b>nterpreted<br>
+                    • <b>C</b>omplete<br>
+                    • <b>C</b>ross-platform<br>
+                    • <b>F</b>ree/Open Source<br>
+                    • <b>V</b>ariety of usage
+                    </span>
+                </div>
+                <div>
+                    <b>4 Minuses (FLTC)</b><br>
+                    <span style="font-size: 10.5px;">
+                    • <b>F</b>astness (Not fastest)<br>
+                    • <b>L</b>ibraries (Lesser)<br>
+                    • <b>T</b>ype-binding (Weak)<br>
+                    • <b>C</b>onvertible (Not easily)
+                    </span>
+                </div>
+                <div>
+                    <b>5 Software (IJSPV)</b><br>
+                    <span style="font-size: 10.5px;">
+                    • <b>I</b>DLE (Interactive/Script)<br>
+                    • <b>J</b>upyter Notebook<br>
+                    • <b>S</b>pyder<br>
+                    • <b>P</b>yCharm<br>
+                    • <b>V</b>S Code
+                    </span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
