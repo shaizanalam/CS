@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class XI CS - Data Handling | Practice Question Bank</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;800&display=swap');
+
+        :root {
+            --lavender: #e6e0fa;
+            --lavender-dark: #8b7fd6;
+            --blush: #fde2e9;
+            --blush-dark: #e0729a;
+            --mint: #dcf5e8;
+            --mint-dark: #3f9d72;
+            --babyblue: #dbeeff;
+            --babyblue-dark: #4a90d9;
+            --cream: #faf9f6;
+            --ink: #2d3748;
+            --ink-soft: #5a6478;
+            --correct: #3f9d72;
+            --correct-bg: #e4f9ee;
+            --wrong: #e0567a;
+            --wrong-bg: #fdeaf0;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: var(--cream);
+            color: var(--ink);
+            margin: 0;
+            padding: 0 0 60px;
+            line-height: 1.5;
+        }
+
+        .wrap { max-width: 880px; margin: 0 auto; padding: 16px; }
+
+        /* HEADER */
+        .header-card {
+            background: linear-gradient(120deg, var(--lavender) 0%, var(--blush) 50%, var(--babyblue) 100%);
+            border-radius: 22px;
+            padding: 26px 24px;
+            text-align: center;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+        }
+
+        .header-card h1 { margin: 0; font-size: 24px; font-weight: 800; }
+        .header-card p { margin: 6px 0 0; font-size: 13px; color: var(--ink-soft); font-weight: 600; }
+
+        /* SCORE BAR */
+        .scorebar {
+            position: sticky; top: 10px; z-index: 50;
+            background: #fff; border-radius: 18px; padding: 12px 18px;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08); margin-bottom: 18px;
+            border: 1.5px solid var(--lavender); flex-wrap: wrap; gap: 8px;
+        }
+        .scorebar .label { font-weight: 800; font-size: 13.5px; color: var(--lavender-dark); }
+        .scorebar .stat { font-size: 13px; font-weight: 700; }
+        .scorebar .stat.correct-txt { color: var(--correct); }
+        .scorebar .stat.wrong-txt { color: var(--wrong); }
+
+        .barouter { flex: 1; min-width: 140px; height: 10px; background: #f1eefc; border-radius: 10px; overflow: hidden; margin: 0 10px; }
+        .barinner { height: 100%; width: 0%; background: linear-gradient(90deg, var(--mint-dark), var(--babyblue-dark)); transition: width .4s ease; }
+
+        .reset-btn {
+            background: var(--blush); color: var(--blush-dark); border: none;
+            padding: 6px 14px; border-radius: 20px; font-family: 'Quicksand', sans-serif;
+            font-weight: 700; font-size: 12px; cursor: pointer;
+        }
+        .reset-btn:hover { background: var(--blush-dark); color: #fff; }
+
+        /* SECTION LABEL */
+        .section-title { font-size: 16px; font-weight: 800; margin: 26px 4px 10px; display: flex; align-items: center; gap: 10px; }
+        .section-title .chip { background: var(--lavender-dark); color: #fff; font-size: 11px; padding: 4px 11px; border-radius: 20px; }
+        .subsection-title { font-size: 13px; font-weight: 700; margin: 16px 2px 8px; color: var(--lavender-dark); }
+
+        /* QUESTION CARD */
+        .qcard {
+            background: #fff; border-radius: 16px; padding: 14px 16px; margin-bottom: 10px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04); border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .qtext { font-weight: 700; font-size: 13.5px; margin-bottom: 10px; }
+        .qnum { color: var(--babyblue-dark); margin-right: 4px; }
+
+        .options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .options.two-col-wide { grid-template-columns: 1fr; }
+
+        .opt-btn {
+            text-align: left; background: #f9f8ff; border: 1.5px solid #ece8fb; border-radius: 12px;
+            padding: 9px 12px; font-family: 'Quicksand', sans-serif; font-size: 12.5px;
+            font-weight: 600; color: var(--ink); cursor: pointer; transition: all .15s ease;
+        }
+        .opt-btn:hover:not(.locked) { border-color: var(--lavender-dark); background: #f1eefe; transform: translateY(-1px); }
+        .opt-btn.correct-pick { background: var(--correct-bg); border-color: var(--correct); color: #1f6b46; }
+        .opt-btn.wrong-pick { background: var(--wrong-bg); border-color: var(--wrong); color: #9c2f4d; }
+        .opt-btn.reveal-correct { background: var(--correct-bg); border-color: var(--correct); color: #1f6b46; }
+        .opt-btn.locked { cursor: default; }
+
+        .feedback { margin-top: 9px; font-size: 12px; font-weight: 700; border-radius: 10px; padding: 7px 11px; display: none; }
+        .feedback.show { display: block; }
+        .feedback.ok { background: var(--correct-bg); color: #1f6b46; }
+        .feedback.no { background: var(--wrong-bg); color: #9c2f4d; }
+
+        /* TF pills */
+        .tf-options { display: flex; gap: 10px; }
+        .tf-btn {
+            flex: 1; text-align: center; background: #f9f8ff; border: 1.5px solid #ece8fb;
+            border-radius: 20px; padding: 8px 10px; font-family: 'Quicksand', sans-serif;
+            font-weight: 700; font-size: 12.5px; cursor: pointer;
+        }
+        .tf-btn:hover:not(.locked) { border-color: var(--lavender-dark); }
+        .tf-btn.correct-pick { background: var(--correct-bg); border-color: var(--correct); color: #1f6b46; }
+        .tf-btn.wrong-pick { background: var(--wrong-bg); border-color: var(--wrong); color: #9c2f4d; }
+        .tf-btn.reveal-correct { background: var(--correct-bg); border-color: var(--correct); color: #1f6b46; }
+        .tf-btn.locked { cursor: default; }
+
+        /* Reference / written sections */
+        details.ref-card {
+            background: #fff; border-radius: 16px; padding: 0; margin-bottom: 10px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04); border: 1px solid rgba(0, 0, 0, 0.05); overflow: hidden;
+        }
+        details.ref-card summary {
+            cursor: pointer; list-style: none; padding: 13px 16px; font-weight: 800; font-size: 13.5px;
+            display: flex; align-items: center; justify-content: space-between;
+            background: linear-gradient(90deg, #f9f8ff, #fff);
+        }
+        details.ref-card summary::-webkit-details-marker { display: none; }
+        details.ref-card summary .arrow { transition: transform .2s ease; color: var(--lavender-dark); font-size: 14px; }
+        details.ref-card[open] summary .arrow { transform: rotate(90deg); }
+        .ref-body { padding: 4px 18px 16px; }
+        .ref-body ol { margin: 0; padding-left: 20px; font-size: 12.5px; }
+        .ref-body ol li { margin-bottom: 8px; }
+
+        .priority-card {
+            background: linear-gradient(120deg, #fff7e6, #fff2f8); border: 1.5px dashed #f0c469;
+            border-radius: 16px; padding: 14px 16px; margin: 14px 0 22px; font-size: 12.5px;
+        }
+        .priority-card ol { padding-left: 18px; margin: 6px 0 0; }
+        .priority-card li { margin-bottom: 5px; }
+
+        .footer-note { text-align: center; font-size: 11px; color: var(--ink-soft); margin-top: 26px; }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #fff;
+            color: var(--ink-soft);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: var(--lavender-dark);
+            transform: translateX(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .code-visual {
+            font-family: monospace;
+            background: #f4f4f4;
+            padding: 4px 6px;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 0 0 70px; }
+            .wrap { padding: 12px 10px; }
+            .back-link { font-size: 13.5px; padding: 9px 16px; margin-bottom: 12px; }
+            .header-card { padding: 22px 16px; border-radius: 18px; margin-bottom: 14px; }
+            .header-card h1 { font-size: 21px; line-height: 1.3; }
+            .header-card p { font-size: 13.5px; margin-top: 6px; }
+            .scorebar { top: 6px; padding: 10px 14px; border-radius: 14px; gap: 8px; margin-bottom: 14px; }
+            .scorebar .label { font-size: 13.5px; }
+            .scorebar .stat { font-size: 13px; }
+            .barouter { min-width: 90px; height: 8px; margin: 0 6px; }
+            .reset-btn { padding: 6px 12px; font-size: 12px; }
+            .section-title { font-size: 17px; margin: 22px 4px 10px; flex-wrap: wrap; }
+            .section-title .chip { font-size: 11.5px; padding: 4px 10px; }
+            .subsection-title { font-size: 14.5px; margin: 16px 2px 8px; }
+            .qcard { padding: 16px 14px; border-radius: 16px; margin-bottom: 12px; }
+            .qtext { font-size: 15px; line-height: 1.55; margin-bottom: 12px; }
+            .qnum { font-size: 15.5px; }
+            .options { grid-template-columns: 1fr; gap: 9px; }
+            .opt-btn { font-size: 14.5px; line-height: 1.45; padding: 12px 14px; border-radius: 12px; min-height: 46px; display: flex; align-items: center; }
+            .tf-options { gap: 10px; }
+            .tf-btn { font-size: 14.5px; padding: 12px 10px; min-height: 46px; border-radius: 16px; }
+            .feedback { font-size: 13.5px; line-height: 1.5; padding: 10px 12px; border-radius: 10px; margin-top: 10px; }
+            details.ref-card { border-radius: 14px; margin-bottom: 12px; }
+            details.ref-card summary { font-size: 14.5px; padding: 14px 14px; line-height: 1.4; }
+            .ref-body { padding: 6px 14px 16px; }
+            .ref-body ol { font-size: 14px; line-height: 1.6; padding-left: 20px; }
+            .ref-body ol li { margin-bottom: 10px; }
+            .priority-card { padding: 14px 14px; border-radius: 14px; font-size: 13.5px; line-height: 1.55; margin: 14px 0 20px; }
+            .priority-card ol { padding-left: 18px; }
+            .priority-card li { margin-bottom: 6px; }
+            .footer-note { font-size: 12px; margin-top: 24px; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <a href="index.html" class="back-link">← Back to Revision Hub</a>
+
+        <div class="header-card">
+            <h1>🐍 Data Handling</h1>
+            <p>Class XI Computer Science (083) • Interactive Practice Question Bank</p>
+        </div>
+
+        <div class="scorebar">
+            <span class="label">🎯 Your Score</span>
+            <div class="barouter"><div class="barinner" id="barinner"></div></div>
+            <span class="stat correct-txt" id="correctStat">✅ 0</span>
+            <span class="stat wrong-txt" id="wrongStat">❌ 0</span>
+            <span class="stat" id="totalStat" style="color:var(--ink-soft);">/ 0 answered</span>
+            <button class="reset-btn" onclick="resetAll()">↺ Reset</button>
+        </div>
+
+        <!-- SECTION A: MCQ -->
+        <div class="section-title"><span class="chip">Section A</span> Multiple Choice Questions</div>
+        <div id="mcq-container"></div>
+
+        <!-- SECTION B: TRUE/FALSE -->
+        <div class="section-title"><span class="chip">Section B</span> True / False</div>
+        <p style="font-size:12px;color:var(--ink-soft);margin:-4px 4px 10px;">Tap True or False — wrong statements
+            auto-show the correction.</p>
+        <div id="tf-container"></div>
+
+        <!-- SECTION C: ASSERTION-REASON -->
+        <div class="section-title"><span class="chip">Section C</span> Assertion &amp; Reason</div>
+        <p style="font-size:12px;color:var(--ink-soft);margin:-4px 4px 10px;">A: Both true, R explains A &nbsp;|&nbsp;
+            B: Both true, R does not explain A &nbsp;|&nbsp; C: A true, R false &nbsp;|&nbsp; D: A false, R true</p>
+        <div id="ar-container"></div>
+
+        <!-- SECTION D: WRITTEN PRACTICE -->
+        <div class="section-title"><span class="chip">Section D</span> Written Practice (2, 3, 4, and 5 Markers)</div>
+
+        <details class="ref-card">
+            <summary>📌 2 Marker Questions <span class="arrow">▶</span></summary>
+            <div class="ref-body">
+                <ol>
+                    <li>What are mutable and immutable data types in Python? Give one example of each.</li>
+                    <li>Write a Python statement to generate a random integer between 1 and 10 (inclusive).</li>
+                    <li>Evaluate the expression: <code>result = (3 ** 3) ** 2</code>.</li>
+                    <li>Differentiate between the <code>==</code> and <code>is</code> operators in Python.</li>
+                    <li>State the difference between implicit and explicit type casting.</li>
+                    <li>Find the output: <br><code>import math<br>print(math.pow(2,3))</code></li>
+                    <li>What is an expression in Python? Give an example of a mixed expression.</li>
+                    <li>Which of the following are mutable? <br><code>List, Dictionary, Tuple, String, Sets</code></li>
+                    <li>What is the difference between Syntax Error and Semantics Error?</li>
+                    <li>What are the truth values associated with Python? Name two values that have a false truth value.</li>
+                </ol>
+            </div>
+        </details>
+
+        <details class="ref-card">
+            <summary>📝 3 Marker Questions <span class="arrow">▶</span></summary>
+            <div class="ref-body">
+                <ol start="11">
+                    <li>Explain the three types of errors that can occur in a Python program with examples.</li>
+                    <li>Write a program to calculate the amount payable after simple interest.</li>
+                    <li>What are the 3 key attributes associated with every Python object? Explain them briefly.</li>
+                    <li>Evaluate the following logical expression and show the result:<br><code>result = [1,2,3] and []</code><br>Explain why.</li>
+                    <li>Explain lexicographical string comparison. What will be the output of <code>"God" < "god"</code>? Why?</li>
+                    <li>Identify the module and the function needed to calculate the mean, median, and mode of a list. Write the code snippet.</li>
+                    <li>Explain the difference between a Runtime Error and a Logical Error.</li>
+                </ol>
+            </div>
+        </details>
+        
+        <details class="ref-card">
+            <summary>🏆 4 Marker Questions <span class="arrow">▶</span></summary>
+            <div class="ref-body">
+                <ol start="18">
+                    <li>Discuss the behavior of the <code>and</code> and <code>or</code> operators when the operands are numbers or lists instead of boolean values. Give two examples.</li>
+                    <li>Write a Python program to generate 6 random numbers and then print their mean, median, and mode using the <code>statistics</code> and <code>random</code> modules.</li>
+                    <li>What is Operator Precedence and Operator Associativity? Explain with the help of the expression: <code>7 * 8 / 5 // 2</code>.</li>
+                    <li>Write a program to generate a 5-digit secure random OTP (between 10000 and 99999).</li>
+                </ol>
+            </div>
+        </details>
+
+        <details class="ref-card">
+            <summary>🏅 5 Marker Questions <span class="arrow">▶</span></summary>
+            <div class="ref-body">
+                <ol start="22">
+                    <li>Write a complete Python program that: <br>
+                        a) Imports the <code>math</code> module.<br>
+                        b) Asks the user for a base and a power.<br>
+                        c) Calculates the result using <code>math.pow()</code>.<br>
+                        d) Demonstrates handling of a <code>ZeroDivisionError</code> using an example (like 10/0).<br>
+                        e) Explains what an exception is in this context.
+                    </li>
+                    <li>Explain the different bitwise operators (<code>&</code>, <code>|</code>, <code>^</code>, <code>~</code>) available in Python. Write down the result of <code>13 & 12</code> and <code>13 | 12</code> with their binary equivalents.</li>
+                </ol>
+            </div>
+        </details>
+
+        <div class="priority-card">
+            <b style="font-size:13px;">🔥 Top Priority — Do These First</b>
+            <ol>
+                <li>Mutable vs Immutable types categorization.</li>
+                <li>Difference between <code>is</code> (identity) and <code>==</code> (equality).</li>
+                <li>Logical operators evaluated with numbers/strings (Truth value testing).</li>
+                <li>Generating random integers using <code>random.randint()</code>.</li>
+                <li>Identifying the difference between Syntax Error, Logical Error, and Runtime Error.</li>
+            </ol>
+        </div>
+
+        <div class="footer-note">Data Handling is crucial for logic building. Master operators and data types! ✨</div>
+
+    </div>
+
+    <script>
+        // ---------------- DATA ----------------
+        const mcqData = [
+            {
+                sec: "A. Data Types and Mutability", items: [
+                    { q: "Which of the following is an immutable data type?", o: ["List", "Dictionary", "Tuple", "Set"], a: 2 },
+                    { q: "Which of the following data types does NOT allow duplicate entries?", o: ["List", "String", "Tuple", "Set"], a: 3 },
+                    { q: "The elements of a dictionary are accessed using:", o: ["Index", "Keys", "Values", "Pointers"], a: 1 },
+                    { q: "Which of the following is a mutable type?", o: ["Integer", "String", "List", "Float"], a: 2 },
+                    { q: "Every Python object has 3 key attributes. Which of the following is NOT one of them?", o: ["type", "value", "size", "id"], a: 2 }
+                ]
+            },
+            {
+                sec: "B. Operators", items: [
+                    { q: "Which operator performs floor division?", o: ["/", "%", "//", "**"], a: 2 },
+                    { q: "Which operator checks if two operands refer to the same object memory?", o: ["==", "is", "in", "="], a: 1 },
+                    { q: "What is the result of '4 == 4.0' in Python?", o: ["True", "False", "Error", "None"], a: 0 },
+                    { q: "Bitwise XOR operator is represented by:", o: ["&", "|", "~", "^"], a: 3 },
+                    { q: "Which of the following has Right-to-Left (R2L) associativity?", o: ["*", "/", "+", "**"], a: 3 }
+                ]
+            },
+            {
+                sec: "C. Logical and Relational Expressions", items: [
+                    { q: "What is the truth value of an empty list `[]`?", o: ["True", "False", "None", "Error"], a: 1 },
+                    { q: "In the expression `X or Y`, if X is True, what will be returned?", o: ["Y", "X", "True", "False"], a: 1 },
+                    { q: "What is the output of `[] and [1,2,3]`?", o: ["[]", "[1,2,3]", "True", "False"], a: 0 },
+                    { q: "What will be the output of `\"aman\" + \"sharma\"`?", o: ["amansharma", "aman sharma", "Error", "None"], a: 0 },
+                    { q: "How are strings compared in Python?", o: ["By length", "By Lexicographical ordering", "By memory size", "They cannot be compared"], a: 1 }
+                ]
+            },
+            {
+                sec: "D. Modules and Debugging", items: [
+                    { q: "Which function from the `random` module returns an integer between a and b (inclusive)?", o: ["random.random()", "random.randrange(a,b)", "random.randint(a,b)", "random.choice(a,b)"], a: 2 },
+                    { q: "The `math.pow(base, exp)` function belongs to which module?", o: ["random", "statistics", "math", "cmath"], a: 2 },
+                    { q: "An error that occurs during compilation due to misused language rules is called a:", o: ["Logical Error", "Run Time Error", "Syntax Error", "Exception"], a: 2 },
+                    { q: "If a program runs successfully but produces incorrect output due to a flawed formula, it is a:", o: ["Syntax Error", "Semantics Error", "Run Time Error", "Logical Error"], a: 3 },
+                    { q: "A `ZeroDivisionError` is an example of:", o: ["Logical Error", "Exception / Run Time Error", "Syntax Error", "Semantics Error"], a: 1 }
+                ]
+            }
+        ];
+
+        const tfData = [
+            { s: "Tuples are mutable data types in Python.", a: false, fix: "Tuples are immutable. Lists are mutable." },
+            { s: "Dictionary keys must be of an immutable type.", a: true },
+            { s: "Sets allow duplicate entries.", a: false, fix: "Sets do not allow duplicate entries." },
+            { s: "The `id()` function returns the memory address of an object.", a: true },
+            { s: "`is` and `==` operators perform the exact same function.", a: false, fix: "`==` checks for value equality, while `is` checks for memory identity." },
+            { s: "In Python, trailing zeros after a decimal point are ignored during numeric comparisons.", a: true },
+            { s: "In string comparison, capital letters are considered lesser than small letters.", a: true },
+            { s: "The logical `and` operator returns the first operand if it is false.", a: true },
+            { s: "Implicit type casting requires programmer intervention.", a: false, fix: "Implicit type casting is done automatically by the compiler. Explicit type casting requires intervention." },
+            { s: "`random.random()` returns a float number in the range [0.0, 1.0).", a: true },
+            { s: "Syntax errors occur when statements are not meaningful.", a: false, fix: "Semantics errors occur when statements are not meaningful. Syntax errors are grammar/rule violations." },
+            { s: "Exceptions are unexpected situations occurring during execution.", a: true }
+        ];
+
+        const arData = [
+            { a: "Lists are mutable, meaning their elements can be changed in place.", r: "Changing a list element does not change the memory location (id) of the list itself.", ans: "A", exp: "Both are true and the reason correctly explains the internal mechanism of mutability." },
+            { a: "Strings are considered immutable in Python.", r: "You can change a specific character of a string using its index (e.g., s[0] = 'p').", ans: "C", exp: "Assertion is true, but Reason is false. You cannot change a specific character of a string; it will throw a TypeError." },
+            { a: "The expression `10 == 10.0` evaluates to True.", r: "Python automatically promotes the integer to a float and compares them after removing trailing zeros.", ans: "A", exp: "Both are true and the reason correctly explains how numeric types are compared." },
+            { a: "The `is` operator compares the memory locations of two objects.", r: "The `==` operator compares the values of two objects.", ans: "B", exp: "Both statements are true, but the reason does not explain the assertion; they are just parallel facts." },
+            { a: "A program with a Logical Error will not compile.", r: "Logical errors violate the syntax rules of the programming language.", ans: "D", exp: "Both Assertion and Reason are false. Logical errors compile fine but produce wrong output." },
+            { a: "The expression `'aman' or ''` evaluates to `'aman'`.", r: "In an OR expression, if the first operand is True, it returns the first operand.", ans: "A", exp: "Both are true, and the reason explains the rule of the OR operator." }
+        ];
+
+        // ---------------- STATE ----------------
+        let correctCount = 0, wrongCount = 0;
+
+        function updateScore() {
+            const total = correctCount + wrongCount;
+            document.getElementById('correctStat').textContent = '✅ ' + correctCount;
+            document.getElementById('wrongStat').textContent = '❌ ' + wrongCount;
+            document.getElementById('totalStat').textContent = '/ ' + total + ' answered';
+            const totalQ = mcqData.reduce((n, s) => n + s.items.length, 0) + tfData.length + arData.length;
+            document.getElementById('barinner').style.width = (totalQ ? (total / totalQ * 100) : 0) + '%';
+        }
+
+        // ---------------- RENDER MCQ ----------------
+        const mcqContainer = document.getElementById('mcq-container');
+        let mcqIndex = 0;
+        mcqData.forEach(section => {
+            const h = document.createElement('div');
+            h.className = 'subsection-title';
+            h.textContent = section.sec;
+            mcqContainer.appendChild(h);
+            section.items.forEach(item => {
+                mcqIndex++;
+                const card = document.createElement('div');
+                card.className = 'qcard';
+                const qt = document.createElement('div');
+                qt.className = 'qtext';
+                qt.innerHTML = '<span class="qnum">Q' + mcqIndex + '.</span>' + item.q;
+                card.appendChild(qt);
+                const opts = document.createElement('div');
+                opts.className = 'options';
+                const fb = document.createElement('div');
+                fb.className = 'feedback';
+                item.o.forEach((optText, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'opt-btn';
+                    btn.textContent = String.fromCharCode(65 + idx) + '. ' + optText;
+                    btn.onclick = () => {
+                        if (btn.classList.contains('locked')) return;
+                        const allBtns = opts.querySelectorAll('.opt-btn');
+                        allBtns.forEach(b => b.classList.add('locked'));
+                        if (idx === item.a) {
+                            btn.classList.add('correct-pick');
+                            fb.className = 'feedback show ok';
+                            fb.textContent = '🎉 Correct! ' + optText + ' is right.';
+                            correctCount++;
+                        } else {
+                            btn.classList.add('wrong-pick');
+                            allBtns[item.a].classList.add('reveal-correct');
+                            fb.className = 'feedback show no';
+                            fb.textContent = '❌ Not quite — correct answer: ' + item.o[item.a];
+                            wrongCount++;
+                        }
+                        updateScore();
+                    };
+                    opts.appendChild(btn);
+                });
+                card.appendChild(opts);
+                card.appendChild(fb);
+                mcqContainer.appendChild(card);
+            });
+        });
+
+        // ---------------- RENDER TF ----------------
+        const tfContainer = document.getElementById('tf-container');
+        tfData.forEach((item, i) => {
+            const card = document.createElement('div');
+            card.className = 'qcard';
+            const qt = document.createElement('div');
+            qt.className = 'qtext';
+            qt.innerHTML = '<span class="qnum">' + (i + 1) + '.</span>' + item.s;
+            card.appendChild(qt);
+
+            const opts = document.createElement('div');
+            opts.className = 'tf-options';
+            const fb = document.createElement('div');
+            fb.className = 'feedback';
+
+            [true, false].forEach(boolVal => {
+                const btn = document.createElement('button');
+                btn.className = 'tf-btn';
+                btn.textContent = boolVal ? 'True' : 'False';
+                btn.onclick = () => {
+                    if (btn.classList.contains('locked')) return;
+                    const allBtns = opts.querySelectorAll('.tf-btn');
+                    allBtns.forEach(b => b.classList.add('locked'));
+
+                    if (boolVal === item.a) {
+                        btn.classList.add('correct-pick');
+                        fb.className = 'feedback show ok';
+                        fb.textContent = '✅ Correct!';
+                        correctCount++;
+                    } else {
+                        btn.classList.add('wrong-pick');
+                        allBtns[item.a ? 0 : 1].classList.add('reveal-correct');
+                        fb.className = 'feedback show no';
+                        fb.textContent = item.fix ? '❌ False. ' + item.fix : '❌ Incorrect.';
+                        wrongCount++;
+                    }
+                    updateScore();
+                };
+                opts.appendChild(btn);
+            });
+            card.appendChild(opts);
+            card.appendChild(fb);
+            tfContainer.appendChild(card);
+        });
+
+        // ---------------- RENDER AR ----------------
+        const arContainer = document.getElementById('ar-container');
+        arData.forEach((item, i) => {
+            const card = document.createElement('div');
+            card.className = 'qcard';
+            const qt = document.createElement('div');
+            qt.className = 'qtext';
+            qt.innerHTML = `<span class="qnum">${i + 1}.</span> <b>Assertion (A):</b> ${item.a}<br><br><b>Reason (R):</b> ${item.r}`;
+            card.appendChild(qt);
+
+            const opts = document.createElement('div');
+            opts.className = 'options two-col-wide';
+            const fb = document.createElement('div');
+            fb.className = 'feedback';
+
+            const arChoices = ["A", "B", "C", "D"];
+            arChoices.forEach(choice => {
+                const btn = document.createElement('button');
+                btn.className = 'opt-btn';
+                btn.textContent = choice;
+                btn.onclick = () => {
+                    if (btn.classList.contains('locked')) return;
+                    const allBtns = opts.querySelectorAll('.opt-btn');
+                    allBtns.forEach(b => b.classList.add('locked'));
+
+                    if (choice === item.ans) {
+                        btn.classList.add('correct-pick');
+                        fb.className = 'feedback show ok';
+                        fb.textContent = '✅ Correct! ' + item.exp;
+                        correctCount++;
+                    } else {
+                        btn.classList.add('wrong-pick');
+                        const correctIdx = arChoices.indexOf(item.ans);
+                        allBtns[correctIdx].classList.add('reveal-correct');
+                        fb.className = 'feedback show no';
+                        fb.textContent = `❌ Incorrect. Correct is ${item.ans}. ${item.exp}`;
+                        wrongCount++;
+                    }
+                    updateScore();
+                };
+                opts.appendChild(btn);
+            });
+            card.appendChild(opts);
+            card.appendChild(fb);
+            arContainer.appendChild(card);
+        });
+
+        // ---------------- RESET ----------------
+        window.resetAll = function () {
+            if (!confirm('Reset all your progress?')) return;
+            correctCount = 0; wrongCount = 0; updateScore();
+            document.querySelectorAll('.opt-btn, .tf-btn').forEach(b => {
+                b.classList.remove('locked', 'correct-pick', 'wrong-pick', 'reveal-correct');
+            });
+            document.querySelectorAll('.feedback').forEach(f => {
+                f.className = 'feedback';
+                f.textContent = '';
+            });
+            document.querySelectorAll('details').forEach(d => d.removeAttribute('open'));
+        };
+    </script>
+</body>
+</html>

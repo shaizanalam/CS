@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class XI CS - Flow of Control | Practice Question Bank</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;800&display=swap');
+
+        :root {
+            --lavender: #e6e0fa;
+            --lavender-dark: #8b7fd6;
+            --blush: #fde2e9;
+            --blush-dark: #e0729a;
+            --mint: #dcf5e8;
+            --mint-dark: #3f9d72;
+            --babyblue: #dbeeff;
+            --babyblue-dark: #4a90d9;
+            --cream: #faf9f6;
+            --ink: #2d3748;
+            --ink-soft: #5a6478;
+            --correct: #3f9d72;
+            --correct-bg: #e4f9ee;
+            --wrong: #e0567a;
+            --wrong-bg: #fdeaf0;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: var(--cream);
+            color: var(--ink);
+            margin: 0;
+            padding: 0 0 60px;
+            line-height: 1.5;
+        }
+
+        .wrap { max-width: 880px; margin: 0 auto; padding: 16px; }
+
+        /* HEADER */
+        .header-card {
+            background: linear-gradient(120deg, var(--lavender) 0%, var(--blush) 50%, var(--babyblue) 100%);
+            border-radius: 22px;
+            padding: 26px 24px;
+            text-align: center;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+        }
+
+        .header-card h1 { margin: 0; font-size: 24px; font-weight: 800; }
+        .header-card p { margin: 6px 0 0; font-size: 13px; color: var(--ink-soft); font-weight: 600; }
+
+        /* SCORE BAR */
+        .scorebar {
+            position: sticky; top: 10px; z-index: 50;
+            background: #fff; border-radius: 18px; padding: 12px 18px;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08); margin-bottom: 18px;
+            border: 1.5px solid var(--lavender); flex-wrap: wrap; gap: 8px;
+        }
+        .scorebar .label { font-weight: 800; font-size: 13.5px; color: var(--lavender-dark); }
+        .scorebar .stat { font-size: 13px; font-weight: 700; }
+        .scorebar .stat.correct-txt { color: var(--correct); }
+        .scorebar .stat.wrong-txt { color: var(--wrong); }
+
+        .barouter { flex: 1; min-width: 140px; height: 10px; background: #f1eefc; border-radius: 10px; overflow: hidden; margin: 0 10px; }
+        .barinner { height: 100%; width: 0%; background: linear-gradient(90deg, var(--mint-dark), var(--babyblue-dark)); transition: width .4s ease; }
+
+        .reset-btn {
+            background: var(--blush); color: var(--blush-dark); border: none;
+            padding: 6px 14px; border-radius: 20px; font-family: 'Quicksand', sans-serif;
+            font-weight: 700; font-size: 12px; cursor: pointer;
+        }
+        .reset-btn:hover { background: var(--blush-dark); color: #fff; }
+
+        /* SECTION LABEL */
+        .section-title { font-size: 16px; font-weight: 800; margin: 26px 4px 10px; display: flex; align-items: center; gap: 10px; }
+        .section-title .chip { background: var(--lavender-dark); color: #fff; font-size: 11px; padding: 4px 11px; border-radius: 20px; }
+        .subsection-title { font-size: 13px; font-weight: 700; margin: 16px 2px 8px; color: var(--lavender-dark); }
+
+        /* QUESTION CARD */
+        .qcard {
+            background: #fff; border-radius: 16px; padding: 14px 16px; margin-bottom: 10px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04); border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .qtext { font-weight: 700; font-size: 13.5px; margin-bottom: 10px; }
+        .qnum { color: var(--babyblue-dark); margin-right: 4px; }
+
+        .options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .options.two-col-wide { grid-template-columns: 1fr; }
+
+        .opt-btn {
+            text-align: left; background: #f9f8ff; border: 1.5px solid #ece8fb; border-radius: 12px;
+            padding: 9px 12px; font-family: 'Quicksand', sans-serif; font-size: 12.5px;
+            font-weight: 600; color: var(--ink); cursor: pointer; transition: all .15s ease;
+        }
+        .opt-btn:hover:not(.locked) { border-color: var(--lavender-dark); background: #f1eefe; transform: translateY(-1px); }
+        .opt-btn.correct-pick { background: var(--correct-bg); border-color: var(--correct); color: #1f6b46; }
+        .opt-btn.wrong-pick { background: var(--wrong-bg); border-color: var(--wrong); color: #9c2f4d; }
+        .opt-btn.reveal-correct { background: var(--correct-bg); border-color: var(--correct); color: #1f6b46; }
+        .opt-btn.locked { cursor: default; }
+
+        .feedback { margin-top: 9px; font-size: 12px; font-weight: 700; border-radius: 10px; padding: 7px 11px; display: none; }
+        .feedback.show { display: block; }
+        .feedback.ok { background: var(--correct-bg); color: #1f6b46; }
+        .feedback.no { background: var(--wrong-bg); color: #9c2f4d; }
+
+        /* TF pills */
+        .tf-options { display: flex; gap: 10px; }
+        .tf-btn {
+            flex: 1; text-align: center; background: #f9f8ff; border: 1.5px solid #ece8fb;
+            border-radius: 20px; padding: 8px 10px; font-family: 'Quicksand', sans-serif;
+            font-weight: 700; font-size: 12.5px; cursor: pointer;
+        }
+        .tf-btn:hover:not(.locked) { border-color: var(--lavender-dark); }
+        .tf-btn.correct-pick { background: var(--correct-bg); border-color: var(--correct); color: #1f6b46; }
+        .tf-btn.wrong-pick { background: var(--wrong-bg); border-color: var(--wrong); color: #9c2f4d; }
+        .tf-btn.reveal-correct { background: var(--correct-bg); border-color: var(--correct); color: #1f6b46; }
+        .tf-btn.locked { cursor: default; }
+
+        /* Reference / written sections */
+        details.ref-card {
+            background: #fff; border-radius: 16px; padding: 0; margin-bottom: 10px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04); border: 1px solid rgba(0, 0, 0, 0.05); overflow: hidden;
+        }
+        details.ref-card summary {
+            cursor: pointer; list-style: none; padding: 13px 16px; font-weight: 800; font-size: 13.5px;
+            display: flex; align-items: center; justify-content: space-between;
+            background: linear-gradient(90deg, #f9f8ff, #fff);
+        }
+        details.ref-card summary::-webkit-details-marker { display: none; }
+        details.ref-card summary .arrow { transition: transform .2s ease; color: var(--lavender-dark); font-size: 14px; }
+        details.ref-card[open] summary .arrow { transform: rotate(90deg); }
+        .ref-body { padding: 4px 18px 16px; }
+        .ref-body ol { margin: 0; padding-left: 20px; font-size: 12.5px; }
+        .ref-body ol li { margin-bottom: 8px; }
+
+        .priority-card {
+            background: linear-gradient(120deg, #fff7e6, #fff2f8); border: 1.5px dashed #f0c469;
+            border-radius: 16px; padding: 14px 16px; margin: 14px 0 22px; font-size: 12.5px;
+        }
+        .priority-card ol { padding-left: 18px; margin: 6px 0 0; }
+        .priority-card li { margin-bottom: 5px; }
+
+        .footer-note { text-align: center; font-size: 11px; color: var(--ink-soft); margin-top: 26px; }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #fff;
+            color: var(--ink-soft);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: var(--lavender-dark);
+            transform: translateX(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .code-visual {
+            font-family: monospace;
+            background: #f4f4f4;
+            padding: 4px 6px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 0 0 70px; }
+            .wrap { padding: 12px 10px; }
+            .back-link { font-size: 13.5px; padding: 9px 16px; margin-bottom: 12px; }
+            .header-card { padding: 22px 16px; border-radius: 18px; margin-bottom: 14px; }
+            .header-card h1 { font-size: 21px; line-height: 1.3; }
+            .header-card p { font-size: 13.5px; margin-top: 6px; }
+            .scorebar { top: 6px; padding: 10px 14px; border-radius: 14px; gap: 8px; margin-bottom: 14px; }
+            .scorebar .label { font-size: 13.5px; }
+            .scorebar .stat { font-size: 13px; }
+            .barouter { min-width: 90px; height: 8px; margin: 0 6px; }
+            .reset-btn { padding: 6px 12px; font-size: 12px; }
+            .section-title { font-size: 17px; margin: 22px 4px 10px; flex-wrap: wrap; }
+            .section-title .chip { font-size: 11.5px; padding: 4px 10px; }
+            .subsection-title { font-size: 14.5px; margin: 16px 2px 8px; }
+            .qcard { padding: 16px 14px; border-radius: 16px; margin-bottom: 12px; }
+            .qtext { font-size: 15px; line-height: 1.55; margin-bottom: 12px; }
+            .qnum { font-size: 15.5px; }
+            .options { grid-template-columns: 1fr; gap: 9px; }
+            .opt-btn { font-size: 14.5px; line-height: 1.45; padding: 12px 14px; border-radius: 12px; min-height: 46px; display: flex; align-items: center; }
+            .tf-options { gap: 10px; }
+            .tf-btn { font-size: 14.5px; padding: 12px 10px; min-height: 46px; border-radius: 16px; }
+            .feedback { font-size: 13.5px; line-height: 1.5; padding: 10px 12px; border-radius: 10px; margin-top: 10px; }
+            details.ref-card { border-radius: 14px; margin-bottom: 12px; }
+            details.ref-card summary { font-size: 14.5px; padding: 14px 14px; line-height: 1.4; }
+            .ref-body { padding: 6px 14px 16px; }
+            .ref-body ol { font-size: 14px; line-height: 1.6; padding-left: 20px; }
+            .ref-body ol li { margin-bottom: 10px; }
+            .priority-card { padding: 14px 14px; border-radius: 14px; font-size: 13.5px; line-height: 1.55; margin: 14px 0 20px; }
+            .priority-card ol { padding-left: 18px; }
+            .priority-card li { margin-bottom: 6px; }
+            .footer-note { font-size: 12px; margin-top: 24px; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <a href="index.html" class="back-link">← Back to Revision Hub</a>
+
+        <div class="header-card">
+            <h1>🐍 Flow of Control</h1>
+            <p>Class XI Computer Science (083) • Interactive Practice Question Bank</p>
+        </div>
+
+        <div class="scorebar">
+            <span class="label">🎯 Your Score</span>
+            <div class="barouter"><div class="barinner" id="barinner"></div></div>
+            <span class="stat correct-txt" id="correctStat">✅ 0</span>
+            <span class="stat wrong-txt" id="wrongStat">❌ 0</span>
+            <span class="stat" id="totalStat" style="color:var(--ink-soft);">/ 0 answered</span>
+            <button class="reset-btn" onclick="resetAll()">↺ Reset</button>
+        </div>
+
+        <!-- SECTION A: MCQ -->
+        <div class="section-title"><span class="chip">Section A</span> Multiple Choice Questions</div>
+        <div id="mcq-container"></div>
+
+        <!-- SECTION B: TRUE/FALSE -->
+        <div class="section-title"><span class="chip">Section B</span> True / False</div>
+        <p style="font-size:12px;color:var(--ink-soft);margin:-4px 4px 10px;">Tap True or False — wrong statements
+            auto-show the correction.</p>
+        <div id="tf-container"></div>
+
+        <!-- SECTION C: ASSERTION-REASON -->
+        <div class="section-title"><span class="chip">Section C</span> Assertion &amp; Reason</div>
+        <p style="font-size:12px;color:var(--ink-soft);margin:-4px 4px 10px;">A: Both true, R explains A &nbsp;|&nbsp;
+            B: Both true, R does not explain A &nbsp;|&nbsp; C: A true, R false &nbsp;|&nbsp; D: A false, R true</p>
+        <div id="ar-container"></div>
+
+        <!-- SECTION D: WRITTEN PRACTICE -->
+        <div class="section-title"><span class="chip">Section D</span> Written Practice (2, 3, 4, and 5 Markers)</div>
+
+        <details class="ref-card">
+            <summary>📌 2 Marker Questions <span class="arrow">▶</span></summary>
+            <div class="ref-body">
+                <ol>
+                    <li>What are the three execution orders of a program?</li>
+                    <li>What is an empty statement in Python? Which keyword is used for it?</li>
+                    <li>Differentiate between a simple statement and a compound statement.</li>
+                    <li>What is the difference between `break` and `continue` statements?</li>
+                    <li>Write the output of <code>list(range(1, 10, 2))</code>.</li>
+                    <li>What are the two types of loops in Python? State their alternative names.</li>
+                    <li>When does the <code>else</code> clause attached to a loop execute?</li>
+                    <li>Write a Python program to check whether a given number is odd or even.</li>
+                    <li>Write a Python statement to print a sequence of numbers from 10 down to 1 (in descending order) using the <code>range()</code> function.</li>
+                    <li>What is an infinite loop? How can you break out of it?</li>
+                </ol>
+            </div>
+        </details>
+
+        <details class="ref-card">
+            <summary>📝 3 Marker Questions <span class="arrow">▶</span></summary>
+            <div class="ref-body">
+                <ol start="11">
+                    <li>Explain the `range()` function and its three formats with examples.</li>
+                    <li>Write a Python program to accept a character and check if it is an uppercase letter, lowercase letter, or a digit.</li>
+                    <li>Differentiate between the `for` loop and the `while` loop.</li>
+                    <li>Write a program to display the factorial of a given input number using a loop.</li>
+                    <li>Write a program to sum the even numbers and odd numbers separately from a range of 1 to 50.</li>
+                    <li>What will be the output of the following code?
+<div class="code-visual">for x in [1, 2, 3]:
+    for y in [4, 5]:
+        print(x, y)</div></li>
+                    <li>Write a Python program to print a multiplication table for a user-inputted number.</li>
+                </ol>
+            </div>
+        </details>
+        
+        <details class="ref-card">
+            <summary>🏆 4 Marker Questions <span class="arrow">▶</span></summary>
+            <div class="ref-body">
+                <ol start="18">
+                    <li>Write a program to accept 3 numbers from a user and display the largest one using multiple `if` statements.</li>
+                    <li>Write a Python program to print the following pattern:
+<div class="code-visual">*
+* *
+* * *
+* * * *
+* * * * *</div></li>
+                    <li>Write a Python program to calculate the area of a circle if the radius is &gt;= 50, otherwise calculate its perimeter.</li>
+                    <li>Write a program to print any 3-digit number in reverse form mathematically (using `%` and `//`).</li>
+                </ol>
+            </div>
+        </details>
+
+        <details class="ref-card">
+            <summary>🏅 5 Marker Questions <span class="arrow">▶</span></summary>
+            <div class="ref-body">
+                <ol start="22">
+                    <li>Write a complete Python program to accept the marks of 3 subjects and print the grade based on the average.
+                    <br> - If avg &gt;= 50, print "Grade A"
+                    <br> - If avg &lt; 50, print "Grade B"
+                    <br> Include total and average in the final output.</li>
+                    <li>Write a Python program to implement a 'guess the number' game. Python generates a number randomly in the range [10, 50]. The user is given an infinite number of chances to guess the number. When they guess correctly, print "You Win!" and terminate the loop.</li>
+                    <li>Explain the nested `if-elif-else` statement. Provide the syntax and a working program to accept a day number (1-7) and display the corresponding day of the week (e.g., 1=Mon, 2=Tue... 7=Sun). If the input is outside this range, print "Wrong Input".</li>
+                </ol>
+            </div>
+        </details>
+
+        <div class="priority-card">
+            <b style="font-size:13px;">🔥 Top Priority — Do These First</b>
+            <ol>
+                <li>Understanding the three forms of `range()`. Extremely common in MCQs and output questions.</li>
+                <li>`break` vs `continue` difference.</li>
+                <li>Execution of the loop `else` block (executes only when loop finishes normally, without `break`).</li>
+                <li>Star pattern printing (nested loop logic).</li>
+                <li>Identifying infinite loops.</li>
+            </ol>
+        </div>
+
+        <div class="footer-note">Flow of Control forms the backbone of Python programming. Practice tracing loop outputs carefully! ✨</div>
+
+    </div>
+
+    <script>
+        // ---------------- DATA ----------------
+        const mcqData = [
+            {
+                sec: "A. Statements and Execution Order", items: [
+                    { q: "Which statement in Python does nothing and acts as a placeholder?", o: ["continue", "break", "pass", "empty"], a: 2 },
+                    { q: "A group of statements represented as a unit under a header is called a:", o: ["Simple Statement", "Compound Statement", "Empty Statement", "Function"], a: 1 },
+                    { q: "Which of the following represents the normal, default flow of control in a program?", o: ["Selection", "Iteration", "Sequential", "Decision"], a: 2 },
+                    { q: "Which of the following is NOT a decision construct?", o: ["if", "if-else", "for", "if-elif-else"], a: 2 }
+                ]
+            },
+            {
+                sec: "B. Iteration and Loops", items: [
+                    { q: "Which loop is designed to process items of any sequence one by one?", o: ["while loop", "for loop", "do-while loop", "infinite loop"], a: 1 },
+                    { q: "Which loop is also known as a conditional loop?", o: ["for loop", "while loop", "nested loop", "range loop"], a: 1 },
+                    { q: "What does the `range(5)` function generate?", o: ["[1, 2, 3, 4, 5]", "[0, 1, 2, 3, 4, 5]", "[0, 1, 2, 3, 4]", "[1, 2, 3, 4]"], a: 2 },
+                    { q: "What will `list(range(1, 10, 3))` produce?", o: ["[1, 4, 7, 10]", "[1, 4, 7]", "[1, 3, 6, 9]", "[3, 6, 9]"], a: 1 },
+                    { q: "In a nested loop, which loop executes its complete cycle for each single iteration of the other loop?", o: ["Outer loop", "Inner loop", "Both simultaneously", "Neither"], a: 1 }
+                ]
+            },
+            {
+                sec: "C. Jump Statements and else clause", items: [
+                    { q: "Which statement is used to skip the rest of the loop and move to the next iteration?", o: ["break", "pass", "continue", "exit"], a: 2 },
+                    { q: "Which statement is used to terminate a loop entirely?", o: ["continue", "pass", "stop", "break"], a: 3 },
+                    { q: "When does the `else` block of a loop execute?", o: ["When the loop terminates due to a break", "When the loop encounters an error", "When the loop terminates normally (no break)", "At the beginning of every iteration"], a: 2 },
+                    { q: "Can a `break` statement be used outside a loop?", o: ["Yes", "No", "Only in functions", "Only in if statements"], a: 1 },
+                    { q: "What happens if the step value in the `range()` function is 0?", o: ["Generates an empty list", "Infinite sequence", "ValueError", "TypeError"], a: 2 }
+                ]
+            }
+        ];
+
+        const tfData = [
+            { s: "The 'pass' statement is used to create an empty statement in Python.", a: true },
+            { s: "Selection constructs execute statements sequentially without checking any condition.", a: false, fix: "Selection constructs execute statements depending upon a condition-test." },
+            { s: "A variable used in the condition of a while loop must be initialized before the loop starts.", a: true },
+            { s: "The `range(start, end)` function includes the `end` value in the generated sequence.", a: false, fix: "The `end` value is exclusive. It generates up to end-1." },
+            { s: "The `for` loop in Python is also called a counting loop.", a: true },
+            { s: "The `continue` statement terminates the entire loop and exits it.", a: false, fix: "The `continue` statement skips the current iteration and moves to the next iteration. `break` terminates the entire loop." },
+            { s: "The loop `else` block will execute if the loop is forcefully terminated by a `break` statement.", a: false, fix: "The loop `else` block ONLY executes if the loop finishes normally without hitting a `break`." },
+            { s: "An infinite loop can be created using `while True:`.", a: true },
+            { s: "Python supports do-while loops.", a: false, fix: "Python only has `for` and `while` loops. It does not support do-while loops." },
+            { s: "A compound statement must have a header ending with a colon (:).", a: true }
+        ];
+
+        const arData = [
+            { a: "The `pass` statement does nothing when executed.", r: "It is an empty statement used as a placeholder where a statement is syntactically required but no action is needed.", ans: "A", exp: "Both are true and the reason correctly explains the purpose of the pass statement." },
+            { a: "The `range(0, 11, 0)` statement will raise a ValueError.", r: "The step value in a range function cannot be zero.", ans: "A", exp: "Both are true and the reason explains why the assertion raises an error." },
+            { a: "The `else` clause of a loop always executes after the loop finishes.", r: "The `else` clause executes only if the loop terminates normally and is not interrupted by a break.", ans: "D", exp: "Assertion is false (it doesn't ALWAYS execute if broken). Reason is true." },
+            { a: "A `while` loop is a conditional loop.", r: "A `while` loop repeats instructions as long as a specified condition evaluates to True.", ans: "A", exp: "Both are true and the reason defines why it is called a conditional loop." },
+            { a: "The `continue` statement causes the loop to exit entirely.", r: "The `continue` statement skips the rest of the code in the current iteration and jumps to the loop header.", ans: "D", exp: "Assertion is false (break exits the loop, continue skips iteration). Reason is true." },
+            { a: "A nested loop has an inner loop inside an outer loop.", r: "For every single iteration of the outer loop, the inner loop completes its entire cycle.", ans: "A", exp: "Both are true and the reason correctly explains the execution mechanism of nested loops." }
+        ];
+
+        // ---------------- STATE ----------------
+        let correctCount = 0, wrongCount = 0;
+
+        function updateScore() {
+            const total = correctCount + wrongCount;
+            document.getElementById('correctStat').textContent = '✅ ' + correctCount;
+            document.getElementById('wrongStat').textContent = '❌ ' + wrongCount;
+            document.getElementById('totalStat').textContent = '/ ' + total + ' answered';
+            const totalQ = mcqData.reduce((n, s) => n + s.items.length, 0) + tfData.length + arData.length;
+            document.getElementById('barinner').style.width = (totalQ ? (total / totalQ * 100) : 0) + '%';
+        }
+
+        // ---------------- RENDER MCQ ----------------
+        const mcqContainer = document.getElementById('mcq-container');
+        let mcqIndex = 0;
+        mcqData.forEach(section => {
+            const h = document.createElement('div');
+            h.className = 'subsection-title';
+            h.textContent = section.sec;
+            mcqContainer.appendChild(h);
+            section.items.forEach(item => {
+                mcqIndex++;
+                const card = document.createElement('div');
+                card.className = 'qcard';
+                const qt = document.createElement('div');
+                qt.className = 'qtext';
+                qt.innerHTML = '<span class="qnum">Q' + mcqIndex + '.</span>' + item.q;
+                card.appendChild(qt);
+                const opts = document.createElement('div');
+                opts.className = 'options';
+                const fb = document.createElement('div');
+                fb.className = 'feedback';
+                item.o.forEach((optText, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'opt-btn';
+                    btn.textContent = String.fromCharCode(65 + idx) + '. ' + optText;
+                    btn.onclick = () => {
+                        if (btn.classList.contains('locked')) return;
+                        const allBtns = opts.querySelectorAll('.opt-btn');
+                        allBtns.forEach(b => b.classList.add('locked'));
+                        if (idx === item.a) {
+                            btn.classList.add('correct-pick');
+                            fb.className = 'feedback show ok';
+                            fb.textContent = '🎉 Correct! ' + optText + ' is right.';
+                            correctCount++;
+                        } else {
+                            btn.classList.add('wrong-pick');
+                            allBtns[item.a].classList.add('reveal-correct');
+                            fb.className = 'feedback show no';
+                            fb.textContent = '❌ Not quite — correct answer: ' + item.o[item.a];
+                            wrongCount++;
+                        }
+                        updateScore();
+                    };
+                    opts.appendChild(btn);
+                });
+                card.appendChild(opts);
+                card.appendChild(fb);
+                mcqContainer.appendChild(card);
+            });
+        });
+
+        // ---------------- RENDER TF ----------------
+        const tfContainer = document.getElementById('tf-container');
+        tfData.forEach((item, i) => {
+            const card = document.createElement('div');
+            card.className = 'qcard';
+            const qt = document.createElement('div');
+            qt.className = 'qtext';
+            qt.innerHTML = '<span class="qnum">' + (i + 1) + '.</span>' + item.s;
+            card.appendChild(qt);
+
+            const opts = document.createElement('div');
+            opts.className = 'tf-options';
+            const fb = document.createElement('div');
+            fb.className = 'feedback';
+
+            [true, false].forEach(boolVal => {
+                const btn = document.createElement('button');
+                btn.className = 'tf-btn';
+                btn.textContent = boolVal ? 'True' : 'False';
+                btn.onclick = () => {
+                    if (btn.classList.contains('locked')) return;
+                    const allBtns = opts.querySelectorAll('.tf-btn');
+                    allBtns.forEach(b => b.classList.add('locked'));
+
+                    if (boolVal === item.a) {
+                        btn.classList.add('correct-pick');
+                        fb.className = 'feedback show ok';
+                        fb.textContent = '✅ Correct!';
+                        correctCount++;
+                    } else {
+                        btn.classList.add('wrong-pick');
+                        allBtns[item.a ? 0 : 1].classList.add('reveal-correct');
+                        fb.className = 'feedback show no';
+                        fb.textContent = item.fix ? '❌ False. ' + item.fix : '❌ Incorrect.';
+                        wrongCount++;
+                    }
+                    updateScore();
+                };
+                opts.appendChild(btn);
+            });
+            card.appendChild(opts);
+            card.appendChild(fb);
+            tfContainer.appendChild(card);
+        });
+
+        // ---------------- RENDER AR ----------------
+        const arContainer = document.getElementById('ar-container');
+        arData.forEach((item, i) => {
+            const card = document.createElement('div');
+            card.className = 'qcard';
+            const qt = document.createElement('div');
+            qt.className = 'qtext';
+            qt.innerHTML = `<span class="qnum">${i + 1}.</span> <b>Assertion (A):</b> ${item.a}<br><br><b>Reason (R):</b> ${item.r}`;
+            card.appendChild(qt);
+
+            const opts = document.createElement('div');
+            opts.className = 'options two-col-wide';
+            const fb = document.createElement('div');
+            fb.className = 'feedback';
+
+            const arChoices = ["A", "B", "C", "D"];
+            arChoices.forEach(choice => {
+                const btn = document.createElement('button');
+                btn.className = 'opt-btn';
+                btn.textContent = choice;
+                btn.onclick = () => {
+                    if (btn.classList.contains('locked')) return;
+                    const allBtns = opts.querySelectorAll('.opt-btn');
+                    allBtns.forEach(b => b.classList.add('locked'));
+
+                    if (choice === item.ans) {
+                        btn.classList.add('correct-pick');
+                        fb.className = 'feedback show ok';
+                        fb.textContent = '✅ Correct! ' + item.exp;
+                        correctCount++;
+                    } else {
+                        btn.classList.add('wrong-pick');
+                        const correctIdx = arChoices.indexOf(item.ans);
+                        allBtns[correctIdx].classList.add('reveal-correct');
+                        fb.className = 'feedback show no';
+                        fb.textContent = `❌ Incorrect. Correct is ${item.ans}. ${item.exp}`;
+                        wrongCount++;
+                    }
+                    updateScore();
+                };
+                opts.appendChild(btn);
+            });
+            card.appendChild(opts);
+            card.appendChild(fb);
+            arContainer.appendChild(card);
+        });
+
+        // ---------------- RESET ----------------
+        window.resetAll = function () {
+            if (!confirm('Reset all your progress?')) return;
+            correctCount = 0; wrongCount = 0; updateScore();
+            document.querySelectorAll('.opt-btn, .tf-btn').forEach(b => {
+                b.classList.remove('locked', 'correct-pick', 'wrong-pick', 'reveal-correct');
+            });
+            document.querySelectorAll('.feedback').forEach(f => {
+                f.className = 'feedback';
+                f.textContent = '';
+            });
+            document.querySelectorAll('details').forEach(d => d.removeAttribute('open'));
+        };
+    </script>
+</body>
+</html>

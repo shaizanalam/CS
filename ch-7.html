@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class XI CS - Flow of Control</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;800&display=swap');
+
+        :root {
+            --lavender: #e6e0fa;
+            --lavender-dark: #8b7fd6;
+            --blush: #fde2e9;
+            --blush-dark: #e0729a;
+            --mint: #dcf5e8;
+            --mint-dark: #4a9d78;
+            --babyblue: #dbeeff;
+            --babyblue-dark: #4a90d9;
+            --cream: #faf9f6;
+            --ink: #2d3748;
+            --ink-soft: #5a6478;
+        }
+
+        @page {
+            size: A4 portrait;
+            margin: 12mm;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: var(--cream);
+            color: var(--ink);
+            line-height: 1.45;
+            margin: 0;
+            padding: 6px;
+            font-size: 12.5px;
+        }
+
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        h1, h2, h3 {
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+        }
+
+        /* ---------- HEADER ---------- */
+        .header-card {
+            background: linear-gradient(120deg, var(--lavender) 0%, var(--blush) 50%, var(--babyblue) 100%);
+            border-radius: 20px;
+            padding: 20px 24px;
+            text-align: center;
+            margin-bottom: 14px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+
+        .header-card h1 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--ink);
+            letter-spacing: 0.3px;
+        }
+
+        .header-card p {
+            margin: 6px 0 0;
+            font-size: 12px;
+            color: var(--ink-soft);
+            font-weight: 600;
+        }
+
+        .header-tags {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .htag {
+            background: rgba(255, 255, 255, 0.65);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 10.5px;
+            font-weight: 700;
+            color: var(--ink-soft);
+        }
+
+        /* ---------- SECTION LABEL ---------- */
+        .section-label {
+            font-size: 13px;
+            font-weight: 800;
+            margin: 14px 2px 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            break-after: avoid;
+        }
+
+        .section-label .num {
+            background: var(--lavender-dark);
+            color: #fff;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10.5px;
+        }
+
+        /* ---------- CARDS ---------- */
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 14px 16px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            break-inside: avoid;
+            page-break-inside: avoid;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 13.5px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-pink { color: var(--blush-dark); }
+        .badge-purple { color: var(--lavender-dark); }
+        .badge-blue { color: var(--babyblue-dark); }
+        .badge-green { color: var(--mint-dark); }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        p.note {
+            font-size: 11.5px;
+            color: var(--ink-soft);
+            margin: 4px 0 8px;
+        }
+
+        /* ---------- TABLES ---------- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11.5px;
+            margin-top: 6px;
+        }
+
+        th {
+            background: var(--lavender);
+            color: #4b3f91;
+            padding: 7px 9px;
+            text-align: left;
+            font-weight: 700;
+        }
+
+        th:first-child { border-radius: 8px 0 0 8px; }
+        th:last-child { border-radius: 0 8px 8px 0; }
+
+        td {
+            padding: 6px 9px;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        tr:nth-child(even) td { background: #faf8ff; }
+
+        ul, ol {
+            margin: 0;
+            padding-left: 16px;
+            font-size: 11.5px;
+        }
+
+        li { margin-bottom: 4px; }
+
+        /* ---------- TAG GRID & ITEMS ---------- */
+        .tag-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 11.5px;
+        }
+
+        .tag-item {
+            background: #fdf4ff;
+            border-radius: 10px;
+            padding: 8px 10px;
+            border-left: 3px solid #d946ef;
+        }
+
+        .tag-item.blue {
+            background: #f0f8ff;
+            border-left-color: var(--babyblue-dark);
+        }
+        
+        .tag-item.green {
+            background: #f2fbf6;
+            border-left-color: var(--mint-dark);
+        }
+        
+        .tag-item.purple {
+            background: #f6f5fc;
+            border-left-color: var(--lavender-dark);
+        }
+
+        .flash {
+            background: var(--mint);
+            border-radius: 10px;
+            padding: 7px 10px;
+            font-size: 10.5px;
+            font-weight: 700;
+            color: #1f5f43;
+            display: inline-block;
+            margin: 3px 4px 0 0;
+        }
+
+        .callout {
+            background: #fff7e6;
+            border: 1.5px dashed #f0c469;
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: 11px;
+            color: #7a5c14;
+            margin-top: 8px;
+            break-inside: avoid;
+        }
+
+        .def-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 14px;
+        }
+
+        .def-item {
+            font-size: 10.8px;
+            padding: 6px 8px;
+            background: #f9f8ff;
+            border-radius: 8px;
+        }
+
+        .def-item b {
+            color: var(--lavender-dark);
+            display: block;
+            font-size: 11px;
+            margin-bottom: 1px;
+        }
+
+        /* ---------- CODE BLOCK VISUAL ---------- */
+        .code-visual {
+            background: #2d3748;
+            color: #e2e8f0;
+            border-radius: 12px;
+            padding: 10px 14px;
+            margin: 6px 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 11.5px;
+            line-height: 1.6;
+            border-left: 3px solid var(--mint-dark);
+            text-align: left;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        .code-visual .result {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 800;
+            color: var(--mint-dark);
+            margin-top: 6px;
+            font-size: 11.5px;
+            display: block;
+        }
+
+        .code-visual .error {
+            color: var(--blush-dark);
+        }
+        
+        .code-prompt {
+            color: var(--lavender-dark);
+            font-weight: bold;
+        }
+
+        /* ---------- THEOREM CARD (Reused for Important Info) ---------- */
+        .theorem-card {
+            background: linear-gradient(120deg, #fff7e6, #fff2f8);
+            border: 1.5px dashed #f0c469;
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin: 8px 0;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #fff;
+            color: var(--ink-soft);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            margin: 6px 0 12px 4px;
+            transition: all 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: var(--lavender-dark);
+            transform: translateX(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                font-size: 15px;
+                line-height: 1.6;
+                padding: 12px 10px 50px;
+            }
+
+            .back-link {
+                font-size: 13.5px;
+                padding: 9px 16px;
+                margin: 4px 0 12px 2px;
+            }
+
+            .header-card {
+                padding: 20px 14px;
+                border-radius: 18px;
+                margin-bottom: 14px;
+            }
+
+            .header-card h1 {
+                font-size: 21px;
+                line-height: 1.3;
+            }
+
+            .section-label {
+                font-size: 16px;
+                margin: 18px 4px 10px;
+            }
+
+            .section-label .num {
+                width: 24px;
+                height: 24px;
+                font-size: 12px;
+            }
+
+            .card {
+                padding: 16px 14px;
+                border-radius: 16px;
+                margin-bottom: 14px;
+            }
+
+            .card-title {
+                font-size: 15.5px;
+                line-height: 1.35;
+                margin-bottom: 10px;
+            }
+
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            table {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                font-size: 13.5px;
+            }
+
+            .tag-grid {
+                grid-template-columns: 1fr;
+                gap: 9px;
+                font-size: 13.5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <a href="index.html" class="back-link">← Back to Revision Hub</a>
+
+        <div class="header-card">
+            <h1>🐍 Flow of Control</h1>
+            <p>Class XI Computer Science (083) • Chapter 7 Detailed Notes</p>
+            <div class="header-tags">
+                <span class="htag">Statements</span>
+                <span class="htag">If/Else</span>
+                <span class="htag">Loops (For/While)</span>
+                <span class="htag">Jump Statements</span>
+            </div>
+        </div>
+
+        <p class="note" style="text-align:center;">These notes are prepared directly from the PDF "Flow of Control", expanding the concepts for easy understanding and exam writing.</p>
+
+        <!-- SECTION 1 -->
+        <div class="section-label"><span class="num">1</span> Types of Statements in Python</div>
+        
+        <div class="card">
+            <div class="card-title badge-purple">📋 What is a Statement?</div>
+            <p>Statements are the instructions given to the computer to perform any kind of action.</p>
+            <p>There are 3 main types of statements in Python:</p>
+            
+            <div class="grid-3" style="margin-top: 10px;">
+                <div class="tag-item purple">
+                    <b>1. Empty Statement</b><br>
+                    <span style="font-size: 10.5px;">The simplest statement, which does nothing (null operation).<br>Keyword: <code>pass</code></span>
+                </div>
+                <div class="tag-item blue">
+                    <b>2. Simple Statement</b><br>
+                    <span style="font-size: 10.5px;">Any single executable statement (line).<br>e.g., <code>print(name)</code></span>
+                </div>
+                <div class="tag-item green">
+                    <b>3. Compound Statement</b><br>
+                    <span style="font-size: 10.5px;">A group of statements represented as a unit (has a header ending with <code>:</code> and an indented body).</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2 -->
+        <div class="section-label"><span class="num">2</span> Statement Flow Control</div>
+        
+        <div class="card">
+            <div class="card-title badge-blue">🛤️ Execution Order of Program</div>
+            <p>There are 3 types of execution orders:</p>
+            <ul>
+                <li><b>1. Sequential (Sequence):</b> Normal default flow. Statements are executed sequentially line by line.</li>
+                <li><b>2. Selection (Conditional):</b> Execution depends upon a condition-test. (Decision construct). e.g., <code>if</code>, <code>if-else</code>.</li>
+                <li><b>3. Repetition/Iteration (Looping):</b> A set of instructions performed repeatedly until a certain condition is fulfilled. e.g., <code>for</code>, <code>while</code>.</li>
+            </ul>
+        </div>
+
+        <!-- SECTION 3 -->
+        <div class="section-label"><span class="num">3</span> The if Statements</div>
+
+        <div class="card">
+            <div class="card-title badge-pink">⚖️ Decision Constructs</div>
+            <p><code>if</code> statements evaluate a condition. If true, a course of action is performed. Otherwise, another course of action may be followed.</p>
+            
+            <div class="grid-2">
+                <div>
+                    <b>Format of if:</b>
+                    <div class="code-visual" style="border-left-color: #e0729a;">if condition:
+    &lt;block&gt;</div>
+                </div>
+                <div>
+                    <b>Format of if-else:</b>
+                    <div class="code-visual" style="border-left-color: #e0729a;">if condition:
+    &lt;if block&gt;
+else:
+    &lt;else block&gt;</div>
+                </div>
+            </div>
+
+            <div class="grid-2" style="margin-top: 10px;">
+                <div>
+                    <b>Format of if-elif-else:</b>
+                    <div class="code-visual" style="border-left-color: #e0729a;">if condition1:
+    &lt;block 1&gt;
+elif condition2:
+    &lt;block 2&gt;
+else:
+    &lt;optional else block&gt;</div>
+                </div>
+                <div>
+                    <b>Nested if:</b>
+                    <div class="code-visual" style="border-left-color: #e0729a;">if condition1:
+    if condition2:
+        &lt;inner block&gt;
+    else:
+        &lt;inner else&gt;</div>
+                </div>
+            </div>
+
+            <div class="callout">
+                💡 <b>Named Condition:</b> We can store a condition's result into an identifier (variable) to enhance readability.
+                <br>e.g., <code>is_upper = (chr &gt;= 'A' and chr &lt;= 'Z')</code><br>
+                <code>if is_upper: print("Uppercase")</code>
+            </div>
+        </div>
+
+        <!-- SECTION 4 -->
+        <div class="section-label"><span class="num">4</span> The range() Function</div>
+
+        <div class="card">
+            <div class="card-title badge-purple">📏 Generating Sequences</div>
+            <p>The <code>range()</code> function generates a list which is a special sequence type (a succession of values bound together by a single name).</p>
+            
+            <ul>
+                <li><b>Format 1:</b> <code>range(upperlimit)</code> -> Generates from 0 up to upperlimit-1.</li>
+                <li><b>Format 2:</b> <code>range(lowerlimit, upperlimit)</code> -> Generates from lowerlimit up to upperlimit-1.</li>
+                <li><b>Format 3:</b> <code>range(start, end, step)</code> -> Generates from start to end-1, incrementing/decrementing by step.</li>
+            </ul>
+
+            <div class="code-visual" style="border-left-color: #8b7fd6;">
+list(range(1, 11, 1))   <span class="result">[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</span>
+list(range(1, 10, -1))  <span class="result">[1, 0, -1, -2, -3, -4, -5, -6, -7, -8, -9]</span>
+list(range(0, 11, 0))   <span class="error">ValueError: range() arg 3 must not be zero</span>
+            </div>
+        </div>
+
+        <!-- SECTION 5 -->
+        <div class="section-label"><span class="num">5</span> Iteration / Looping Statements</div>
+
+        <div class="card">
+            <div class="card-title badge-green">🔁 Types of Loops</div>
+            <p>Python provides two kinds of entry-controlled loops:</p>
+            
+            <div class="grid-2">
+                <div class="tag-item green">
+                    <b>1. for loop (Counting loop)</b><br>
+                    Repeats a certain number of times. Designed to process items of any sequence (like list or string) one by one. You do not need to pre-define the loop variable.
+                </div>
+                <div class="tag-item green">
+                    <b>2. while loop (Conditional loop)</b><br>
+                    Repeats until a certain condition is fulfilled (as long as condition is True). The loop variable MUST have some value before entering the loop.
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-title badge-blue">🔄 for Loop</div>
+                <div class="code-visual" style="border-left-color: #4a90d9;">for &lt;var&gt; in &lt;sequence&gt;:
+    &lt;body of loop&gt;</div>
+                <p style="margin-top: 8px;"><b>Example:</b></p>
+                <div class="code-visual" style="border-left-color: #4a90d9;">for i in range(1,6):
+    print(i)</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title badge-blue">🔄 while Loop</div>
+                <div class="code-visual" style="border-left-color: #4a90d9;">while &lt;condition&gt;:
+    &lt;body of loop&gt;
+    &lt;update expression&gt;</div>
+                <p style="margin-top: 8px;"><b>Example:</b></p>
+                <div class="code-visual" style="border-left-color: #4a90d9;">i = 1
+while i &lt;= 5:
+    print(i)
+    i += 1</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title badge-pink">📦 Loop else Statement & Nested Loops</div>
+            <ul>
+                <li><b>Loop else:</b> The <code>else</code> clause of a Python loop executes when the loop terminates <b>normally</b>, but NOT when the loop is terminated because of a <code>break</code> statement.</li>
+                <li><b>Nested Loop:</b> A loop may contain another loop in its body.
+                    <br>- The outer loop controls rows, and the inner loop controls columns (e.g., printing star patterns).
+                </li>
+            </ul>
+            <div class="code-visual" style="border-left-color: #e0729a;">for i in range(1, 6):
+    if i == 5:
+        break
+else:
+    print("I successfully complete loop cycle")</div>
+        </div>
+
+        <!-- SECTION 6 -->
+        <div class="section-label"><span class="num">6</span> Jump Statements</div>
+
+        <div class="card">
+            <div class="card-title badge-purple">🦘 break and continue</div>
+            
+            <table style="margin-top: 8px;">
+                <tr>
+                    <th width="50%">break</th>
+                    <th width="50%">continue</th>
+                </tr>
+                <tr>
+                    <td>Skips the rest of the loop and <b>jumps out</b> to the statement following the loop.</td>
+                    <td>Skips the rest of the loop statements and <b>causes the next iteration</b> of the loop to take place.</td>
+                </tr>
+                <tr>
+                    <td>Terminates the loop entirely.</td>
+                    <td>Forces the next cycle of the loop.</td>
+                </tr>
+                <tr>
+                    <td>Cannot be used outside a loop.</td>
+                    <td>Cannot be used outside a loop.</td>
+                </tr>
+            </table>
+
+            <div class="callout">
+                ⚠️ <b>Infinite Loops:</b> A loop that never terminates is called an infinite loop (e.g., <code>while True:</code>). A <code>break</code> statement is typically used to exit an infinite loop when a condition is met.
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

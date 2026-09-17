@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class XI CS - Python Fundamentals</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;800&display=swap');
+
+        :root {
+            --lavender: #e6e0fa;
+            --lavender-dark: #8b7fd6;
+            --blush: #fde2e9;
+            --blush-dark: #e0729a;
+            --mint: #dcf5e8;
+            --mint-dark: #4a9d78;
+            --babyblue: #dbeeff;
+            --babyblue-dark: #4a90d9;
+            --cream: #faf9f6;
+            --ink: #2d3748;
+            --ink-soft: #5a6478;
+        }
+
+        @page {
+            size: A4 portrait;
+            margin: 12mm;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: var(--cream);
+            color: var(--ink);
+            line-height: 1.45;
+            margin: 0;
+            padding: 6px;
+            font-size: 12.5px;
+        }
+
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        h1, h2, h3 {
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+        }
+
+        /* ---------- HEADER ---------- */
+        .header-card {
+            background: linear-gradient(120deg, var(--lavender) 0%, var(--blush) 50%, var(--babyblue) 100%);
+            border-radius: 20px;
+            padding: 20px 24px;
+            text-align: center;
+            margin-bottom: 14px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+
+        .header-card h1 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--ink);
+            letter-spacing: 0.3px;
+        }
+
+        .header-card p {
+            margin: 6px 0 0;
+            font-size: 12px;
+            color: var(--ink-soft);
+            font-weight: 600;
+        }
+
+        .header-tags {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .htag {
+            background: rgba(255, 255, 255, 0.65);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 10.5px;
+            font-weight: 700;
+            color: var(--ink-soft);
+        }
+
+        /* ---------- SECTION LABEL ---------- */
+        .section-label {
+            font-size: 13px;
+            font-weight: 800;
+            margin: 14px 2px 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            break-after: avoid;
+        }
+
+        .section-label .num {
+            background: var(--lavender-dark);
+            color: #fff;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10.5px;
+        }
+
+        /* ---------- CARDS ---------- */
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 14px 16px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            break-inside: avoid;
+            page-break-inside: avoid;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 13.5px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-pink { color: var(--blush-dark); }
+        .badge-purple { color: var(--lavender-dark); }
+        .badge-blue { color: var(--babyblue-dark); }
+        .badge-green { color: var(--mint-dark); }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        p.note {
+            font-size: 11.5px;
+            color: var(--ink-soft);
+            margin: 4px 0 8px;
+        }
+
+        /* ---------- TABLES ---------- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11.5px;
+            margin-top: 6px;
+        }
+
+        th {
+            background: var(--lavender);
+            color: #4b3f91;
+            padding: 7px 9px;
+            text-align: left;
+            font-weight: 700;
+        }
+
+        th:first-child { border-radius: 8px 0 0 8px; }
+        th:last-child { border-radius: 0 8px 8px 0; }
+
+        td {
+            padding: 6px 9px;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        tr:nth-child(even) td { background: #faf8ff; }
+
+        ul, ol {
+            margin: 0;
+            padding-left: 16px;
+            font-size: 11.5px;
+        }
+
+        li { margin-bottom: 4px; }
+
+        /* ---------- TAG GRID & ITEMS ---------- */
+        .tag-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 11.5px;
+        }
+
+        .tag-item {
+            background: #fdf4ff;
+            border-radius: 10px;
+            padding: 8px 10px;
+            border-left: 3px solid #d946ef;
+        }
+
+        .tag-item.blue {
+            background: #f0f8ff;
+            border-left-color: var(--babyblue-dark);
+        }
+        
+        .tag-item.green {
+            background: #f2fbf6;
+            border-left-color: var(--mint-dark);
+        }
+        
+        .tag-item.purple {
+            background: #f6f5fc;
+            border-left-color: var(--lavender-dark);
+        }
+
+        .flash {
+            background: var(--mint);
+            border-radius: 10px;
+            padding: 7px 10px;
+            font-size: 10.5px;
+            font-weight: 700;
+            color: #1f5f43;
+            display: inline-block;
+            margin: 3px 4px 0 0;
+        }
+
+        .callout {
+            background: #fff7e6;
+            border: 1.5px dashed #f0c469;
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: 11px;
+            color: #7a5c14;
+            margin-top: 8px;
+            break-inside: avoid;
+        }
+
+        .def-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 14px;
+        }
+
+        .def-item {
+            font-size: 10.8px;
+            padding: 6px 8px;
+            background: #f9f8ff;
+            border-radius: 8px;
+        }
+
+        .def-item b {
+            color: var(--lavender-dark);
+            display: block;
+            font-size: 11px;
+            margin-bottom: 1px;
+        }
+
+        /* ---------- CODE BLOCK VISUAL ---------- */
+        .code-visual {
+            background: #2d3748;
+            color: #e2e8f0;
+            border-radius: 12px;
+            padding: 10px 14px;
+            margin: 6px 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 11.5px;
+            line-height: 1.6;
+            border-left: 3px solid var(--mint-dark);
+            text-align: left;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        .code-visual .result {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 800;
+            color: var(--mint-dark);
+            margin-top: 6px;
+            font-size: 11.5px;
+            display: block;
+        }
+
+        .code-visual .error {
+            color: var(--blush-dark);
+        }
+        
+        .code-prompt {
+            color: var(--lavender-dark);
+            font-weight: bold;
+        }
+
+        /* ---------- THEOREM CARD (Reused for Important Info) ---------- */
+        .theorem-card {
+            background: linear-gradient(120deg, #fff7e6, #fff2f8);
+            border: 1.5px dashed #f0c469;
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin: 8px 0;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #fff;
+            color: var(--ink-soft);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            margin: 6px 0 12px 4px;
+            transition: all 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: var(--lavender-dark);
+            transform: translateX(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                font-size: 15px;
+                line-height: 1.6;
+                padding: 12px 10px 50px;
+            }
+
+            .back-link {
+                font-size: 13.5px;
+                padding: 9px 16px;
+                margin: 4px 0 12px 2px;
+            }
+
+            .header-card {
+                padding: 20px 14px;
+                border-radius: 18px;
+                margin-bottom: 14px;
+            }
+
+            .header-card h1 {
+                font-size: 21px;
+                line-height: 1.3;
+            }
+
+            .section-label {
+                font-size: 16px;
+                margin: 18px 4px 10px;
+            }
+
+            .section-label .num {
+                width: 24px;
+                height: 24px;
+                font-size: 12px;
+            }
+
+            .card {
+                padding: 16px 14px;
+                border-radius: 16px;
+                margin-bottom: 14px;
+            }
+
+            .card-title {
+                font-size: 15.5px;
+                line-height: 1.35;
+                margin-bottom: 10px;
+            }
+
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            table {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                font-size: 13.5px;
+            }
+
+            .tag-grid {
+                grid-template-columns: 1fr;
+                gap: 9px;
+                font-size: 13.5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <a href="index.html" class="back-link">← Back to Revision Hub</a>
+
+        <div class="header-card">
+            <h1>🐍 Python Fundamentals</h1>
+            <p>Class XI Computer Science (083) • Chapter 5 Detailed Notes</p>
+            <div class="header-tags">
+                <span class="htag">Tokens</span>
+                <span class="htag">Variables</span>
+                <span class="htag">Literals</span>
+                <span class="htag">Operators</span>
+            </div>
+        </div>
+
+        <p class="note" style="text-align:center;">These notes are prepared directly from the PDF "Python Fundamentals", expanding the concepts for easy understanding and exam writing.</p>
+
+        <!-- SECTION 1 -->
+        <div class="section-label"><span class="num">1</span> Python Character Set</div>
+        
+        <div class="card">
+            <div class="card-title badge-purple">🔤 What is a Character Set?</div>
+            <p>A character set is a set of valid characters that a language can recognize. Python has the following character set:</p>
+            <ul>
+                <li><b>Letters:</b> A(65) - Z(90) , a(97) - z(122)</li>
+                <li><b>Digits:</b> 0(48) - 9(57)</li>
+                <li><b>Special Symbols:</b> space, +, -, etc.</li>
+                <li><b>Whitespace:</b> Blank Space, tabs, newline</li>
+            </ul>
+        </div>
+
+        <!-- SECTION 2 -->
+        <div class="section-label"><span class="num">2</span> Tokens / Lexical Units</div>
+        
+        <div class="card">
+            <div class="card-title badge-blue">🧩 What is a Token?</div>
+            <p>The smallest individual unit in a program is known as a <b>Token</b> or a <b>lexical unit</b>.</p>
+            <p>Python has 5 main types of tokens:</p>
+            <div class="tag-grid">
+                <div class="tag-item purple"><b>1. Keywords</b></div>
+                <div class="tag-item purple"><b>2. Identifiers (Names)</b></div>
+                <div class="tag-item purple"><b>3. Literals</b></div>
+                <div class="tag-item purple"><b>4. Operators</b></div>
+                <div class="tag-item purple"><b>5. Punctuators</b></div>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-title badge-pink">🔑 2.1 Keywords</div>
+                <p>A keyword is a word having special meaning reserved by the programming language.</p>
+                <p><b>Note:</b> Most of the keywords will be available in small case only.</p>
+                <b>Examples:</b>
+                <div class="code-visual" style="border-left-color: #e0729a;">True, False, for, in, not, if, else, elif, etc.</div>
+            </div>
+            
+            <div class="card">
+                <div class="card-title badge-green">🏷️ 2.2 Identifiers (Names)</div>
+                <p>Identifiers are fundamental building blocks of a program and are used as the general terminology for the names given to different parts of the program such as - variables, objects, classes, functions, lists, dictionaries, strings, tuples, etc.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title badge-purple">📜 Identifier Forming Rules</div>
+            <ol>
+                <li>The <b>first character</b> must be a letter or an underscore (_).</li>
+                <li>An identifier must <b>not contain any space</b>.</li>
+                <li>Uppercase and lowercase identifiers are considered <b>differently</b> by Python (Python is case-sensitive).</li>
+                <li>Digits are only allowed in between or at the last of the identifier.</li>
+                <li>No special characters are allowed in an identifier <b>except UNDERSCORE</b>.</li>
+                <li>An identifier must <b>not be a keyword</b> of Python.</li>
+            </ol>
+            
+            <div class="grid-2" style="margin-top: 10px;">
+                <div class="tag-item green"><b>Valid Identifiers:</b><br>Myfile, In, File420, _CS, _12, DOB_08_07_21</div>
+                <div class="tag-item" style="border-left-color: #e0729a;"><b>Invalid Identifiers:</b><br>Data-Rec (-), 29Kohli (Starts with digit), in (keyword), My.life (.), &name (&), Import (If considered keyword)</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title badge-blue">🔢 2.3 Literals / Data / Values / Constants</div>
+            <p>Literals are data items that have a fixed value. Python allows several kinds of literals:</p>
+            
+            <table style="margin-top: 8px;">
+                <tr>
+                    <th width="20%">Type</th>
+                    <th width="80%">Details & Sub-types</th>
+                </tr>
+                <tr>
+                    <td><b>Numeric Literals</b></td>
+                    <td>
+                        <b>a. Integer (int):</b> All +ve and -ve whole numbers without decimal point.<br>
+                        - <b>Decimal:</b> 0 to 9 (e.g., 155, 859)<br>
+                        - <b>Octal:</b> Starts with 0o or 0O, range 0 to 7 (e.g., 0o28 is invalid, 0o762 is valid)<br>
+                        - <b>Hexadecimal:</b> Starts with 0x or 0X, range 0-9 and A-F (e.g., 0XBA9)<br>
+                        <br>
+                        <b>b. Float:</b> Numbers with a decimal point (e.g., 3.14). Supports <b>Fractional Form</b> (2.0, -13.0) and <b>Exponent Form</b> (Mantissa E Exponent, e.g., 123E04).<br>
+                        <br>
+                        <b>c. Complex:</b> Form of a+bi (e.g., 12 + 2j).
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>String Literals</b></td>
+                    <td>A sequence of characters surrounded by quotes (single/double/triple).<br>
+                        - <b>Single-line strings:</b> Terminate in one line (<code>'text'</code> or <code>"text"</code>).<br>
+                        - <b>Multiline strings:</b> Spread across multiple lines. Created using a backslash (<code>\</code>) at the end of normal quotes, or by using triple quotes (<code>'''text'''</code>).
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Boolean Literals</b></td>
+                    <td>Used to represent one of the two Boolean values: <code>True</code> or <code>False</code>.</td>
+                </tr>
+                <tr>
+                    <td><b>Special Literal</b></td>
+                    <td><b>None:</b> Used to indicate the absence of a value.</td>
+                </tr>
+            </table>
+
+            <div class="callout">
+                ⚠️ <b>Nongraphic Characters (Escape Sequences):</b> Characters that cannot be typed directly (like backspace, tab). Represented by a backslash (<code>\</code>) followed by a character.<br>
+                <b>Examples:</b> <code>\n</code> (Newline), <code>\t</code> (Tab), <code>\\</code> (Backslash), <code>\'</code> (Single Quote), <code>\"</code> (Double Quote).
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title badge-green">🧮 2.4 Operators</div>
+            <p>Operators are tokens that trigger some computation/action when applied to variables and other objects (called <b>Operands</b>) in an expression.</p>
+            
+            <div class="grid-2">
+                <div class="tag-item blue"><b>1. Unary Operator</b><br>Requires one operand to operate upon.<br>Examples: Unary plus (+), Unary minus (-), Logical negation (not)</div>
+                <div class="tag-item blue"><b>2. Binary Operator</b><br>Requires two operands to operate upon.<br>Categories: Arithmetic, Relational, Logical, Assignment, Membership, Identity</div>
+            </div>
+
+            <table style="margin-top: 10px;">
+                <tr>
+                    <th>Operator Type</th>
+                    <th>Symbols / Keywords</th>
+                </tr>
+                <tr>
+                    <td><b>Arithmetic</b></td>
+                    <td><code>+</code> (addition), <code>-</code> (subtraction), <code>*</code> (multiplication), <code>/</code> (division), <code>%</code> (modulus/remainder), <code>**</code> (exponent), <code>//</code> (floor division)</td>
+                </tr>
+                <tr>
+                    <td><b>Relational</b></td>
+                    <td><code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>==</code> (Equal to), <code>!=</code> (Not equal to)</td>
+                </tr>
+                <tr>
+                    <td><b>Logical</b></td>
+                    <td><code>and</code>, <code>or</code></td>
+                </tr>
+                <tr>
+                    <td><b>Assignment</b></td>
+                    <td><code>=</code>, <code>+=</code>, <code>-=</code>, <code>*=</code>, <code>/=</code>, <code>%=</code>, <code>**=</code>, <code>//=</code></td>
+                </tr>
+                <tr>
+                    <td><b>Membership</b></td>
+                    <td><code>in</code>, <code>not in</code> (checks if variable is in a sequence)</td>
+                </tr>
+                <tr>
+                    <td><b>Identity</b></td>
+                    <td><code>is</code>, <code>is not</code> (checks if the identity/memory location is the same)</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <div class="card-title badge-purple">📍 2.5 Punctuators</div>
+            <p>Punctuators are symbols that are used in programming languages to organize sentence structure, and indicate the rhythm and emphasis of expressions, statements, and program structure.</p>
+            <p><b>Examples:</b> <code>' '</code>, <code>" "</code>, <code>#</code>, <code>\</code>, <code>()</code>, <code>[]</code>, <code>{}</code>, <code>@</code>, <code>,</code>, <code>:</code>, <code>.</code></p>
+        </div>
+
+        <!-- SECTION 3 -->
+        <div class="section-label"><span class="num">3</span> Barebones of a Python Program</div>
+        
+        <div class="card">
+            <div class="card-title badge-blue">🦴 Components of a Python Program</div>
+            <p>A typical Python program contains various components:</p>
+            <ul>
+                <li><b>Expressions:</b> Any legal combination of symbols that represents a value. Python evaluates it and produces a value. (e.g., <code>15</code>, <code>a+5</code>)</li>
+                <li><b>Statements:</b> A programming instruction that does something (action takes place). It executes and may or may not yield a value. (e.g., <code>print("Hello")</code>, <code>a=10</code>)</li>
+                <li><b>Comments:</b> Additional readable information to clarify source code. Ignored by Python.
+                    <ul>
+                        <li><b>Single Line:</b> Starts with <code>#</code>. Can be full line or inline (after code).</li>
+                        <li><b>Multiline (docstrings):</b> Enclosed in triple quotes <code>''' '''</code>.</li>
+                    </ul>
+                </li>
+                <li><b>Functions:</b> A code that has a name and can be reused by specifying its name. Created using the <code>def</code> keyword. Includes a header and a body.</li>
+                <li><b>Blocks & Indentation:</b> A group of statements part of another statement or function is called a block/suite. Python uses <b>indentation</b> to create blocks of code. Statements requiring a block have a colon (<code>:</code>) at their end.</li>
+            </ul>
+        </div>
+
+        <!-- SECTION 4 -->
+        <div class="section-label"><span class="num">4</span> Variables and Assignments</div>
+        
+        <div class="card">
+            <div class="card-title badge-green">📦 Variables</div>
+            <p>Named labels, whose values can be used and processed during program run, are called Variables (also Symbolic Variables).</p>
+            <div class="code-visual">
+variablename = value
+a = 10
+            </div>
+            
+            <div class="grid-2" style="margin-top: 10px;">
+                <div class="tag-item purple"><b>Lvalues</b><br>The objects to which you can assign a value or expression. Can come on LHS or RHS of an assignment statement. (e.g., <code>A</code> in <code>A=10</code>)</div>
+                <div class="tag-item blue"><b>Rvalues</b><br>The literals and expressions that are assigned to lvalues. Can only come on the RHS. (e.g., <code>10</code> or <code>10+20</code>)</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title badge-pink">🔄 Multiple Assignments & Dynamic Typing</div>
+            <ul>
+                <li><b>Assigning same value to multiple variables:</b> <code>a = b = c = 10</code></li>
+                <li><b>Assigning multiple values to multiple variables:</b> <code>x, y = 10, 20</code> (Also allows easy swapping: <code>x, y = y, x</code>)</li>
+            </ul>
+
+            <div class="callout">
+                🌟 <b>Dynamic Typing in Python:</b> A variable pointing to a value of a certain type can be made to point to a value/object of a different type later. (e.g., <code>a = 10</code> then <code>a = "aman"</code> is perfectly valid).<br>
+                <b>Drawback:</b> It can lead to <code>TypeError</code> if you try to perform unsupported operations on the current type (like dividing a string by an integer).
+            </div>
+            <p style="margin-top: 8px;"><b>Note:</b> You can use the <code>type()</code> function to determine the type of an object/variable.</p>
+        </div>
+
+        <!-- SECTION 5 -->
+        <div class="section-label"><span class="num">5</span> Simple Input and Output Functions</div>
+
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-title badge-blue">📥 Input: input() Function</div>
+                <p>A built-in function used to accept any value from the user in run-time.</p>
+                <div class="callout" style="margin-top: 0;">
+                    ⚠️ <b>Important:</b> The <code>input()</code> function <b>always returns a value of string type</b>.
+                </div>
+                <b>Format 1 (String):</b>
+                <div class="code-visual">var = input("Prompt")</div>
+                <b>Format 2 (Type Conversion):</b>
+                <div class="code-visual">var = int(input("Prompt"))</div>
+                <p style="font-size: 11px;">You can use <code>int()</code>, <code>float()</code>, or <code>str()</code> to convert the input value into the desired type.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-title badge-green">📤 Output: print() Function</div>
+                <p>Used to print something on the output screen.</p>
+                <b>Syntax:</b>
+                <div class="code-visual">print(*objects, sep=' ', end='\n')</div>
+                <ul>
+                    <li><b>sep:</b> Separator between multiple objects. Default is a space <code>' '</code>.</li>
+                    <li><b>end:</b> What to print at the end. Default is a newline <code>'\n'</code>.</li>
+                </ul>
+                <div class="code-visual" style="border-left-color: #5a6478;">
+print(10, 20, sep='#') 
+<span class="result">10#20</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class XI CS - Data Handling</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;800&display=swap');
+
+        :root {
+            --lavender: #e6e0fa;
+            --lavender-dark: #8b7fd6;
+            --blush: #fde2e9;
+            --blush-dark: #e0729a;
+            --mint: #dcf5e8;
+            --mint-dark: #4a9d78;
+            --babyblue: #dbeeff;
+            --babyblue-dark: #4a90d9;
+            --cream: #faf9f6;
+            --ink: #2d3748;
+            --ink-soft: #5a6478;
+        }
+
+        @page {
+            size: A4 portrait;
+            margin: 12mm;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: var(--cream);
+            color: var(--ink);
+            line-height: 1.45;
+            margin: 0;
+            padding: 6px;
+            font-size: 12.5px;
+        }
+
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        h1, h2, h3 {
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+        }
+
+        /* ---------- HEADER ---------- */
+        .header-card {
+            background: linear-gradient(120deg, var(--lavender) 0%, var(--blush) 50%, var(--babyblue) 100%);
+            border-radius: 20px;
+            padding: 20px 24px;
+            text-align: center;
+            margin-bottom: 14px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+
+        .header-card h1 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--ink);
+            letter-spacing: 0.3px;
+        }
+
+        .header-card p {
+            margin: 6px 0 0;
+            font-size: 12px;
+            color: var(--ink-soft);
+            font-weight: 600;
+        }
+
+        .header-tags {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .htag {
+            background: rgba(255, 255, 255, 0.65);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 10.5px;
+            font-weight: 700;
+            color: var(--ink-soft);
+        }
+
+        /* ---------- SECTION LABEL ---------- */
+        .section-label {
+            font-size: 13px;
+            font-weight: 800;
+            margin: 14px 2px 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            break-after: avoid;
+        }
+
+        .section-label .num {
+            background: var(--lavender-dark);
+            color: #fff;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10.5px;
+        }
+
+        /* ---------- CARDS ---------- */
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 14px 16px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            break-inside: avoid;
+            page-break-inside: avoid;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 13.5px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-pink { color: var(--blush-dark); }
+        .badge-purple { color: var(--lavender-dark); }
+        .badge-blue { color: var(--babyblue-dark); }
+        .badge-green { color: var(--mint-dark); }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        p.note {
+            font-size: 11.5px;
+            color: var(--ink-soft);
+            margin: 4px 0 8px;
+        }
+
+        /* ---------- TABLES ---------- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11.5px;
+            margin-top: 6px;
+        }
+
+        th {
+            background: var(--lavender);
+            color: #4b3f91;
+            padding: 7px 9px;
+            text-align: left;
+            font-weight: 700;
+        }
+
+        th:first-child { border-radius: 8px 0 0 8px; }
+        th:last-child { border-radius: 0 8px 8px 0; }
+
+        td {
+            padding: 6px 9px;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        tr:nth-child(even) td { background: #faf8ff; }
+
+        ul, ol {
+            margin: 0;
+            padding-left: 16px;
+            font-size: 11.5px;
+        }
+
+        li { margin-bottom: 4px; }
+
+        /* ---------- TAG GRID & ITEMS ---------- */
+        .tag-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 11.5px;
+        }
+
+        .tag-item {
+            background: #fdf4ff;
+            border-radius: 10px;
+            padding: 8px 10px;
+            border-left: 3px solid #d946ef;
+        }
+
+        .tag-item.blue {
+            background: #f0f8ff;
+            border-left-color: var(--babyblue-dark);
+        }
+        
+        .tag-item.green {
+            background: #f2fbf6;
+            border-left-color: var(--mint-dark);
+        }
+        
+        .tag-item.purple {
+            background: #f6f5fc;
+            border-left-color: var(--lavender-dark);
+        }
+
+        .flash {
+            background: var(--mint);
+            border-radius: 10px;
+            padding: 7px 10px;
+            font-size: 10.5px;
+            font-weight: 700;
+            color: #1f5f43;
+            display: inline-block;
+            margin: 3px 4px 0 0;
+        }
+
+        .callout {
+            background: #fff7e6;
+            border: 1.5px dashed #f0c469;
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: 11px;
+            color: #7a5c14;
+            margin-top: 8px;
+            break-inside: avoid;
+        }
+
+        .def-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 14px;
+        }
+
+        .def-item {
+            font-size: 10.8px;
+            padding: 6px 8px;
+            background: #f9f8ff;
+            border-radius: 8px;
+        }
+
+        .def-item b {
+            color: var(--lavender-dark);
+            display: block;
+            font-size: 11px;
+            margin-bottom: 1px;
+        }
+
+        /* ---------- CODE BLOCK VISUAL ---------- */
+        .code-visual {
+            background: #2d3748;
+            color: #e2e8f0;
+            border-radius: 12px;
+            padding: 10px 14px;
+            margin: 6px 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 11.5px;
+            line-height: 1.6;
+            border-left: 3px solid var(--mint-dark);
+            text-align: left;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        .code-visual .result {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 800;
+            color: var(--mint-dark);
+            margin-top: 6px;
+            font-size: 11.5px;
+            display: block;
+        }
+
+        .code-visual .error {
+            color: var(--blush-dark);
+        }
+        
+        .code-prompt {
+            color: var(--lavender-dark);
+            font-weight: bold;
+        }
+
+        /* ---------- THEOREM CARD (Reused for Important Info) ---------- */
+        .theorem-card {
+            background: linear-gradient(120deg, #fff7e6, #fff2f8);
+            border: 1.5px dashed #f0c469;
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin: 8px 0;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #fff;
+            color: var(--ink-soft);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            margin: 6px 0 12px 4px;
+            transition: all 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: var(--lavender-dark);
+            transform: translateX(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                font-size: 15px;
+                line-height: 1.6;
+                padding: 12px 10px 50px;
+            }
+
+            .back-link {
+                font-size: 13.5px;
+                padding: 9px 16px;
+                margin: 4px 0 12px 2px;
+            }
+
+            .header-card {
+                padding: 20px 14px;
+                border-radius: 18px;
+                margin-bottom: 14px;
+            }
+
+            .header-card h1 {
+                font-size: 21px;
+                line-height: 1.3;
+            }
+
+            .section-label {
+                font-size: 16px;
+                margin: 18px 4px 10px;
+            }
+
+            .section-label .num {
+                width: 24px;
+                height: 24px;
+                font-size: 12px;
+            }
+
+            .card {
+                padding: 16px 14px;
+                border-radius: 16px;
+                margin-bottom: 14px;
+            }
+
+            .card-title {
+                font-size: 15.5px;
+                line-height: 1.35;
+                margin-bottom: 10px;
+            }
+
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            table {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                font-size: 13.5px;
+            }
+
+            .tag-grid {
+                grid-template-columns: 1fr;
+                gap: 9px;
+                font-size: 13.5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <a href="index.html" class="back-link">← Back to Revision Hub</a>
+
+        <div class="header-card">
+            <h1>🐍 Data Handling</h1>
+            <p>Class XI Computer Science (083) • Chapter 6 Detailed Notes</p>
+            <div class="header-tags">
+                <span class="htag">Data Types</span>
+                <span class="htag">Mutability</span>
+                <span class="htag">Operators</span>
+                <span class="htag">Debugging</span>
+            </div>
+        </div>
+
+        <p class="note" style="text-align:center;">These notes are prepared directly from the PDF "Data Handling", expanding the concepts for easy understanding and exam writing.</p>
+
+        <!-- SECTION 1 -->
+        <div class="section-label"><span class="num">1</span> Data Types in Python</div>
+        
+        <div class="card">
+            <div class="card-title badge-purple">📚 Core Data Types</div>
+            <p>Data type is the way of representing the type of any data. Python offers the following built-in core data types:</p>
+            <div class="tag-grid">
+                <div class="tag-item purple"><b>1. Numbers</b> (int, float, complex)</div>
+                <div class="tag-item purple"><b>2. String</b> ('text')</div>
+                <div class="tag-item purple"><b>3. List</b> [1, 2, 3]</div>
+                <div class="tag-item purple"><b>4. Tuple</b> (1, 2, 3)</div>
+                <div class="tag-item purple"><b>5. Sets</b> {1, 2, 3}</div>
+                <div class="tag-item purple"><b>6. Dictionary</b> {'key':'value'}</div>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-title badge-blue">🔢 Numbers</div>
+                <ul>
+                    <li><b>Integer:</b> Whole numbers.</li>
+                    <li><b>Floating Point:</b> Decimal numbers.</li>
+                    <li><b>Complex:</b> Pair of floating point numbers represented as <code>a+bj</code> or <code>a+bi</code>.</li>
+                </ul>
+                <p>The real and imaginary parts of a complex number <code>c</code> can be retrieved through read-only attributes <code>c.real</code> and <code>c.imag</code>.</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-title badge-pink">📝 Strings</div>
+                <p>A sequence of characters enclosed in quotes <code>''</code> / <code>""</code> / <code>''' '''</code>.</p>
+                <ul>
+                    <li>Accessed individually using <b>INDEX</b>.</li>
+                    <li>+ve index -> 0, 1, 2... (Left to Right)</li>
+                    <li>-ve index -> -1, -2, -3... (Right to Left)</li>
+                    <li><b>Immutable</b> in nature.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-title badge-green">📋 Lists</div>
+                <p>Comma-separated values of any datatype between square brackets <code>[]</code>.</p>
+                <ul>
+                    <li>Elements can be accessed using INDEX (+ve or -ve).</li>
+                    <li><b>Mutable</b> in nature (elements can be changed in place).</li>
+                </ul>
+                <div class="code-visual" style="border-left-color: #4a9d78;">l = [1, 2, 'a', 'b']</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title badge-purple">📦 Tuples</div>
+                <p>Comma-separated values of any datatype between parentheses <code>()</code>.</p>
+                <ul>
+                    <li>Elements accessed using INDEX.</li>
+                    <li><b>Immutable</b> in nature.</li>
+                </ul>
+                <div class="code-visual" style="border-left-color: #8b7fd6;">t = (1, 2, 'a', 'b')</div>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-title badge-blue">⭕ Sets</div>
+                <p>Comma-separated values enclosed in curly brackets <code>{}</code>.</p>
+                <ul>
+                    <li>Elements are <b>unordered</b> and <b>unindexed</b>.</li>
+                    <li>Do <b>not</b> allow duplicate entries.</li>
+                    <li>Cannot contain mutable elements (like lists), but Sets themselves are <b>mutable</b>.</li>
+                </ul>
+                <div class="code-visual" style="border-left-color: #4a90d9;">s = {1, 2, 3, 4}</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title badge-pink">📖 Dictionary</div>
+                <p>Unordered set of comma separated <code>key:value</code> pairs within <code>{}</code>.</p>
+                <ul>
+                    <li>No built-in index available (accessed via keys).</li>
+                    <li>Dictionary is <b>mutable</b> (values can change).</li>
+                    <li>Dictionary <b>keys must be immutable</b>.</li>
+                    <li>No two keys can be the same.</li>
+                </ul>
+                <div class="code-visual" style="border-left-color: #e0729a;">d = {10: 'zero', 11: 'one'}</div>
+            </div>
+        </div>
+
+        <!-- SECTION 2 -->
+        <div class="section-label"><span class="num">2</span> Mutable and Immutable Types</div>
+        
+        <div class="card">
+            <div class="grid-2">
+                <div>
+                    <div class="card-title badge-purple">🔒 Immutable Types</div>
+                    <p>Types that can <b>never change their values in place</b>. If you change the value, a new object is created in memory.</p>
+                    <ul style="color:var(--ink-soft); font-weight: 600;">
+                        <li>Integers</li>
+                        <li>Floating point numbers</li>
+                        <li>Booleans</li>
+                        <li>Strings</li>
+                        <li>Tuples</li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="card-title badge-green">🔓 Mutable Types</div>
+                    <p>Types whose values <b>can be changed in place</b> without changing their memory location (id).</p>
+                    <ul style="color:var(--ink-soft); font-weight: 600;">
+                        <li>Lists</li>
+                        <li>Dictionaries</li>
+                        <li>Sets</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="callout" style="margin-top: 12px;">
+                💡 <b>Variable Internals:</b> Python is object-oriented. Every entity that stores data is an object. Every object has 3 key attributes: <code>type()</code>, <code>value</code>, and <code>id()</code> (memory address).
+            </div>
+            
+            <p style="margin-top: 10px;"><b>Important Note:</b> Python creates two different objects even if they store the same value in these cases:</p>
+            <ol>
+                <li>Input of strings from the console.</li>
+                <li>Writing integer literals with many digits (very big integers).</li>
+                <li>Writing floating point and complex literals.</li>
+            </ol>
+        </div>
+
+        <!-- SECTION 3 -->
+        <div class="section-label"><span class="num">3</span> Operators</div>
+        
+        <div class="card">
+            <div class="card-title badge-blue">⚙️ Types of Operators</div>
+            
+            <div class="tag-grid">
+                <div class="tag-item blue"><b>Arithmetic:</b> <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>//</code> (Floor Div), <code>%</code> (Modulus), <code>**</code> (Exponent)</div>
+                <div class="tag-item blue"><b>Relational:</b> <code>&lt;</code>, <code>&gt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>==</code>, <code>!=</code></div>
+                <div class="tag-item blue"><b>Logical:</b> <code>and</code>, <code>or</code>, <code>not</code></div>
+                <div class="tag-item blue"><b>Identity:</b> <code>is</code>, <code>is not</code></div>
+                <div class="tag-item blue"><b>Bitwise:</b> <code>&</code> (AND), <code>|</code> (OR), <code>^</code> (XOR), <code>~</code> (NOT)</div>
+            </div>
+
+            <div class="subsection-title" style="margin-top: 14px;">🔍 How Relational Operators Work</div>
+            <ul>
+                <li><b>Numeric:</b> Trailing zeros after decimal points are ignored (e.g., <code>4 == 4.0</code> is True).</li>
+                <li><b>Lists & Tuples:</b> Equal if they have the same elements in the <b>same order</b>.</li>
+                <li><b>Booleans:</b> True is equivalent to 1, False is equivalent to 0.</li>
+                <li><b>Strings:</b> Compared based on <b>Lexicographical ordering</b> (dictionary order).
+                    <br>- Capital letters are lesser than small letters.
+                    <br>- Use <code>ord(char)</code> to get ASCII value, <code>chr(int)</code> to get character.
+                </li>
+            </ul>
+
+            <div class="subsection-title" style="margin-top: 14px;">🔀 Identity vs Equality</div>
+            <p><code>==</code> checks if values are identical (Equality).<br><code>is</code> checks if both operands refer to the <b>same object memory/id</b> (Identity).</p>
+        </div>
+
+        <div class="card">
+            <div class="card-title badge-purple">🧠 Logical Operators Deep Dive</div>
+            <p>Logical operators (<code>and</code>, <code>or</code>, <code>not</code>) can combine expressions or handle truth values of numbers/strings/lists.</p>
+            <ul>
+                <li><b>Truth Value Testing:</b> Every value has a truth value.
+                    <br>- <b>False:</b> <code>None</code>, <code>False</code>, zero of any numeric type (<code>0</code>, <code>0.0</code>), empty sequences (<code>''</code>, <code>[]</code>, <code>()</code>), empty mappings (<code>{}</code>).
+                    <br>- <b>True:</b> All other values.
+                </li>
+                <br>
+                <li><b>OR Operator (<code>X or Y</code>):</b> If X is true, returns X. Otherwise, returns Y.</li>
+                <li><b>AND Operator (<code>X and Y</code>):</b> If X is false, returns X. Otherwise, returns Y.</li>
+            </ul>
+            <div class="code-visual">
+result = '' or 'aman'   <span class="result">aman (since '' is false, returns Y)</span>
+result = [] and [1,2,3] <span class="result">[] (since [] is false, returns X)</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title badge-green">⏱️ Precedence & Associativity</div>
+            <p><b>Operator Precedence</b> represents the priority of operators (Top to Bottom approach).</p>
+            <p><b>Operator Associativity</b> guides the processing direction when an expression has operators of the same priority. Usually follows <b>Left to Right</b> (L2R), but Exponentiation (<code>**</code>) follows <b>Right to Left</b> (R2L).</p>
+        </div>
+
+        <!-- SECTION 4 -->
+        <div class="section-label"><span class="num">4</span> Expressions and Type Casting</div>
+
+        <div class="grid-2">
+            <div class="card">
+                <div class="card-title badge-pink">📜 Evaluating Expressions</div>
+                <p>Expressions can be of any type according to the used operators:</p>
+                <ul>
+                    <li><b>Arithmetic:</b> <code>10 + 20</code></li>
+                    <li><b>Relational:</b> <code>a &gt;= b</code></li>
+                    <li><b>Logical:</b> <code>a and b</code></li>
+                    <li><b>String:</b> <code>"aman" + "sharma"</code> (Concatenation) or <code>"aman" * 3</code> (Replication)</li>
+                    <li><b>Mixed:</b> Combines multiple types.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <div class="card-title badge-blue">🔄 Type Casting (Conversion)</div>
+                <p>Process of converting one type of value into another.</p>
+                <ul>
+                    <li><b>Implicit (Type Promotion):</b> Done automatically by compiler (e.g., int + float = float). No conversion if both are integers.</li>
+                    <li><b>Explicit:</b> User-defined using functions like <code>int()</code>, <code>float()</code>, <code>str()</code>, <code>complex()</code>, <code>bool()</code>.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- SECTION 5 -->
+        <div class="section-label"><span class="num">5</span> Python Standard Library Modules</div>
+
+        <div class="card">
+            <div class="card-title badge-purple">📦 Modules Overview</div>
+            <p>A Module is a collection of functions, methods, and constants. Examples: <code>math</code>, <code>random</code>, <code>statistics</code>.</p>
+            <p><b>How to import:</b> <code>import &lt;module_name&gt; [as alias]</code></p>
+            
+            <table style="margin-top: 10px;">
+                <tr>
+                    <th width="30%">Module</th>
+                    <th width="70%">Important Functions</th>
+                </tr>
+                <tr>
+                    <td><b>math</b></td>
+                    <td><code>math.pi</code>, <code>math.pow(base, exp)</code>, <code>math.sqrt(x)</code>, <code>math.fmod(x, y)</code>, <code>math.factorial(x)</code></td>
+                </tr>
+                <tr>
+                    <td><b>statistics</b></td>
+                    <td><code>statistics.mean(l)</code>, <code>statistics.mode(l)</code>, <code>statistics.median(l)</code></td>
+                </tr>
+                <tr>
+                    <td><b>random</b></td>
+                    <td>
+                        - <code>random.random()</code>: returns float [0.0, 1.0)<br>
+                        - <code>random.randint(a, b)</code>: returns integer N where a &lt;= N &lt;= b<br>
+                        - <code>random.randrange(start, stop, step)</code>: returns random from range
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- SECTION 6 -->
+        <div class="section-label"><span class="num">6</span> Debugging</div>
+
+        <div class="card">
+            <div class="card-title badge-blush">🐛 Error / Bug & Debugging</div>
+            <p>An error (bug) is anything in the code that prevents a program from compiling and running correctly. Debugging is the process of locating and correcting the code.</p>
+            
+            <div class="tag-grid" style="grid-template-columns: 1fr;">
+                <div class="tag-item purple">
+                    <b>1. Compile Time Error</b><br>
+                    Occurs during compilation when code is checked against programming rules.<br>
+                    - <b>Syntax Error:</b> Misuse of formal language rules (e.g., missing quotes, wrong indentation).<br>
+                    - <b>Semantics Error:</b> Statements are not meaningful despite being syntactically correct (e.g., <code>A+B=C</code> instead of <code>C=A+B</code>).
+                </div>
+                <div class="tag-item blue">
+                    <b>2. Logical Error</b><br>
+                    No syntactical or semantical errors, but program shows unexpected/wrong output due to a logical flaw by the programmer (e.g., using <code>+</code> instead of <code>*</code> for area calculation).
+                </div>
+                <div class="tag-item green">
+                    <b>3. Run Time Error</b><br>
+                    Occurs during the execution (run time) of the program. Harder to find. (e.g., User inputs string 'sdsd' when <code>int()</code> is expected, resulting in <code>ValueError</code>).
+                </div>
+            </div>
+
+            <div class="callout" style="margin-top: 10px;">
+                🚨 <b>Exceptions:</b> An exception is an irregular, unexpected situation occurring during execution on which the programmer has no control (e.g., <code>ZeroDivisionError</code>, <code>AttributeError</code>).
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
