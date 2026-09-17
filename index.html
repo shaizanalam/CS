@@ -33,65 +33,99 @@
         body {
             font-family: 'Quicksand', sans-serif;
             background: var(--cream);
+            background-image: radial-gradient(circle at 1px 1px, rgba(139,127,214,0.04) 1px, transparent 0);
+            background-size: 28px 28px;
             color: var(--ink);
             line-height: 1.5;
             padding: 20px 16px 60px;
+            scroll-behavior: smooth;
         }
 
         .wrap {
-            max-width: 900px;
+            max-width: 920px;
             margin: 0 auto;
         }
 
-        /* HEADER */
+        /* ============ HEADER ============ */
         .header-card {
-            background: linear-gradient(135deg, var(--lavender) 0%, var(--blush) 50%, var(--babyblue) 100%);
+            background: linear-gradient(135deg, var(--lavender) 0%, var(--blush) 40%, var(--babyblue) 100%);
             border-radius: 24px;
-            padding: 30px 24px;
+            padding: 36px 24px 32px;
             text-align: center;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+            margin-bottom: 32px;
+            box-shadow: 0 10px 30px rgba(139, 127, 214, 0.15);
             position: relative;
             overflow: hidden;
         }
 
         .header-card::before {
-            content: '✨';
+            content: '';
             position: absolute;
-            top: 20px;
-            left: 30px;
-            font-size: 24px;
-            opacity: 0.6;
+            top: -30px;
+            right: -30px;
+            width: 120px;
+            height: 120px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
         }
-        
+
         .header-card::after {
-            content: '🚀';
+            content: '';
             position: absolute;
-            bottom: 20px;
-            right: 30px;
-            font-size: 30px;
-            opacity: 0.6;
+            bottom: -20px;
+            left: -20px;
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 50%;
         }
 
         .header-card h1 {
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 800;
             color: var(--ink);
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             letter-spacing: -0.5px;
+            position: relative;
+            z-index: 1;
         }
 
-        .header-card p {
-            font-size: 15px;
+        .header-card .subtitle {
+            font-size: 14px;
             color: var(--ink-soft);
             font-weight: 700;
+            position: relative;
+            z-index: 1;
         }
 
-        /* BLUEPRINT SECTION */
+        .header-stats {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-stats .pill {
+            background: rgba(255,255,255,0.6);
+            backdrop-filter: blur(10px);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--ink);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* ============ SECTION TITLES ============ */
         .section-title {
             font-size: 20px;
             font-weight: 800;
-            margin: 0 0 16px 8px;
+            margin: 0 0 16px 4px;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -100,89 +134,206 @@
 
         .section-title .icon {
             background: #fff;
-            width: 36px;
-            height: 36px;
+            width: 38px;
+            height: 38px;
             border-radius: 12px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
             font-size: 18px;
         }
 
-        .blueprint-card {
+        /* ============ BLUEPRINT TABLE ============ */
+        .blueprint-wrap {
             background: #fff;
-            border-radius: 24px;
-            padding: 12px;
-            margin-bottom: 40px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(0, 0, 0, 0.03);
-            text-align: center;
-        }
-        
-        .blueprint-card img {
-            max-width: 100%;
-            border-radius: 16px;
-            display: block;
-            margin: 0 auto;
-            border: 4px solid var(--cream);
-        }
-        
-        .blueprint-card .caption {
-            margin-top: 12px;
-            margin-bottom: 4px;
-            font-size: 13.5px;
-            font-weight: 700;
-            color: var(--ink-soft);
+            border-radius: 22px;
+            margin-bottom: 36px;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            overflow: hidden;
         }
 
-        /* CHAPTERS GRID */
+        .bp-header {
+            background: linear-gradient(135deg, #4a90d9 0%, #8b7fd6 100%);
+            padding: 18px 20px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .bp-header h2 {
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .bp-header .bp-sub {
+            font-size: 12px;
+            font-weight: 600;
+            opacity: 0.85;
+        }
+
+        .bp-table-scroll {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .bp-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            font-size: 12.5px;
+            min-width: 700px;
+        }
+
+        .bp-table thead th {
+            background: #f4f1ff;
+            color: var(--lavender-dark);
+            padding: 12px 8px;
+            font-weight: 800;
+            font-size: 11.5px;
+            border-bottom: 2px solid var(--lavender);
+            position: sticky;
+            top: 0;
+        }
+
+        .bp-table thead th:first-child {
+            text-align: left;
+            padding-left: 16px;
+        }
+
+        .bp-table thead th .th-sub {
+            display: block;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--ink-soft);
+            margin-top: 2px;
+            line-height: 1.35;
+        }
+
+        .bp-table tbody td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #f3f1fa;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .bp-table tbody td:first-child {
+            text-align: left;
+            padding-left: 16px;
+            font-weight: 800;
+        }
+
+        .bp-table tbody tr:hover {
+            background: #faf8ff;
+        }
+
+        .bp-table tbody td .cell-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .cell-filled { background: var(--lavender); color: #4b3f91; }
+        .cell-empty { color: #d4d0e8; }
+
+        .bp-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .bp-table .total-row td {
+            background: #f4f1ff;
+            font-weight: 800;
+            color: var(--lavender-dark);
+            border-bottom: none;
+            padding: 12px 8px;
+            font-size: 12px;
+        }
+
+        .bp-table .grand-row td {
+            background: linear-gradient(135deg, #4a90d9, #8b7fd6);
+            color: #fff;
+            font-weight: 800;
+            font-size: 16px;
+            padding: 14px 8px;
+            border-bottom: none;
+        }
+
+        .bp-marks-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--lavender-dark), var(--babyblue-dark));
+            color: #fff;
+            width: 34px;
+            height: 28px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 13px;
+        }
+
+        .bp-footer {
+            padding: 12px 18px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--ink-soft);
+            border-top: 1px solid #f3f1fa;
+        }
+
+        /* ============ CHAPTERS GRID ============ */
         .chapters-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
+            gap: 18px;
         }
 
         .chapter-card {
             background: #fff;
             border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
+            padding: 22px 20px 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03), 0 8px 24px rgba(0, 0, 0, 0.04);
             border: 1px solid rgba(0, 0, 0, 0.04);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
             position: relative;
             overflow: hidden;
         }
 
         .chapter-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 0 12px 28px rgba(139, 127, 214, 0.12), 0 4px 12px rgba(0, 0, 0, 0.04);
         }
-        
+
         .chapter-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 6px;
+            height: 5px;
         }
 
-        .card-1::before { background: var(--lavender-dark); }
-        .card-2::before { background: var(--blush-dark); }
-        .card-3::before { background: var(--babyblue-dark); }
-        .card-4::before { background: var(--mint-dark); }
-        .card-5::before, .card-6::before, .card-7::before { background: var(--peach-dark); }
+        .card-1::before { background: linear-gradient(90deg, var(--lavender-dark), #a78bfa); }
+        .card-2::before { background: linear-gradient(90deg, var(--blush-dark), #f472b6); }
+        .card-3::before { background: linear-gradient(90deg, var(--babyblue-dark), #60a5fa); }
+        .card-4::before { background: linear-gradient(90deg, var(--mint-dark), #34d399); }
+        .card-5::before { background: linear-gradient(90deg, #f09e51, #fbbf24); }
+        .card-6::before { background: linear-gradient(90deg, #e0729a, #f472b6); }
+        .card-7::before { background: linear-gradient(90deg, #4a90d9, #818cf8); }
 
         .ch-num {
             display: inline-block;
-            background: #f1f3f5;
-            padding: 4px 10px;
+            padding: 4px 11px;
             border-radius: 10px;
-            font-size: 11px;
+            font-size: 10.5px;
             font-weight: 800;
-            color: var(--ink-soft);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             letter-spacing: 0.5px;
             text-transform: uppercase;
         }
@@ -191,40 +342,57 @@
         .card-2 .ch-num { background: var(--blush); color: #9c2f4d; }
         .card-3 .ch-num { background: var(--babyblue); color: #2c5a8d; }
         .card-4 .ch-num { background: var(--mint); color: #1f6b46; }
+        .card-5 .ch-num { background: var(--peach); color: #8a5a1e; }
+        .card-6 .ch-num { background: var(--blush); color: #9c2f4d; }
+        .card-7 .ch-num { background: var(--babyblue); color: #2c5a8d; }
 
         .chapter-card h3 {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 800;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             color: var(--ink);
-            min-height: 54px;
+            min-height: 46px;
+            line-height: 1.35;
+        }
+
+        .marks-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #f8f6ff;
+            border: 1px solid var(--lavender);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 10.5px;
+            font-weight: 800;
+            color: var(--lavender-dark);
+            margin-bottom: 14px;
         }
 
         .action-links {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
 
         .btn {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 16px;
+            padding: 11px 14px;
             border-radius: 12px;
             text-decoration: none;
             font-size: 13px;
             font-weight: 700;
             transition: all 0.2s ease;
         }
-        
+
         .btn span {
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        /* Note Button */
         .btn-notes {
             background: #fdfdfd;
             border: 1.5px solid #ece8fb;
@@ -234,9 +402,8 @@
             border-color: var(--lavender-dark);
             background: #f9f8ff;
         }
-        .btn-notes i { font-style: normal; font-size: 16px; }
+        .btn-notes i { font-style: normal; font-size: 15px; }
 
-        /* Questions Button */
         .btn-questions {
             background: #fdfdfd;
             border: 1.5px solid #fdeaf0;
@@ -246,9 +413,8 @@
             border-color: var(--blush-dark);
             background: #fff5f8;
         }
-        .btn-questions i { font-style: normal; font-size: 16px; }
+        .btn-questions i { font-style: normal; font-size: 15px; }
 
-        /* PDF Button */
         .btn-pdf {
             background: #fdfdfd;
             border: 1.5px solid #e2f1ff;
@@ -258,81 +424,250 @@
             border-color: var(--babyblue-dark);
             background: #f0f8ff;
         }
-        .btn-pdf i { font-style: normal; font-size: 16px; }
-        
-        .btn-locked {
-            background: #f4f5f7;
-            border: 1.5px dashed #e2e8f0;
-            color: #a0aec0;
-            cursor: not-allowed;
-        }
-        
+        .btn-pdf i { font-style: normal; font-size: 15px; }
+
         .btn::after {
             content: '→';
-            font-size: 16px;
+            font-size: 15px;
             opacity: 0;
-            transform: translateX(-5px);
+            transform: translateX(-6px);
             transition: all 0.2s ease;
         }
-        
-        .btn:hover:not(.btn-locked)::after {
+
+        .btn:hover::after {
             opacity: 1;
             transform: translateX(0);
         }
-        
-        .btn-locked::after {
-            content: '🔒';
-            opacity: 0.6;
-            transform: none;
-        }
-        
-        @media (max-width: 600px) {
-            body { padding: 12px 10px 50px; }
-            .header-card h1 { font-size: 24px; }
-            .header-card p { font-size: 13.5px; }
-            .header-card { padding: 22px 16px; margin-bottom: 20px; }
-            .section-title { font-size: 18px; margin-bottom: 12px; }
-            .blueprint-card { margin-bottom: 22px; padding: 10px; border-radius: 18px; }
-            .chapters-grid { grid-template-columns: 1fr; gap: 14px; }
-            .chapter-card { padding: 16px; border-radius: 18px; }
-            .ch-title { font-size: 16.5px; }
-            .btn { padding: 13px 14px; font-size: 14px; min-height: 46px; }
+
+        /* ============ FOOTER ============ */
+        .site-footer {
+            text-align: center;
+            margin-top: 36px;
+            padding: 16px;
+            font-size: 12px;
+            color: var(--ink-soft);
+            font-weight: 600;
         }
 
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 768px) {
+            body { padding: 12px 10px 50px; }
+            .header-card { padding: 26px 16px 22px; margin-bottom: 22px; border-radius: 20px; }
+            .header-card h1 { font-size: 24px; }
+            .header-card .subtitle { font-size: 13px; }
+            .header-stats { gap: 8px; margin-top: 12px; }
+            .header-stats .pill { font-size: 11px; padding: 5px 10px; }
+            .section-title { font-size: 18px; margin-bottom: 12px; }
+            .section-title .icon { width: 34px; height: 34px; font-size: 16px; }
+            .blueprint-wrap { margin-bottom: 24px; border-radius: 18px; }
+            .bp-header { padding: 14px 16px; }
+            .bp-header h2 { font-size: 15px; }
+            .bp-footer { font-size: 11.5px; padding: 10px 14px; }
+            .chapters-grid { grid-template-columns: 1fr; gap: 14px; }
+            .chapter-card { padding: 18px 16px 16px; border-radius: 18px; }
+            .chapter-card h3 { font-size: 16px; min-height: auto; margin-bottom: 12px; }
+            .btn { padding: 12px 14px; font-size: 14px; min-height: 46px; }
+        }
+
+        /* ============ SCROLL-TO-TOP ============ */
+        .scroll-top {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--lavender-dark), var(--babyblue-dark));
+            color: #fff;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(139, 127, 214, 0.3);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .scroll-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .scroll-top:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 127, 214, 0.4);
+        }
+
+        /* ============ FADE-IN ANIMATION ============ */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(18px);
+            animation: fadeUp 0.5s ease forwards;
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.25s; }
+        .delay-4 { animation-delay: 0.3s; }
+        .delay-5 { animation-delay: 0.35s; }
+        .delay-6 { animation-delay: 0.4s; }
+        .delay-7 { animation-delay: 0.45s; }
     </style>
 </head>
 
 <body>
     <div class="wrap">
 
-        <div class="header-card">
-            <h1>Class XI CS Hub</h1>
-            <p>Your Ultimate Study Portal & Question Bank</p>
+        <!-- HEADER -->
+        <div class="header-card fade-up">
+            <h1>📚 Class XI CS Hub</h1>
+            <p class="subtitle">Your Ultimate Study Portal &amp; Question Bank</p>
+            <div class="header-stats">
+                <div class="pill">📖 7 Chapters</div>
+                <div class="pill">🎯 7 Question Banks</div>
+                <div class="pill">📊 70 Marks</div>
+            </div>
         </div>
 
-        <div class="section-title">
+        <!-- BLUEPRINT SECTION -->
+        <div class="section-title fade-up delay-1">
             <span class="icon">📊</span> KPS Half-Yearly Blueprint
         </div>
-        
-        <div class="blueprint-card">
-            <!-- Ensure no spaces in the URL if possible, using URL encoding %20 -->
-            <img src="pdfs/blue%20print%20cs.jpeg" alt="CS Blueprint">
-            <div class="caption">Official marks distribution for half-yearly examination.</div>
+
+        <div class="blueprint-wrap fade-up delay-2">
+            <div class="bp-header">
+                <h2>KRISHNA PUBLIC SCHOOL</h2>
+                <div class="bp-sub">Session 2026-27 &nbsp;•&nbsp; Class XI CS [083] &nbsp;•&nbsp; Half-Yearly Exam Blueprint</div>
+            </div>
+            <div class="bp-table-scroll">
+                <table class="bp-table">
+                    <thead>
+                        <tr>
+                            <th>Chapter</th>
+                            <th>Section A<span class="th-sub">Q1–Q21 &nbsp;|&nbsp; 1m × 21 = 21</span></th>
+                            <th>Section B<span class="th-sub">Q22–Q28 &nbsp;|&nbsp; 2m × 7 = 14</span></th>
+                            <th>Section C<span class="th-sub">Q29–Q31 &nbsp;|&nbsp; 3m × 3 = 9</span></th>
+                            <th>Section D<span class="th-sub">Q32–Q35 &nbsp;|&nbsp; 4m × 4 = 16</span></th>
+                            <th>Section E<span class="th-sub">Q36–Q37 &nbsp;|&nbsp; 5m × 2 = 10</span></th>
+                            <th>Ques</th>
+                            <th>Marks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Computer System Overview</td>
+                            <td><span class="cell-num cell-filled">3</span></td>
+                            <td><span class="cell-num cell-filled">1</span></td>
+                            <td><span class="cell-num cell-empty">—</span></td>
+                            <td><span class="cell-num cell-empty">—</span></td>
+                            <td><span class="cell-num cell-empty">—</span></td>
+                            <td><b>4</b></td>
+                            <td><span class="bp-marks-badge">5</span></td>
+                        </tr>
+                        <tr>
+                            <td>Data Representation</td>
+                            <td><span class="cell-num cell-filled">3</span></td>
+                            <td><span class="cell-num cell-filled">1</span></td>
+                            <td><span class="cell-num cell-empty">—</span></td>
+                            <td><span class="cell-num cell-empty">—</span></td>
+                            <td><span class="cell-num cell-empty">—</span></td>
+                            <td><b>4</b></td>
+                            <td><span class="bp-marks-badge">5</span></td>
+                        </tr>
+                        <tr>
+                            <td>Boolean Logic</td>
+                            <td><span class="cell-num cell-filled">3</span></td>
+                            <td><span class="cell-num cell-filled">1</span></td>
+                            <td><span class="cell-num cell-empty">—</span></td>
+                            <td><span class="cell-num cell-empty">—</span></td>
+                            <td><span class="cell-num cell-empty">—</span></td>
+                            <td><b>4</b></td>
+                            <td><span class="bp-marks-badge">5</span></td>
+                        </tr>
+                        <tr>
+                            <td>Getting Started With Python</td>
+                            <td><span class="cell-num cell-filled">3</span></td>
+                            <td><span class="cell-num cell-filled">1</span></td>
+                            <td><span class="cell-num cell-empty">—</span></td>
+                            <td><span class="cell-num cell-empty">—</span></td>
+                            <td><span class="cell-num cell-empty">—</span></td>
+                            <td><b>4</b></td>
+                            <td><span class="bp-marks-badge">5</span></td>
+                        </tr>
+                        <tr>
+                            <td>Python Fundamentals</td>
+                            <td><span class="cell-num cell-filled">1</span></td>
+                            <td><span class="cell-num cell-filled">1</span></td>
+                            <td><span class="cell-num cell-filled">1</span></td>
+                            <td><span class="cell-num cell-filled">1</span></td>
+                            <td><span class="cell-num cell-empty">—</span></td>
+                            <td><b>4</b></td>
+                            <td><span class="bp-marks-badge">10</span></td>
+                        </tr>
+                        <tr>
+                            <td>Data Handling</td>
+                            <td><span class="cell-num cell-filled">1</span></td>
+                            <td><span class="cell-num cell-filled">1</span></td>
+                            <td><span class="cell-num cell-filled">1</span></td>
+                            <td><span class="cell-num cell-filled">1</span></td>
+                            <td><span class="cell-num cell-filled">1</span></td>
+                            <td><b>5</b></td>
+                            <td><span class="bp-marks-badge">15</span></td>
+                        </tr>
+                        <tr>
+                            <td>Flow of Control</td>
+                            <td><span class="cell-num cell-filled">7</span></td>
+                            <td><span class="cell-num cell-filled">1</span></td>
+                            <td><span class="cell-num cell-filled">1</span></td>
+                            <td><span class="cell-num cell-filled">2</span></td>
+                            <td><span class="cell-num cell-filled">1</span></td>
+                            <td><b>12</b></td>
+                            <td><span class="bp-marks-badge">25</span></td>
+                        </tr>
+                        <tr class="total-row">
+                            <td>Total Questions</td>
+                            <td>21</td>
+                            <td>7</td>
+                            <td>3</td>
+                            <td>4</td>
+                            <td>2</td>
+                            <td>37</td>
+                            <td></td>
+                        </tr>
+                        <tr class="grand-row">
+                            <td colspan="7" style="text-align:center; letter-spacing: 0.5px;">Grand Total</td>
+                            <td>70</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="bp-footer">📌 Official marks distribution for half-yearly examination • Krishna Public School</div>
         </div>
 
-        <div class="section-title">
+        <!-- CHAPTERS SECTION -->
+        <div class="section-title fade-up delay-3">
             <span class="icon">📚</span> Chapter Modules
         </div>
 
         <div class="chapters-grid">
-            
+
             <!-- Chapter 1 -->
-            <div class="chapter-card card-1">
+            <div class="chapter-card card-1 fade-up delay-1">
                 <span class="ch-num">Chapter 1</span>
                 <h3>Computer System Overview</h3>
+                <div class="marks-pill">🎯 5 Marks &nbsp;•&nbsp; 4 Questions</div>
                 <div class="action-links">
                     <a href="ch-1.html" class="btn btn-notes">
-                        <span><i>📝</i> HTML Notes</span>
+                        <span><i>📝</i> Detailed Notes</span>
                     </a>
                     <a href="ch-1-question.html" class="btn btn-questions">
                         <span><i>🎯</i> Interactive Questions</span>
@@ -344,12 +679,13 @@
             </div>
 
             <!-- Chapter 2 -->
-            <div class="chapter-card card-2">
+            <div class="chapter-card card-2 fade-up delay-2">
                 <span class="ch-num">Chapter 2</span>
                 <h3>Data Representation</h3>
+                <div class="marks-pill">🎯 5 Marks &nbsp;•&nbsp; 4 Questions</div>
                 <div class="action-links">
                     <a href="ch-2.html" class="btn btn-notes">
-                        <span><i>📝</i> HTML Notes</span>
+                        <span><i>📝</i> Detailed Notes</span>
                     </a>
                     <a href="ch-2-question.html" class="btn btn-questions">
                         <span><i>🎯</i> Interactive Questions</span>
@@ -361,12 +697,13 @@
             </div>
 
             <!-- Chapter 3 -->
-            <div class="chapter-card card-3">
+            <div class="chapter-card card-3 fade-up delay-3">
                 <span class="ch-num">Chapter 3</span>
                 <h3>Boolean Logic</h3>
+                <div class="marks-pill">🎯 5 Marks &nbsp;•&nbsp; 4 Questions</div>
                 <div class="action-links">
                     <a href="ch-3.html" class="btn btn-notes">
-                        <span><i>📝</i> HTML Notes</span>
+                        <span><i>📝</i> Detailed Notes</span>
                     </a>
                     <a href="ch-3-question.html" class="btn btn-questions">
                         <span><i>🎯</i> Interactive Questions</span>
@@ -378,12 +715,13 @@
             </div>
 
             <!-- Chapter 4 -->
-            <div class="chapter-card card-4">
+            <div class="chapter-card card-4 fade-up delay-4">
                 <span class="ch-num">Chapter 4</span>
                 <h3>Getting Started with Python</h3>
+                <div class="marks-pill">🎯 5 Marks &nbsp;•&nbsp; 4 Questions</div>
                 <div class="action-links">
                     <a href="ch-4.html" class="btn btn-notes">
-                        <span><i>📝</i> HTML Notes</span>
+                        <span><i>📝</i> Detailed Notes</span>
                     </a>
                     <a href="ch-4-question.html" class="btn btn-questions">
                         <span><i>🎯</i> Interactive Questions</span>
@@ -395,51 +733,54 @@
             </div>
 
             <!-- Chapter 5 -->
-            <div class="chapter-card card-5">
+            <div class="chapter-card card-5 fade-up delay-5">
                 <span class="ch-num">Chapter 5</span>
                 <h3>Python Fundamentals</h3>
+                <div class="marks-pill">🎯 10 Marks &nbsp;•&nbsp; 4 Questions</div>
                 <div class="action-links">
-                    <a href="#" class="btn btn-locked">
-                        <span><i>📝</i> HTML Notes</span>
+                    <a href="ch-5.html" class="btn btn-notes">
+                        <span><i>📝</i> Detailed Notes</span>
                     </a>
-                    <a href="#" class="btn btn-locked">
+                    <a href="ch-5-question.html" class="btn btn-questions">
                         <span><i>🎯</i> Interactive Questions</span>
                     </a>
-                    <a href="#" class="btn btn-locked">
+                    <a href="pdfs/Python%20Fundamentals.pdf" target="_blank" class="btn btn-pdf">
                         <span><i>📕</i> Classroom PDF</span>
                     </a>
                 </div>
             </div>
 
             <!-- Chapter 6 -->
-            <div class="chapter-card card-6">
+            <div class="chapter-card card-6 fade-up delay-6">
                 <span class="ch-num">Chapter 6</span>
                 <h3>Data Handling</h3>
+                <div class="marks-pill">🎯 15 Marks &nbsp;•&nbsp; 5 Questions</div>
                 <div class="action-links">
-                    <a href="#" class="btn btn-locked">
-                        <span><i>📝</i> HTML Notes</span>
+                    <a href="ch-6.html" class="btn btn-notes">
+                        <span><i>📝</i> Detailed Notes</span>
                     </a>
-                    <a href="#" class="btn btn-locked">
+                    <a href="ch-6-question.html" class="btn btn-questions">
                         <span><i>🎯</i> Interactive Questions</span>
                     </a>
-                    <a href="#" class="btn btn-locked">
+                    <a href="pdfs/Data%20Handling.pdf" target="_blank" class="btn btn-pdf">
                         <span><i>📕</i> Classroom PDF</span>
                     </a>
                 </div>
             </div>
 
             <!-- Chapter 7 -->
-            <div class="chapter-card card-7">
+            <div class="chapter-card card-7 fade-up delay-7">
                 <span class="ch-num">Chapter 7</span>
                 <h3>Flow of Control</h3>
+                <div class="marks-pill" style="border-color: #fde2e9; background: #fff5f8; color: var(--blush-dark);">🔥 25 Marks &nbsp;•&nbsp; 12 Questions</div>
                 <div class="action-links">
-                    <a href="#" class="btn btn-locked">
-                        <span><i>📝</i> HTML Notes</span>
+                    <a href="ch-7.html" class="btn btn-notes">
+                        <span><i>📝</i> Detailed Notes</span>
                     </a>
-                    <a href="#" class="btn btn-locked">
+                    <a href="ch-7-question.html" class="btn btn-questions">
                         <span><i>🎯</i> Interactive Questions</span>
                     </a>
-                    <a href="#" class="btn btn-locked">
+                    <a href="pdfs/Flow%20of%20Control.pdf" target="_blank" class="btn btn-pdf">
                         <span><i>📕</i> Classroom PDF</span>
                     </a>
                 </div>
@@ -447,7 +788,20 @@
 
         </div>
 
+        <div class="site-footer">
+            Made with ❤️ for Class XI CS (083) &nbsp;•&nbsp; Krishna Public School
+        </div>
+
     </div>
+
+    <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">↑</button>
+
+    <script>
+        const scrollBtn = document.getElementById('scrollTop');
+        window.addEventListener('scroll', () => {
+            scrollBtn.classList.toggle('visible', window.scrollY > 300);
+        });
+    </script>
 </body>
 
 </html>

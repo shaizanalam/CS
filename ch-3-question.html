@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -31,6 +31,9 @@
         body {
             font-family: 'Quicksand', sans-serif;
             background: var(--cream);
+            background-image: radial-gradient(circle at 1px 1px, rgba(139,127,214,0.04) 1px, transparent 0);
+            background-size: 28px 28px;
+            scroll-behavior: smooth;
             color: var(--ink);
             margin: 0;
             padding: 0 0 60px;
@@ -826,6 +829,43 @@
 
         updateScore();
     </script>
+    <style>
+        .scroll-top {
+            position: fixed; bottom: 20px; right: 20px; width: 42px; height: 42px;
+            border-radius: 50%; background: linear-gradient(135deg, #8b7fd6, #4a90d9);
+            color: #fff; border: none; font-size: 18px; cursor: pointer;
+            box-shadow: 0 4px 14px rgba(139,127,214,0.3); opacity: 0;
+            transform: translateY(10px); transition: all 0.3s ease; z-index: 100;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Quicksand', sans-serif; font-weight: 800;
+        }
+        .scroll-top.visible { opacity: 1; transform: translateY(0); }
+        .scroll-top:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(139,127,214,0.4); }
+        
+        .qcard { transition: transform 0.15s ease, box-shadow 0.15s ease; }
+        .qcard:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(139,127,214,0.08); }
+        .header-card { position: relative; overflow: hidden; }
+        .header-card::before {
+            content: ''; position: absolute; top: -30px; right: -30px;
+            width: 100px; height: 100px; background: rgba(255,255,255,0.2);
+            border-radius: 50%; pointer-events: none;
+        }
+        .header-card::after {
+            content: ''; position: absolute; bottom: -20px; left: -20px;
+            width: 70px; height: 70px; background: rgba(255,255,255,0.15);
+            border-radius: 50%; pointer-events: none;
+        }
+        details.ref-card { transition: transform 0.15s ease; }
+        details.ref-card:hover { transform: translateY(-1px); }
+    </style>
+    <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">â†‘</button>
+    <script>
+        (function(){
+            const sb = document.getElementById('scrollTop');
+            window.addEventListener('scroll', () => sb.classList.toggle('visible', window.scrollY > 300));
+        })();
+    </script>
 </body>
 
 </html>
+
