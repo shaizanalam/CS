@@ -33,7 +33,7 @@
         body {
             font-family: 'Quicksand', sans-serif;
             background: var(--cream);
-            background-image: radial-gradient(circle at 1px 1px, rgba(139,127,214,0.04) 1px, transparent 0);
+            background-image: radial-gradient(circle at 1px 1px, rgba(139, 127, 214, 0.04) 1px, transparent 0);
             background-size: 28px 28px;
             color: var(--ink);
             line-height: 1.5;
@@ -65,7 +65,7 @@
             right: -30px;
             width: 120px;
             height: 120px;
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
             border-radius: 50%;
         }
 
@@ -76,7 +76,7 @@
             left: -20px;
             width: 80px;
             height: 80px;
-            background: rgba(255,255,255,0.15);
+            background: rgba(255, 255, 255, 0.15);
             border-radius: 50%;
         }
 
@@ -109,7 +109,7 @@
         }
 
         .header-stats .pill {
-            background: rgba(255,255,255,0.6);
+            background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(10px);
             padding: 6px 14px;
             border-radius: 20px;
@@ -140,7 +140,7 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
             font-size: 18px;
         }
 
@@ -240,8 +240,14 @@
             font-weight: 800;
         }
 
-        .cell-filled { background: var(--lavender); color: #4b3f91; }
-        .cell-empty { color: #d4d0e8; }
+        .cell-filled {
+            background: var(--lavender);
+            color: #4b3f91;
+        }
+
+        .cell-empty {
+            color: #d4d0e8;
+        }
 
         .bp-table tbody tr:last-child td {
             border-bottom: none;
@@ -319,13 +325,33 @@
             height: 5px;
         }
 
-        .card-1::before { background: linear-gradient(90deg, var(--lavender-dark), #a78bfa); }
-        .card-2::before { background: linear-gradient(90deg, var(--blush-dark), #f472b6); }
-        .card-3::before { background: linear-gradient(90deg, var(--babyblue-dark), #60a5fa); }
-        .card-4::before { background: linear-gradient(90deg, var(--mint-dark), #34d399); }
-        .card-5::before { background: linear-gradient(90deg, #f09e51, #fbbf24); }
-        .card-6::before { background: linear-gradient(90deg, #e0729a, #f472b6); }
-        .card-7::before { background: linear-gradient(90deg, #4a90d9, #818cf8); }
+        .card-1::before {
+            background: linear-gradient(90deg, var(--lavender-dark), #a78bfa);
+        }
+
+        .card-2::before {
+            background: linear-gradient(90deg, var(--blush-dark), #f472b6);
+        }
+
+        .card-3::before {
+            background: linear-gradient(90deg, var(--babyblue-dark), #60a5fa);
+        }
+
+        .card-4::before {
+            background: linear-gradient(90deg, var(--mint-dark), #34d399);
+        }
+
+        .card-5::before {
+            background: linear-gradient(90deg, #f09e51, #fbbf24);
+        }
+
+        .card-6::before {
+            background: linear-gradient(90deg, #e0729a, #f472b6);
+        }
+
+        .card-7::before {
+            background: linear-gradient(90deg, #4a90d9, #818cf8);
+        }
 
         .ch-num {
             display: inline-block;
@@ -338,13 +364,40 @@
             text-transform: uppercase;
         }
 
-        .card-1 .ch-num { background: var(--lavender); color: #4b3f91; }
-        .card-2 .ch-num { background: var(--blush); color: #9c2f4d; }
-        .card-3 .ch-num { background: var(--babyblue); color: #2c5a8d; }
-        .card-4 .ch-num { background: var(--mint); color: #1f6b46; }
-        .card-5 .ch-num { background: var(--peach); color: #8a5a1e; }
-        .card-6 .ch-num { background: var(--blush); color: #9c2f4d; }
-        .card-7 .ch-num { background: var(--babyblue); color: #2c5a8d; }
+        .card-1 .ch-num {
+            background: var(--lavender);
+            color: #4b3f91;
+        }
+
+        .card-2 .ch-num {
+            background: var(--blush);
+            color: #9c2f4d;
+        }
+
+        .card-3 .ch-num {
+            background: var(--babyblue);
+            color: #2c5a8d;
+        }
+
+        .card-4 .ch-num {
+            background: var(--mint);
+            color: #1f6b46;
+        }
+
+        .card-5 .ch-num {
+            background: var(--peach);
+            color: #8a5a1e;
+        }
+
+        .card-6 .ch-num {
+            background: var(--blush);
+            color: #9c2f4d;
+        }
+
+        .card-7 .ch-num {
+            background: var(--babyblue);
+            color: #2c5a8d;
+        }
 
         .chapter-card h3 {
             font-size: 17px;
@@ -398,33 +451,48 @@
             border: 1.5px solid #ece8fb;
             color: var(--ink);
         }
+
         .btn-notes:hover {
             border-color: var(--lavender-dark);
             background: #f9f8ff;
         }
-        .btn-notes i { font-style: normal; font-size: 15px; }
+
+        .btn-notes i {
+            font-style: normal;
+            font-size: 15px;
+        }
 
         .btn-questions {
             background: #fdfdfd;
             border: 1.5px solid #fdeaf0;
             color: var(--ink);
         }
+
         .btn-questions:hover {
             border-color: var(--blush-dark);
             background: #fff5f8;
         }
-        .btn-questions i { font-style: normal; font-size: 15px; }
+
+        .btn-questions i {
+            font-style: normal;
+            font-size: 15px;
+        }
 
         .btn-pdf {
             background: #fdfdfd;
             border: 1.5px solid #e2f1ff;
             color: var(--ink);
         }
+
         .btn-pdf:hover {
             border-color: var(--babyblue-dark);
             background: #f0f8ff;
         }
-        .btn-pdf i { font-style: normal; font-size: 15px; }
+
+        .btn-pdf i {
+            font-style: normal;
+            font-size: 15px;
+        }
 
         .btn::after {
             content: '→';
@@ -451,22 +519,84 @@
 
         /* ============ RESPONSIVE ============ */
         @media (max-width: 768px) {
-            body { padding: 12px 10px 50px; }
-            .header-card { padding: 26px 16px 22px; margin-bottom: 22px; border-radius: 20px; }
-            .header-card h1 { font-size: 24px; }
-            .header-card .subtitle { font-size: 13px; }
-            .header-stats { gap: 8px; margin-top: 12px; }
-            .header-stats .pill { font-size: 11px; padding: 5px 10px; }
-            .section-title { font-size: 18px; margin-bottom: 12px; }
-            .section-title .icon { width: 34px; height: 34px; font-size: 16px; }
-            .blueprint-wrap { margin-bottom: 24px; border-radius: 18px; }
-            .bp-header { padding: 14px 16px; }
-            .bp-header h2 { font-size: 15px; }
-            .bp-footer { font-size: 11.5px; padding: 10px 14px; }
-            .chapters-grid { grid-template-columns: 1fr; gap: 14px; }
-            .chapter-card { padding: 18px 16px 16px; border-radius: 18px; }
-            .chapter-card h3 { font-size: 16px; min-height: auto; margin-bottom: 12px; }
-            .btn { padding: 12px 14px; font-size: 14px; min-height: 46px; }
+            body {
+                padding: 12px 10px 50px;
+            }
+
+            .header-card {
+                padding: 26px 16px 22px;
+                margin-bottom: 22px;
+                border-radius: 20px;
+            }
+
+            .header-card h1 {
+                font-size: 24px;
+            }
+
+            .header-card .subtitle {
+                font-size: 13px;
+            }
+
+            .header-stats {
+                gap: 8px;
+                margin-top: 12px;
+            }
+
+            .header-stats .pill {
+                font-size: 11px;
+                padding: 5px 10px;
+            }
+
+            .section-title {
+                font-size: 18px;
+                margin-bottom: 12px;
+            }
+
+            .section-title .icon {
+                width: 34px;
+                height: 34px;
+                font-size: 16px;
+            }
+
+            .blueprint-wrap {
+                margin-bottom: 24px;
+                border-radius: 18px;
+            }
+
+            .bp-header {
+                padding: 14px 16px;
+            }
+
+            .bp-header h2 {
+                font-size: 15px;
+            }
+
+            .bp-footer {
+                font-size: 11.5px;
+                padding: 10px 14px;
+            }
+
+            .chapters-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .chapter-card {
+                padding: 18px 16px 16px;
+                border-radius: 18px;
+            }
+
+            .chapter-card h3 {
+                font-size: 16px;
+                min-height: auto;
+                margin-bottom: 12px;
+            }
+
+            .btn {
+                padding: 12px 14px;
+                font-size: 14px;
+                min-height: 46px;
+            }
         }
 
         /* ============ SCROLL-TO-TOP ============ */
@@ -491,10 +621,12 @@
             align-items: center;
             justify-content: center;
         }
+
         .scroll-top.visible {
             opacity: 1;
             transform: translateY(0);
         }
+
         .scroll-top:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(139, 127, 214, 0.4);
@@ -514,13 +646,33 @@
             }
         }
 
-        .delay-1 { animation-delay: 0.1s; }
-        .delay-2 { animation-delay: 0.2s; }
-        .delay-3 { animation-delay: 0.25s; }
-        .delay-4 { animation-delay: 0.3s; }
-        .delay-5 { animation-delay: 0.35s; }
-        .delay-6 { animation-delay: 0.4s; }
-        .delay-7 { animation-delay: 0.45s; }
+        .delay-1 {
+            animation-delay: 0.1s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.25s;
+        }
+
+        .delay-4 {
+            animation-delay: 0.3s;
+        }
+
+        .delay-5 {
+            animation-delay: 0.35s;
+        }
+
+        .delay-6 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-7 {
+            animation-delay: 0.45s;
+        }
     </style>
 </head>
 
@@ -546,7 +698,8 @@
         <div class="blueprint-wrap fade-up delay-2">
             <div class="bp-header">
                 <h2>KRISHNA PUBLIC SCHOOL</h2>
-                <div class="bp-sub">Session 2026-27 &nbsp;•&nbsp; Class XI CS [083] &nbsp;•&nbsp; Half-Yearly Exam Blueprint</div>
+                <div class="bp-sub">Session 2026-27 &nbsp;•&nbsp; Class XI CS [083] &nbsp;•&nbsp; Half-Yearly Exam
+                    Blueprint</div>
             </div>
             <div class="bp-table-scroll">
                 <table class="bp-table">
@@ -650,7 +803,8 @@
                     </tbody>
                 </table>
             </div>
-            <div class="bp-footer">📌 Official marks distribution for half-yearly examination • Krishna Public School</div>
+            <div class="bp-footer">📌 Official marks distribution for half-yearly examination • Krishna Public School
+            </div>
         </div>
 
         <!-- CHAPTERS SECTION -->
@@ -772,7 +926,8 @@
             <div class="chapter-card card-7 fade-up delay-7">
                 <span class="ch-num">Chapter 7</span>
                 <h3>Flow of Control</h3>
-                <div class="marks-pill" style="border-color: #fde2e9; background: #fff5f8; color: var(--blush-dark);">🔥 25 Marks &nbsp;•&nbsp; 12 Questions</div>
+                <div class="marks-pill" style="border-color: #fde2e9; background: #fff5f8; color: var(--blush-dark);">🔥
+                    25 Marks &nbsp;•&nbsp; 12 Questions</div>
                 <div class="action-links">
                     <a href="ch-7.html" class="btn btn-notes">
                         <span><i>📝</i> Detailed Notes</span>
@@ -796,7 +951,8 @@
             <div class="chapter-card card-4 fade-up delay-1">
                 <span class="ch-num" style="background: var(--mint); color: #1f6b46;">Practical File</span>
                 <h3>Class XI Python Practicals</h3>
-                <div class="marks-pill" style="border-color: #dcf5e8; background: #f2fbf6; color: var(--mint-dark);">💻 20 Questions Expected</div>
+                <div class="marks-pill" style="border-color: #dcf5e8; background: #f2fbf6; color: var(--mint-dark);">💻
+                    20 Questions Expected</div>
                 <div class="action-links">
                     <a href="practical.html" class="btn btn-notes">
                         <span><i>📝</i> View Practical List</span>
@@ -809,12 +965,13 @@
         </div>
 
         <div class="site-footer">
-            Made with ❤️ for Class XI CS (083) &nbsp;•&nbsp; Krishna Public School
+            Made for Class XI CS (083) &nbsp;•&nbsp; Shaizan Alam
         </div>
 
     </div>
 
-    <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">↑</button>
+    <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"
+        aria-label="Scroll to top">↑</button>
 
     <script>
         const scrollBtn = document.getElementById('scrollTop');
